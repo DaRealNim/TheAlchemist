@@ -1,9 +1,15 @@
 public abstract class Level {
-    private int packetGoal;
-    private int scoreGoal;
+    protected int packetGoal;
+    protected int scoreGoal;
+    private Grid grid;
+    private Controller controller;
+    private Display display;
 
-    public abstract void play();
+    public Level() {
+        grid = new Grid(getGridStrings());
+        controller = new TextBasedController();
+    }
 
-    public abstract Grid generateGrid(String[] boardStringRepresentationLines);
+    public abstract String[] getGridStrings();
 
 }

@@ -6,3 +6,6 @@ launch: compile
 
 test: compile
 	java -cp src/ Test
+
+clean:
+	rm src/*.class
