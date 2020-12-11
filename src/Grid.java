@@ -4,7 +4,7 @@ public class Grid {
     private Block[][] blockGrid;
 
     public Grid(String[] boardStringRepresentationLines) throws InvalidGridStringException {
-        /*  Représentation visuelle de la grille
+        /*  Visual representation of the grid
             blockGrid[height][width] =
             [
                     <--width--->
@@ -32,9 +32,10 @@ public class Grid {
         }
     }
 
+    /**
+     * Draws a debug visual representation of the grid in terminal
+     */
     public void display() {
-        // int columnIndicator = 0;
-        // int rowIndicator = 0;
         for(Block[] row : blockGrid) {
             for(Block block : row) {
                 if (block == null) System.out.print(" "); else System.out.print(block);
@@ -43,19 +44,35 @@ public class Grid {
         }
     }
 
+
+    /**
+     * Returns selected block
+     */
     private Block getBlock(int xPos, int yPos) {
         try {
             return blockGrid[yPos][xPos];
         } catch(ArrayIndexOutOfBoundsException e) {
-            System.out.println("Error: selected coordinates aren't in array");
-            e.printStackTrace();
+            // System.out.println("Error: selected coordinates aren't in array");
+            // e.printStackTrace();
             return null;
         }
     }
 
+    /**
+     * Destroys selected block
+     */
     private void destroyBlock(int xPos, int yPos) {
         try {
             blockGrid[yPos][xPos] = null;
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println("Error: selected coordinates aren't in array");
+            e.printStackTrace();
+        }
+    }
+
+    private void insertBlock(int xPos, int yPos, Block block) {
+        try {
+            blockGrid[yPos][xPos] = block;
         } catch(ArrayIndexOutOfBoundsException e) {
             System.out.println("Error: selected coordinates aren't in array");
             e.printStackTrace();
@@ -77,6 +94,42 @@ public class Grid {
             searchAndDestroyAdjacentBlocks(xPos, yPos-1, type);
             searchAndDestroyAdjacentBlocks(xPos, yPos+1, type);
         }
+    }
+
+    /**
+     * Makes all blocks that have nothing below them fall one case
+     * Returns false if some block still need to fall, true if we're done
+     */
+    public boolean applyGravityStep() {
+        boolean gravityCycleDone = true;
+        //We go through the grid from bottom to top
+        for(int row=height-2; row>=0; row--) {
+            for(int column=0; column<width; column++){
+                Block block = getBlock(column, row);
+                if (block != null) {
+                    if (block.getType() != '#') {
+                        if (getBlock(column, row+1) == null) {
+                            insertBlock(column, row+1, block);
+                            destroyBlock(column, row);
+                            if (gravityCycleDone) {
+                                Block blockBelowBelow = getBlock(column, row+2);
+                                if (blockBelowBelow == null) gravityCycleDone = false;
+                                else if (blockBelowBelow.getType() == '#') gravityCycleDone = false;
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return gravityCycleDone;
+    }
+
+    /**
+     * Applies gravity until all blocks are in place
+     */
+    public void applyGravity() {
+        while (!applyGravityStep());
     }
 
 
