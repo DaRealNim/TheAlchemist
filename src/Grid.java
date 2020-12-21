@@ -32,9 +32,6 @@ public class Grid {
         }
     }
 
-    /**
-     * Draws a debug visual representation of the grid in terminal
-     */
     public void display() {
         for(Block[] row : blockGrid) {
             for(Block block : row) {
@@ -45,9 +42,6 @@ public class Grid {
     }
 
 
-    /**
-     * Returns selected block
-     */
     private Block getBlock(int xPos, int yPos) {
         try {
             return blockGrid[yPos][xPos];
@@ -58,9 +52,6 @@ public class Grid {
         }
     }
 
-    /**
-     * Destroys selected block
-     */
     private void destroyBlock(int xPos, int yPos) {
         try {
             blockGrid[yPos][xPos] = null;
