@@ -2,8 +2,8 @@ public abstract class Level {
     protected int packetGoal;
     protected int scoreGoal;
     private Grid grid;
-    private Controller controller;
-    private Display display;
+    protected Controller controller;
+    protected Display display;
 
     public Level() {
         grid = new Grid(getGridStrings());

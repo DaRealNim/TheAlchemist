@@ -3,6 +3,8 @@ import java.io.IOException;
 public class Test {
     public static void main(String[] args) {
         System.out.println("\n");
+        Action a = new BlockSelectedAction(0,0);
+        System.out.println((a instanceof BlockSelectedAction));
         Grid g = new Grid(new String[]{ "  P    P   P  ",
                                         "AABAAACAABACCA",
                                         "ACCCADCAAABACC",
