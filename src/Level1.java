@@ -1,4 +1,4 @@
-public class Level1 extends Level{
+public class Level1 extends Level {
 
     public Level1() {
         super();
@@ -16,6 +16,14 @@ public class Level1 extends Level{
                             "ABACCA#DDDCAAA",
                             "DABAAC#CDCAA##",
                             "ABCAAD#DABCCAA"};
+    }
+
+    public void changeLevel() {
+        //Goto level 2
+    }
+
+    public void unlockLevel() {
+        //Unlock level 2
     }
 
 }

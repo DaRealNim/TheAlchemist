@@ -2,6 +2,7 @@ public class Grid {
     private int width;
     private int height;
     private Block[][] blockGrid;
+    public static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public Grid(String[] boardStringRepresentationLines) throws InvalidGridStringException {
         /*  Visual representation of the grid
@@ -19,12 +20,14 @@ public class Grid {
             ]
         */
 
-        if (boardStringRepresentationLines.length == 0) throw new InvalidGridStringException("Array is empty");
+        if (boardStringRepresentationLines.length == 0)
+            throw new InvalidGridStringException("Array is empty");
         width = boardStringRepresentationLines[0].length();
         height = boardStringRepresentationLines.length;
         blockGrid = new Block[height][width];
         for (int row=0; row<height; row++) {
-            if (boardStringRepresentationLines[row].length() != width) throw new InvalidGridStringException("Line "+row+"'s length does not match the first");
+            if (boardStringRepresentationLines[row].length() != width)
+                throw new InvalidGridStringException("Line "+row+"'s length does not match the first");
             for (int column=0; column<width; column++) {
                 char blockTypeChar = boardStringRepresentationLines[row].charAt(column);
                 if (blockTypeChar != ' ') blockGrid[row][column] = new Block(blockTypeChar);
@@ -33,16 +36,28 @@ public class Grid {
     }
 
     public void display() {
+        System.out.print("  ");
+        for(int i=0; i<blockGrid[0].length; i++) {
+            System.out.print((i<10) ? i : Character.toString(ALPHABET.charAt(i-10)));
+        }
+        int counter  = 0;
+        System.out.println();
         for(Block[] row : blockGrid) {
+            System.out.print((counter<10) ? counter : Character.toString(ALPHABET.charAt(counter-10)));
+            System.out.print(" ");
             for(Block block : row) {
-                if (block == null) System.out.print(" "); else System.out.print(block);
+                if (block == null)
+                    System.out.print(" ");
+                else
+                    System.out.print(block);
             }
             System.out.println();
+            counter++;
         }
     }
 
 
-    private Block getBlock(int xPos, int yPos) {
+    public Block getBlock(int xPos, int yPos) {
         try {
             return blockGrid[yPos][xPos];
         } catch(ArrayIndexOutOfBoundsException e) {
@@ -75,9 +90,11 @@ public class Grid {
      * for adjacent blocks
      */
     public void searchAndDestroyAdjacentBlocks(int xPos, int yPos, char type) {
-        if (type == ' ' || type == '#' || type == 'P') return; //can't destroy air, walls or packets
+        if (type == ' ' || type == '#' || type == 'P')
+            return; //can't destroy air, walls or packets
         Block currentBlock = getBlock(xPos, yPos);
-        if (currentBlock == null) return;
+        if (currentBlock == null)
+            return;
         if (currentBlock.getType() == type) {
             destroyBlock(xPos, yPos);
             searchAndDestroyAdjacentBlocks(xPos-1, yPos, type);
@@ -87,8 +104,60 @@ public class Grid {
         }
     }
 
+    private void shiftUpFromBlock(int column, int row) {
+        //move all blocks one step to left until there's no more or we hit a wall above
+        for(int row2=row-1; row2>=0; row2--) {
+            Block block = getBlock(column, row2);
+            if(block == null) {
+                break;
+            } else if(block.getType() == '#') {
+                break;
+            } else {
+                insertBlock(column-1, row2, block);
+                destroyBlock(column, row2);
+            }
+        }
+
+    }
+
     /**
-     * Makes all blocks that have nothing below them fall one case
+     * Shift columns that need to be shifted to the left:
+     * If there is a wall with a block on top and empty space or wall on the lower left, shift everything
+     * on top of it until the next wall or when we reach another empty space or the top of the grid
+     */
+    public boolean shiftToLeft() {
+        boolean done = true;
+        for(int row=height-1; row>=0; row--) {
+            for(int column=0; column<width; column++){
+                Block block = getBlock(column, row);
+                if (block != null) {
+                    if (block.getType() == '#' || row == height-1) {
+                        if (getBlock(column, row-1) != null) {
+                            if (getBlock(column, row-1).getType() != '#') {
+                                if (getBlock(column-1, row) == null) {
+                                    if (column != 0) {
+                                        //SHIFT!
+                                        shiftUpFromBlock(column, row);
+                                        done = false;
+                                    }
+                                } else if (getBlock(column-1, row).getType() == '#') {
+                                    if(getBlock(column-1, row-1) == null) {
+                                        //SHIFT!
+                                        shiftUpFromBlock(column, row);
+                                        done = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return done;
+    }
+
+    /**
+     * Makes all blocks that have nothing below them fall one step
      * Returns false if some block still need to fall, true if we're done
      */
     public boolean applyGravityStep() {
@@ -104,8 +173,10 @@ public class Grid {
                             destroyBlock(column, row);
                             if (gravityCycleDone) {
                                 Block blockBelowBelow = getBlock(column, row+2);
-                                if (blockBelowBelow == null) gravityCycleDone = false;
-                                else if (blockBelowBelow.getType() == '#') gravityCycleDone = false;
+                                if (blockBelowBelow == null)
+                                    gravityCycleDone = false;
+                                else if (blockBelowBelow.getType() == '#')
+                                    gravityCycleDone = false;
 
                             }
                         }
