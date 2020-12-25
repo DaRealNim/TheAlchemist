@@ -22,28 +22,31 @@ public class Grid {
 
         if (boardStringRepresentationLines.length == 0)
             throw new InvalidGridStringException("Array is empty");
+
         width = boardStringRepresentationLines[0].length();
         height = boardStringRepresentationLines.length;
         blockGrid = new Block[height][width];
-        for (int row=0; row<height; row++) {
+
+        for (int row = 0; row < height; row++) {
             if (boardStringRepresentationLines[row].length() != width)
                 throw new InvalidGridStringException("Line "+row+"'s length does not match the first");
-            for (int column=0; column<width; column++) {
+            for (int column = 0; column < width; column++) {
                 char blockTypeChar = boardStringRepresentationLines[row].charAt(column);
-                if (blockTypeChar != ' ') blockGrid[row][column] = new Block(blockTypeChar);
+                if (blockTypeChar != ' ')
+                  blockGrid[row][column] = new Block(blockTypeChar);
             }
         }
     }
 
     public void display() {
         System.out.print("  ");
-        for(int i=0; i<blockGrid[0].length; i++) {
-            System.out.print((i<10) ? i : Character.toString(ALPHABET.charAt(i-10)));
+        for(int i = 0; i < blockGrid[0].length; i++) {
+            System.out.print((i < 10) ? i : Character.toString(ALPHABET.charAt(i - 10)));
         }
-        int counter  = 0;
+        int counter = 0;
         System.out.println();
         for(Block[] row : blockGrid) {
-            System.out.print((counter<10) ? counter : Character.toString(ALPHABET.charAt(counter-10)));
+            System.out.print((counter < 10) ? counter : Character.toString(ALPHABET.charAt(counter - 10)));
             System.out.print(" ");
             for(Block block : row) {
                 if (block == null)
@@ -97,23 +100,23 @@ public class Grid {
             return;
         if (currentBlock.getType() == type) {
             destroyBlock(xPos, yPos);
-            searchAndDestroyAdjacentBlocks(xPos-1, yPos, type);
-            searchAndDestroyAdjacentBlocks(xPos+1, yPos, type);
-            searchAndDestroyAdjacentBlocks(xPos, yPos-1, type);
-            searchAndDestroyAdjacentBlocks(xPos, yPos+1, type);
+            searchAndDestroyAdjacentBlocks(xPos - 1, yPos, type);
+            searchAndDestroyAdjacentBlocks(xPos + 1, yPos, type);
+            searchAndDestroyAdjacentBlocks(xPos, yPos - 1, type);
+            searchAndDestroyAdjacentBlocks(xPos, yPos + 1, type);
         }
     }
 
     private void shiftUpFromBlock(int column, int row) {
         //move all blocks one step to left until there's no more or we hit a wall above
-        for(int row2=row-1; row2>=0; row2--) {
+        for(int row2 = row - 1; row2 >= 0; row2--) {
             Block block = getBlock(column, row2);
             if(block == null) {
                 break;
             } else if(block.getType() == '#') {
                 break;
             } else {
-                insertBlock(column-1, row2, block);
+                insertBlock(column - 1, row2, block);
                 destroyBlock(column, row2);
             }
         }
@@ -127,21 +130,21 @@ public class Grid {
      */
     public boolean shiftToLeft() {
         boolean done = true;
-        for(int row=height-1; row>=0; row--) {
-            for(int column=0; column<width; column++){
+        for(int row = height - 1; row >= 0; row--) {
+            for(int column = 0; column < width; column++){
                 Block block = getBlock(column, row);
                 if (block != null) {
-                    if (block.getType() == '#' || row == height-1) {
-                        if (getBlock(column, row-1) != null) {
-                            if (getBlock(column, row-1).getType() != '#') {
-                                if (getBlock(column-1, row) == null) {
+                    if (block.getType() == '#' || row == height - 1) {
+                        if (getBlock(column, row - 1) != null) {
+                            if (getBlock(column, row - 1).getType() != '#') {
+                                if (getBlock(column - 1, row) == null) {
                                     if (column != 0) {
                                         //SHIFT!
                                         shiftUpFromBlock(column, row);
                                         done = false;
                                     }
-                                } else if (getBlock(column-1, row).getType() == '#') {
-                                    if(getBlock(column-1, row-1) == null) {
+                                } else if (getBlock(column - 1, row).getType() == '#') {
+                                    if(getBlock(column - 1, row - 1) == null) {
                                         //SHIFT!
                                         shiftUpFromBlock(column, row);
                                         done = false;
@@ -163,16 +166,16 @@ public class Grid {
     public boolean applyGravityStep() {
         boolean gravityCycleDone = true;
         //We go through the grid from bottom to top
-        for(int row=height-2; row>=0; row--) {
-            for(int column=0; column<width; column++){
+        for(int row = height - 2; row >= 0; row--) {
+            for(int column = 0; column < width; column++) {
                 Block block = getBlock(column, row);
                 if (block != null) {
                     if (block.getType() != '#') {
-                        if (getBlock(column, row+1) == null) {
-                            insertBlock(column, row+1, block);
+                        if (getBlock(column, row + 1) == null) {
+                            insertBlock(column, row + 1, block);
                             destroyBlock(column, row);
                             if (gravityCycleDone) {
-                                Block blockBelowBelow = getBlock(column, row+2);
+                                Block blockBelowBelow = getBlock(column, row + 2);
                                 if (blockBelowBelow == null)
                                     gravityCycleDone = false;
                                 else if (blockBelowBelow.getType() == '#')
