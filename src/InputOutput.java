@@ -1,7 +1,7 @@
 public interface InputOutput {
-    public abstract void displayGraphics();
-    public abstract void displayText();
+    public abstract void outputGraphics();
+    public abstract void outputText();
 
-    public abstract void actionGraphics();
-    public abstract void actionText();
+    public abstract void inputGraphics();
+    public abstract void inputText();
 }
