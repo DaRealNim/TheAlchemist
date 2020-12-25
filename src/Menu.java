@@ -2,10 +2,14 @@ import java.util.Scanner;
 
 public class Menu implements InputOutput {
 
-  boolean gui;
+  private boolean gui;
+  private Progressiong gameProg;
+  private Inventory userInv;
 
-  public Menu(boolean userChoseGui) {
+  public Menu(boolean userChoseGui, Progress prog, Inventory inv) {
       gui = userChoseGui;
+      gameProg = prog;
+      userInv = inv;
   }
 
   public void displayMenu() {
@@ -61,7 +65,7 @@ public class Menu implements InputOutput {
   }
 
   public void outputGraphics() {
-    System.out.println("wehasnocluelmao");
+    System.out.println("graphics not implemented yet silly");
   }
 
   public void inputGraphics() {
