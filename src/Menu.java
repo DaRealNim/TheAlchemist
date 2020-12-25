@@ -67,10 +67,4 @@ public class Menu implements InputOutput {
   public void inputGraphics() {
     System.out.println("hereneither");
   }
-
-  public static void main (String[] args)
-  {
-    Menu a = new Menu(false);
-    a.displayMenu();
-  }
 }
