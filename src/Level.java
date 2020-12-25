@@ -4,10 +4,14 @@ import java.util.concurrent.TimeUnit;
 public abstract class Level implements InputOutput, Game  {
     protected int packetGoal;
     protected int scoreGoal;
+    protected int deliveredPackets;
+    protected int score;
     protected Grid grid;
 
     public Level() {
         grid = new Grid(getGridStrings());
+        deliveredPackets = 0;
+        score = 0;
     }
 
     public abstract String[] getGridStrings();
@@ -21,17 +25,20 @@ public abstract class Level implements InputOutput, Game  {
        System.out.flush();
     }
 
-    public void displayGraphics() {}
+    public void outputGraphics() {}
 
-    public void displayText() {
+    public void outputText() {
         clearTerminal();
         grid.display();
+        System.out.println();
+        System.out.println("Packets delivered: "+deliveredPackets);
+        System.out.println("Score            : "+score);
         System.out.println("\n");
     }
 
-    public void actionGraphics() {}
+    public void inputGraphics() {}
 
-    public void actionText() {
+    public void inputText() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("(c)liquer sur un bloc ou utiliser une (f)usée?: ");
         String action = scanner.nextLine();
@@ -54,7 +61,7 @@ public abstract class Level implements InputOutput, Game  {
                 TimeUnit.MILLISECONDS.sleep(500);
             } catch (InterruptedException e) {}
             boolean state = grid.applyGravityStep();
-            displayText();
+            outputText();
             if (state) break;
         }
     }
@@ -65,24 +72,38 @@ public abstract class Level implements InputOutput, Game  {
     //             TimeUnit.MILLISECONDS.sleep(500);
     //         } catch (InterruptedException e) {}
     //         boolean state = grid.shiftToLeft();
-    //         displayText();
+    //         outputText();
     //         if (state) break;
     //     }
     // }
 
     public void play() {
         boolean won = false;
-        while(!won) {
-            displayText();
-            actionText();
+        while (!won) {
+            String boardString = grid.getBoardString();
+            outputText();
+            inputText();
+            while (true) {
+                //when action is done, makes all blocks fall
+                outputText();
+                gravityWithDisplay();
 
-            //when action is done, makes all blocks fall
-            displayText();
-            gravityWithDisplay();
-            //shift to left
-            grid.shiftToLeft();
-            //gravity again
-            gravityWithDisplay();
+                //deliver packets, apply gravity again
+                deliveredPackets += grid.removePacketsOnLastLine();
+                outputText();
+                gravityWithDisplay();
+
+                //shift to left, gravity again
+                grid.shiftToLeft();
+                gravityWithDisplay();
+
+                //if the grid hasn't changed, we quit
+                if(grid.getBoardString().equals(boardString))
+                    break;
+            }
+            if (deliveredPackets >= packetGoal && score >= scoreGoal) {
+                //WON
+            }
         }
     }
 
