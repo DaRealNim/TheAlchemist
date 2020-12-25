@@ -31,22 +31,22 @@ public class Test {
         //
         // }
 
-        // Level1 level = new Level1();
-        // level.play();
+        Level1 level = new Level1();
+        level.play();
 
-        Progression p = new Progression();
-        Inventory i = new Inventory();
-
-        try {
-            FileOutputStream fileOut = new FileOutputStream("PRS_save.dat");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(p);
-            out.writeObject(i);
-            out.close();
-            fileOut.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Progression p = new Progression();
+        // Inventory i = new Inventory();
+        //
+        // try {
+        //     FileOutputStream fileOut = new FileOutputStream("PRS_save.dat");
+        //     ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        //     out.writeObject(p);
+        //     out.writeObject(i);
+        //     out.close();
+        //     fileOut.close();
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
 
 
 

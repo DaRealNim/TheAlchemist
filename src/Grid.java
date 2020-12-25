@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Grid {
     private int width;
     private int height;
@@ -38,14 +40,16 @@ public class Grid {
         }
     }
 
-    public void display() {
+
+
+    public void display(int from, int to) {
         System.out.print("  ");
         for(int i = 0; i < blockGrid[0].length; i++) {
             System.out.print((i < 10) ? i : Character.toString(ALPHABET.charAt(i - 10)));
         }
-        int counter = 0;
+        int counter = from;
         System.out.println();
-        for(Block[] row : blockGrid) {
+        for(Block[] row : Arrays.copyOfRange(blockGrid, from, to)) {
             System.out.print((counter < 10) ? counter : Character.toString(ALPHABET.charAt(counter - 10)));
             System.out.print(" ");
             for(Block block : row) {
@@ -57,6 +61,10 @@ public class Grid {
             System.out.println();
             counter++;
         }
+    }
+
+    public void display() {
+        display(0, height);
     }
 
 
@@ -204,14 +212,47 @@ public class Grid {
         int counter = 0;
         for (int column = 0; column < width; column++) {
             Block currentBlock = getBlock(column, height-1);
+            System.out.println(column + ", " + (height-1));
             if (currentBlock != null) {
-                if (currentBlock.getType() == '#') {
+                if (currentBlock.getType() == 'P') {
+                    System.out.println("PACKET");
                     counter++;
                     destroyBlock(column, height-1);
                 }
             }
         }
         return counter;
+    }
+
+    public boolean lineHasEmptyBlocs(int lineNumber) {
+        for(Block block : blockGrid[lineNumber]) {
+            if(block == null) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if current line is fully devoid of blocs that aren't walls
+     */
+    public boolean isLineFullyEmpty(int lineNumber) {
+        for(Block block : blockGrid[lineNumber]) {
+            if(block != null) {
+                if(block.getType() != '#')
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public void destroyColumn(int column, int from, int to) {
+        for(int i=from; i<=to; i++) {
+            Block block = getBlock(column, i);
+            if (block != null) {
+                if (block.getType() != 'P' && block.getType() != '#') {
+                    destroyBlock(column, i);
+                }
+            }
+        }
     }
 
     public String getBoardString() {
@@ -226,6 +267,16 @@ public class Grid {
         }
         return ret;
     }
+
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
 
 
     public class InvalidGridStringException extends RuntimeException {

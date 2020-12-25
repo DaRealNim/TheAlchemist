@@ -3,10 +3,10 @@ import java.util.Scanner;
 public class Menu implements InputOutput {
 
   private boolean gui;
-  private Progressiong gameProg;
+  private Progression gameProg;
   private Inventory userInv;
 
-  public Menu(boolean userChoseGui, Progress prog, Inventory inv) {
+  public Menu(boolean userChoseGui, Progression prog, Inventory inv) {
       gui = userChoseGui;
       gameProg = prog;
       userInv = inv;

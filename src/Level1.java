@@ -15,6 +15,10 @@ public class Level1 extends Level {
                             "DDDACDDDDADAAA",
                             "ABACCA#DDDCAAA",
                             "DABAAC#CDCAA##",
+                            "DDDACDDDDADAAA",
+                            "DDDACDDDDADAAA",
+                            "DDDACDDDDADAAA",
+                            "DDDACDDDDADAAA",
                             "ABCAAD#DABCCAA"};
     }
 

@@ -7,23 +7,19 @@ public class Launcher {
     public static void main(String[] args) {
 
       File saveFile = new File("SavedGame.dat");
-      Inventory inv;
-      Progression prog;
+      Inventory inv = new Inventory();
+      Progression prog = new Progression();
+
 
       try {
         if (saveFile.createNewFile()) {
           FileOutputStream savedFileOutputStream = new FileOutputStream(saveFile);
           ObjectOutputStream savedObjectOutputStream = new ObjectOutputStream(savedFileOutputStream);
 
-          inv = new Inventory();
-          prog = new Progression();
-
           savedObjectOutputStream.writeObject(inv);
           savedObjectOutputStream.writeObject(prog);
 
           savedObjectOutputStream.close();
-
-          mainMenu.displayMenu();
         }
         else {
           FileInputStream savedFileInputStream = new FileInputStream(saveFile);
@@ -33,8 +29,6 @@ public class Launcher {
           prog = (Progression) savedObjectInputStream.readObject();
 
           savedObjectInputStream.close();
-
-          mainMenu.displayMenu();
         }
       }
       catch (Exception e) {
