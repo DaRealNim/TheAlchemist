@@ -197,6 +197,36 @@ public class Grid {
         while (!applyGravityStep());
     }
 
+    /**
+     * Remove packets on last line and returns the number of removed packets
+     */
+    public int removePacketsOnLastLine() {
+        int counter = 0;
+        for (int column = 0; column < width; column++) {
+            Block currentBlock = getBlock(column, height-1);
+            if (currentBlock != null) {
+                if (currentBlock.getType() == '#') {
+                    counter++;
+                    destroyBlock(column, height-1);
+                }
+            }
+        }
+        return counter;
+    }
+
+    public String getBoardString() {
+        String ret = "";
+        for(Block[] row : blockGrid) {
+            for(Block block : row) {
+                if (block == null)
+                    ret += " ";
+                else
+                    ret += block;
+            }
+        }
+        return ret;
+    }
+
 
     public class InvalidGridStringException extends RuntimeException {
         public InvalidGridStringException(String message) {
