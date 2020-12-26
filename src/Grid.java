@@ -100,19 +100,22 @@ public class Grid {
      * Destroys selected block if it matches `type`, and recursively does the same
      * for adjacent blocks
      */
-    public void searchAndDestroyAdjacentBlocks(int xPos, int yPos, char type) {
+    public int searchAndDestroyAdjacentBlocks(int xPos, int yPos, char type) {
         if (type == ' ' || type == '#' || type == 'P')
-            return; //can't destroy air, walls or packets
+            return 0; //can't destroy air, walls or packets
         Block currentBlock = getBlock(xPos, yPos);
         if (currentBlock == null)
-            return;
+            return 0;
+        int score = 0;
         if (currentBlock.getType() == type) {
             destroyBlock(xPos, yPos);
-            searchAndDestroyAdjacentBlocks(xPos - 1, yPos, type);
-            searchAndDestroyAdjacentBlocks(xPos + 1, yPos, type);
-            searchAndDestroyAdjacentBlocks(xPos, yPos - 1, type);
-            searchAndDestroyAdjacentBlocks(xPos, yPos + 1, type);
+            score += 10;
+            score += searchAndDestroyAdjacentBlocks(xPos - 1, yPos, type);
+            score += searchAndDestroyAdjacentBlocks(xPos + 1, yPos, type);
+            score += searchAndDestroyAdjacentBlocks(xPos, yPos - 1, type);
+            score += searchAndDestroyAdjacentBlocks(xPos, yPos + 1, type);
         }
+        return score;
     }
 
     private void shiftUpFromBlock(int column, int row) {
@@ -244,15 +247,19 @@ public class Grid {
         return true;
     }
 
-    public void destroyColumn(int column, int from, int to) {
+    public int destroyColumn(int column, int from, int to) {
+        int score = 0;
         for(int i=from; i<=to; i++) {
             Block block = getBlock(column, i);
+
             if (block != null) {
                 if (block.getType() != 'P' && block.getType() != '#') {
                     destroyBlock(column, i);
+                    score += 10;
                 }
             }
         }
+        return score;
     }
 
     public String getBoardString() {

@@ -74,18 +74,18 @@ public abstract class Level implements InputOutput, Game  {
                         return;
                 }
                 if (coordsArray.length == 2) {
-                    grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType());
+                    score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType());
                 }
                 break;
             case "f":
                 System.out.print("Colone: ");
                 String column = scanner.nextLine();
                 x = Integer.parseInt(column, 16);
-                grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
+                score += grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
                 break;
             case "d":
                 for(int i=0; i<grid.getWidth(); i++) {
-                    grid.destroyColumn(i, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
+                    score += grid.destroyColumn(i, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
                 }
                 break;
         }
