@@ -4,6 +4,9 @@ compile:
 launch: compile
 	java -cp src/ Launcher
 
+launchtext: compile
+	java -cp src/ Launcher text
+
 test: compile
 	java -cp src/ Test
 
