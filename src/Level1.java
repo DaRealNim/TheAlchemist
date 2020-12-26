@@ -2,8 +2,8 @@ public class Level1 extends Level {
 
     public Level1() {
         super();
-        packetGoal = 2;
-        scoreGoal = 1000;
+        packetGoal = 3;
+        scoreGoal = 1500;
     }
 
     public String[] getGridStrings() {
@@ -16,10 +16,11 @@ public class Level1 extends Level {
                             "ABACCA#DDDCAAA",
                             "DABAAC#CDCAA##",
                             "DDDACDDDDADAAA",
-                            "DDDACDDDDADAAA",
-                            "DDDACDDDDADAAA",
-                            "DDDACDDDDADAAA",
-                            "ABCAAD#DABCCAA"};
+                            "DDDACD#DDDADAA",
+                            "DDDACD#DDDADAA",
+                            "DDDACD#DDADAAA",
+                            "ABCAADAABCCAAD",
+                            "##############"};
     }
 
     public void changeLevel() {

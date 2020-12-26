@@ -49,7 +49,7 @@ public class Grid {
         }
         int counter = from;
         System.out.println();
-        for(Block[] row : Arrays.copyOfRange(blockGrid, from, to)) {
+        for(Block[] row : Arrays.copyOfRange(blockGrid, from, to+1)) {
             System.out.print((counter < 10) ? counter : Character.toString(ALPHABET.charAt(counter - 10)));
             System.out.print(" ");
             for(Block block : row) {
@@ -120,13 +120,16 @@ public class Grid {
 
     private void shiftUpFromBlock(int column, int row) {
         //move all blocks one step to left until there's no more or we hit a wall above
+        //if there's a wall blocking the shift at some point, we quit
         for(int row2 = row - 1; row2 >= 0; row2--) {
             Block block = getBlock(column, row2);
             if(block == null) {
                 break;
-            } else if(block.getType() == '#') {
+            } else if(block.isWall()) {
                 break;
             } else {
+                if(getBlock(column - 1, row2) != null)
+                    return;
                 insertBlock(column - 1, row2, block);
                 destroyBlock(column, row2);
             }
@@ -145,7 +148,10 @@ public class Grid {
             for(int column = 0; column < width; column++){
                 Block block = getBlock(column, row);
                 if (block != null) {
-                    if (block.getType() == '#' || row == height - 1) {
+                    if (block.isWall()) {
+                        int offset = 0;
+                        // if(row == height - 1)
+                        //     offset = 1
                         if (getBlock(column, row - 1) != null) {
                             if (getBlock(column, row - 1).getType() != '#') {
                                 if (getBlock(column - 1, row) == null) {
@@ -154,7 +160,7 @@ public class Grid {
                                         shiftUpFromBlock(column, row);
                                         done = false;
                                     }
-                                } else if (getBlock(column - 1, row).getType() == '#') {
+                                } else if (getBlock(column - 1, row).isWall()) {
                                     if(getBlock(column - 1, row - 1) == null) {
                                         //SHIFT!
                                         shiftUpFromBlock(column, row);
@@ -189,7 +195,7 @@ public class Grid {
                                 Block blockBelowBelow = getBlock(column, row + 2);
                                 if (blockBelowBelow == null)
                                     gravityCycleDone = false;
-                                else if (blockBelowBelow.getType() == '#')
+                                else if (blockBelowBelow.isWall())
                                     gravityCycleDone = false;
 
                             }
@@ -214,13 +220,13 @@ public class Grid {
     public int removePacketsOnLastLine() {
         int counter = 0;
         for (int column = 0; column < width; column++) {
-            Block currentBlock = getBlock(column, height-1);
-            System.out.println(column + ", " + (height-1));
+            Block currentBlock = getBlock(column, height-2);
+            System.out.println(column + ", " + (height-2));
             if (currentBlock != null) {
                 if (currentBlock.getType() == 'P') {
                     System.out.println("PACKET");
                     counter++;
-                    destroyBlock(column, height-1);
+                    destroyBlock(column, height-2);
                 }
             }
         }

@@ -9,6 +9,10 @@ public class Block {
         return (type == block.getType());
     }
 
+    public boolean isWall() {
+        return (type == '#');
+    }
+
 
     @Override
     public String toString() {

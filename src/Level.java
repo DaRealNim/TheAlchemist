@@ -20,7 +20,7 @@ public abstract class Level implements InputOutput, Game  {
         if (hasScroll) {
             scrollFirstLine = 0;
             scrollLastLine = 9;
-            remainingLines = grid.getHeight() - scrollLastLine;
+            remainingLines = grid.getHeight() - scrollLastLine - 2;
         }
     }
 
@@ -51,6 +51,7 @@ public abstract class Level implements InputOutput, Game  {
         }
         System.out.println("Packets delivered: "+deliveredPackets);
         System.out.println("Score            : "+score);
+        // System.out.println(scrollFirstLine + ", "  + scrollLastLine);
         System.out.println("\n");
     }
 
@@ -121,24 +122,27 @@ public abstract class Level implements InputOutput, Game  {
             outputText();
             inputText();
             while (true) {
-                System.out.println("updateScroll");
+                // System.out.println("updateScroll");
                 updateScroll();
 
                 //when action is done, makes all blocks fall
-                System.out.println("gravity");
+                // System.out.println("gravity");
                 outputText();
                 gravityWithDisplay();
 
-                System.out.println("deliver");
+                // System.out.println("deliver");
                 //deliver packets, apply gravity again
                 deliveredPackets += grid.removePacketsOnLastLine();
                 outputText();
                 gravityWithDisplay();
 
-                System.out.println("shift");
+                // System.out.println("shift");
                 //shift to left, gravity again
                 grid.shiftToLeft();
                 gravityWithDisplay();
+
+                // System.out.println("updateScroll");
+                updateScroll();
 
                 //if the grid hasn't changed, we quit
                 String boardString2 = grid.getBoardString();
@@ -147,7 +151,7 @@ public abstract class Level implements InputOutput, Game  {
                 }
                 boardString = boardString2;
             }
-            if (deliveredPackets >= packetGoal) {
+            if (deliveredPackets >= packetGoal && score >= scoreGoal) {
                 won = true;
             }
         }
@@ -155,9 +159,9 @@ public abstract class Level implements InputOutput, Game  {
     }
 
     public void scroll(int length) {
-        scrollFirstLine = Math.min(scrollFirstLine+length, grid.getHeight()-10);
-        scrollLastLine = Math.min(scrollLastLine+length, grid.getHeight());
-        remainingLines = grid.getHeight()-scrollLastLine;
+        scrollFirstLine = Math.min(scrollFirstLine+length, grid.getHeight()-10-1);
+        scrollLastLine = Math.min(scrollLastLine+length, grid.getHeight()-2);
+        remainingLines = grid.getHeight()-scrollLastLine-2;
     }
 
     /**
@@ -169,18 +173,18 @@ public abstract class Level implements InputOutput, Game  {
             if (grid.lineHasEmptyBlocs(scrollLastLine-1)) {
                 if (grid.isLineFullyEmpty(scrollFirstLine)) {
                     int scrollLength = 1;
-                    if (scrollFirstLine >= grid.getHeight()-11) {
-                        scrollLastLine = grid.getHeight();
-                        remainingLines = 0;
-                    } else {
-                        for(int line=1; line<=scrollLastLine-1; line++) {
+                    // if (scrollFirstLine >= grid.getHeight()-10-1) {
+                    //     scrollLastLine = grid.getHeight()-1;
+                    //     remainingLines = 0;
+                    // } else {
+                        for(int line=1; line<=scrollLastLine-2; line++) {
                             if (grid.isLineFullyEmpty(scrollFirstLine+line))
                                 scrollLength++;
                             else
                                 break;
                         }
                         scroll(scrollLength);
-                    }
+                    // }
                 }
             }
         }
