@@ -14,7 +14,7 @@ public class Window extends JFrame {
 
 
     public Window() {
-        setTitle("Pet rescue fucking saga");
+        setTitle("BORIS HAXX0R'S REVENGE 2077");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 1000);
         setVisible(true);

@@ -1,11 +1,17 @@
 import java.util.Scanner;
 import java.lang.reflect.Constructor;
 
+import javax.swing.*;
+import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.event.*;
+
 public class Menu implements InputOutput {
 
   private boolean gui;
   private Progression gameProg;
   private Inventory userInv;
+  private Window mainWindow;
 
   public Menu(boolean userChoseGui, Progression prog, Inventory inv) {
       gui = userChoseGui;
@@ -15,7 +21,7 @@ public class Menu implements InputOutput {
 
   public void displayMenu() {
     if (gui)
-      outputGraphics();
+        outputGraphics();
     else {
         outputText();
         inputText();
@@ -80,8 +86,7 @@ public class Menu implements InputOutput {
                 Constructor<?> levelConstructor = level.getConstructor();
                 Object levelInstance = levelConstructor.newInstance();
               }
-              catch (Exception e)
-              {
+              catch (Exception e) {
                 System.out.println(e.getCause()); //Delete this! 4 debugging
                 System.out.println("The level you're trying to play doesn't exist.");
               }
@@ -117,7 +122,41 @@ public class Menu implements InputOutput {
 
 
   public void outputGraphics() {
-    System.out.println("graphics not implemented yet silly");
+    mainWindow = new Window();
+
+    JPanel optionPanel = new JPanel();
+
+    JMenuBar buttons = new JMenuBar();
+
+    JButton chooseLevelButton = new JButton("Serve Motherland");
+    JButton quitGameButton = new JButton("Exit game");
+
+    chooseLevelButton.addActionListener((ActionEvent e) -> { chooseLevel(); });
+    quitGameButton.addActionListener((ActionEvent e) -> { quitGame(); });
+
+    buttons.add(chooseLevelButton);
+    buttons.add(quitGameButton);
+
+    optionPanel.add(buttons);
+
+    mainWindow.setContentPane(optionPanel);
+  }
+
+  public void quitGame() {
+    System.exit(0);
+  }
+
+  public void chooseLevel() {
+    JPanel levelPanel = new JPanel();
+
+    JMenuBar buttons = new JMenuBar();
+
+    for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
+      buttons.add(new JButton("Level " + (i + 1)));
+    }
+
+    levelPanel.add(buttons);
+    mainWindow.setContentPane(levelPanel);
   }
 
   public void inputGraphics() {
