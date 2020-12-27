@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.lang.reflect.Constructor;
 
 public class Menu implements InputOutput {
 
@@ -49,7 +50,45 @@ public class Menu implements InputOutput {
 
       switch(userOption) {
         case "1":
-          System.out.println("Placeholder");
+          for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
+              if (gameProg.unlockedLevels[i])
+                System.out.println("Level " + (i + 1));
+          }
+          while (true)
+          {
+            System.out.print(">>>");
+
+            String levelChosenString = userMenuInput.nextLine();
+            int levelChosen;
+
+            if (isNumeric(levelChosenString))
+              levelChosen = Integer.valueOf(levelChosenString);
+            else {
+              System.out.println("Please enter a number");
+              break;
+            }
+
+            if (levelChoiceIsValid(levelChosen)) {
+              System.out.println("Invalid level choice");
+              break;
+            }
+
+            if (levelIsUnlocked(levelChosen))
+            {
+              try {
+                Class<?> level = Class.forName("Level" + levelChosenString);
+                Constructor<?> levelConstructor = level.getConstructor();
+                Object levelInstance = levelConstructor.newInstance();
+              }
+              catch (Exception e)
+              {
+                System.out.println(e.getCause()); //Delete this! 4 debugging
+                System.out.println("The level you're trying to play doesn't exist.");
+              }
+            }
+            else
+              System.out.println("This level is still locked!");
+          }
           break;
         case "2":
           System.out.println("хахаха, ты правда думал, что в этой игре есть настройки?");
@@ -63,6 +102,19 @@ public class Menu implements InputOutput {
       }
     }
   }
+
+  private boolean levelChoiceIsValid(int levelId) {
+    return (levelId > gameProg.unlockedLevels.length || levelId < 1);
+  }
+
+  private boolean levelIsUnlocked(int levelId) {
+    return (gameProg.unlockedLevels[levelId - 1]);
+  }
+
+  private boolean isNumeric(String str) {
+        return (str != null && str.matches("[0-9.]+"));
+  }
+
 
   public void outputGraphics() {
     System.out.println("graphics not implemented yet silly");

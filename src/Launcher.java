@@ -33,6 +33,7 @@ public class Launcher {
       }
       catch (Exception e) {
         System.out.println("Error loading save file, exiting...");
+        System.exit(0);
       }
 
       Menu mainMenu;

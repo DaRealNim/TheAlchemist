@@ -18,7 +18,7 @@ public abstract class Level implements InputOutput, Game  {
         grid = new Grid(getGridStrings());
         deliveredPackets = 0;
         score = 0;
-        hasScroll = (grid.getHeight() > 10 );
+        hasScroll = (grid.getHeight() > 10);
         if (hasScroll) {
             scrollFirstLine = 0;
             scrollLastLine = 9;
@@ -26,6 +26,19 @@ public abstract class Level implements InputOutput, Game  {
         }
         this.window = window;
         outputGraphics();
+    }
+
+    public Level() {
+      grid = new Grid(getGridStrings());
+      deliveredPackets = 0;
+      score = 0;
+      hasScroll = (grid.getHeight() > 10);
+      if (hasScroll) {
+          scrollFirstLine = 0;
+          scrollLastLine = 9;
+          remainingLines = grid.getHeight() - scrollLastLine - 2;
+      }
+
     }
 
     public abstract String[] getGridStrings();
@@ -143,37 +156,55 @@ public abstract class Level implements InputOutput, Game  {
         boolean won = false;
         while (!won) {
             String boardString = grid.getBoardString();
-            // System.out.println(boardString);
-            // outputText();
             outputGraphics();
-            // inputText();
             inputGraphics();
+
             while (true) {
-                // System.out.println("updateScroll");
                 updateScroll();
 
-                //when action is done, makes all blocks fall
-                // System.out.println("gravity");
-                // outputText();
                 outputGraphics();
                 gravityWithDisplay();
 
-                // System.out.println("deliver");
-                //deliver packets, apply gravity again
                 deliveredPackets += grid.removePacketsOnLastLine();
-                // outputText();
+
                 outputGraphics();
                 gravityWithDisplay();
 
-                // System.out.println("shift");
-                //shift to left, gravity again
                 grid.shiftToLeft();
                 gravityWithDisplay();
 
-                // System.out.println("updateScroll");
                 updateScroll();
 
-                //if the grid hasn't changed, we quit
+                String boardString2 = grid.getBoardString();
+                if(boardString2.equals(boardString)) {
+                    break;
+                }
+                boardString = boardString2;
+            }
+            if (deliveredPackets >= packetGoal && score >= scoreGoal) {
+                won = true;
+            }
+        }
+        System.out.println("GAGNE!!!!");
+    }
+
+    public void playText() {
+        boolean won = false;
+        while (!won) {
+            String boardString = grid.getBoardString();
+            outputText();
+            inputText();
+            while (true) {
+                updateScroll();
+                outputText();
+
+                deliveredPackets += grid.removePacketsOnLastLine();
+                outputText();
+
+                grid.shiftToLeft();
+
+                updateScroll();
+
                 String boardString2 = grid.getBoardString();
                 if(boardString2.equals(boardString)) {
                     break;

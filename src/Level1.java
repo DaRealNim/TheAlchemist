@@ -6,6 +6,13 @@ public class Level1 extends Level {
         scoreGoal = 1500;
     }
 
+    public Level1() {
+      super();
+      packetGoal = 3;
+      scoreGoal = 1500;
+      super.playText();
+    }
+
     public String[] getGridStrings() {
         return new String[]{"P    P   P",
                             "BAAACAABAC",
