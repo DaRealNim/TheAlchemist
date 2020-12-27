@@ -1,14 +1,14 @@
 compile:
-	javac src/*.java
+	javac src/*.java -d bin/
 
 launch: compile
-	java -cp src/ Launcher
+	java -cp bin/ Launcher
 
 launchtext: compile
-	java -cp src/ Launcher text
+	java -cp bin/ Launcher text
 
 test: compile
-	java -cp src/ Test
+	java -cp bin/ Test
 
 clean:
-	rm src/*.class
+	rm bin/*.class
