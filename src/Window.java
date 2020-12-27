@@ -24,12 +24,12 @@ public class Window extends JFrame {
                 super.paintComponent(g);
                 int n = 9;
                 g.setColor(rgbToColor("#7a04eb"));
-                for(int i=150; i<=950; i+=80) {
-                    g.drawLine(0, i, 800, i);
-                }
-                for(int i=0; i<=800; i+=80) {
-                    g.drawLine(i, 150, i, 950);
-                }
+                // for(int i=150; i<=950; i+=80) {
+                //     g.drawLine(0, i, 800, i);
+                // }
+                // for(int i=0; i<=800; i+=80) {
+                //     g.drawLine(i, 150, i, 950);
+                // }
             };
         }
 
