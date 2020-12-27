@@ -135,12 +135,23 @@ public abstract class Level implements InputOutput, Game  {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {}
             boolean state = grid.applyGravityStep();
-            // outputText();
             outputGraphics();
-            if (state) break;
+            if (state)
+              break;
         }
     }
 
+    private void gravityWithDisplayText() {
+        while(true) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {}
+            boolean state = grid.applyGravityStep();
+            outputText();
+            if (state)
+              break;
+        }
+    }
     // private void shiftWithDisplay() {
     //     while(true) {
     //         try {
@@ -197,11 +208,14 @@ public abstract class Level implements InputOutput, Game  {
             while (true) {
                 updateScroll();
                 outputText();
+                gravityWithDisplayText();
 
                 deliveredPackets += grid.removePacketsOnLastLine();
                 outputText();
+                gravityWithDisplayText();
 
                 grid.shiftToLeft();
+                gravityWithDisplayText();
 
                 updateScroll();
 
