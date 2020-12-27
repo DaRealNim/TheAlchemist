@@ -1,4 +1,5 @@
 import java.io.*;
+import javax.swing.*;
 
 public class Test {
     public static void main(String[] args) {
@@ -31,8 +32,8 @@ public class Test {
         //
         // }
 
-        Level1 level = new Level1();
-        level.play();
+        // Level1 level = new Level1();
+        // level.play();
 
         // Progression p = new Progression();
         // Inventory i = new Inventory();
@@ -47,6 +48,11 @@ public class Test {
         // } catch (IOException e) {
         //     e.printStackTrace();
         // }
+
+        Window w = new Window();
+        Level1 level = new Level1(w);
+        level.play();
+
 
 
 

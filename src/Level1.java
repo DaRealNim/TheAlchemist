@@ -1,26 +1,26 @@
 public class Level1 extends Level {
 
-    public Level1() {
-        super();
+    public Level1(Window w) {
+        super(w);
         packetGoal = 3;
         scoreGoal = 1500;
     }
 
     public String[] getGridStrings() {
-        return new String[]{"  P    P   P  ",
-                            "AABAAACAABACCA",
-                            "ACCCADCAAABACC",
-                            "ABADDDDDDDA###",
-                            "DDDDBAD#######",
-                            "DDDACDDDDADAAA",
-                            "ABACCA#DDDCAAA",
-                            "DABAAC#CDCAA##",
-                            "DDDACDDDDADAAA",
-                            "DDDACD#DDDADAA",
-                            "DDDACD#DDDADAA",
-                            "DDDACD#DDADAAA",
-                            "ABCAADAABCCAAD",
-                            "##############"};
+        return new String[]{"P    P   P",
+                            "BAAACAABAC",
+                            "CCADCAAABA",
+                            "ADDDDDDDA#",
+                            "DDBAD#####",
+                            "DACDDDDADA",
+                            "ACCA#DDDCA",
+                            "BAAC#CDCAA",
+                            "DACDDDDADA",
+                            "DACD#DDDAD",
+                            "DACD#DDDAD",
+                            "DACD#DDADA",
+                            "CAADAABCCA",
+                            "##########"};
     }
 
     public void changeLevel() {

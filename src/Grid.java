@@ -4,6 +4,9 @@ public class Grid {
     private int width;
     private int height;
     private Block[][] blockGrid;
+    public int blockClickedX;
+    public int blockClickedY;
+    public boolean blockClicked;
     public static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public Grid(String[] boardStringRepresentationLines) throws InvalidGridStringException {
@@ -28,6 +31,9 @@ public class Grid {
         width = boardStringRepresentationLines[0].length();
         height = boardStringRepresentationLines.length;
         blockGrid = new Block[height][width];
+        blockClicked = false;
+        blockClickedX = 0;
+        blockClickedY = 0;
 
         for (int row = 0; row < height; row++) {
             if (boardStringRepresentationLines[row].length() != width)
@@ -35,7 +41,7 @@ public class Grid {
             for (int column = 0; column < width; column++) {
                 char blockTypeChar = boardStringRepresentationLines[row].charAt(column);
                 if (blockTypeChar != ' ')
-                  blockGrid[row][column] = new Block(blockTypeChar);
+                  blockGrid[row][column] = new Block(blockTypeChar, this);
             }
         }
     }
@@ -109,6 +115,7 @@ public class Grid {
         int score = 0;
         if (currentBlock.getType() == type) {
             destroyBlock(xPos, yPos);
+            System.out.println("DESTROY");
             score += 10;
             score += searchAndDestroyAdjacentBlocks(xPos - 1, yPos, type);
             score += searchAndDestroyAdjacentBlocks(xPos + 1, yPos, type);
@@ -281,6 +288,21 @@ public class Grid {
         return ret;
     }
 
+    public void setBlockClicked(Block block) {
+        //search position of block in grid
+        System.out.println("setBlockClicked");
+        for(int row=0; row<height; row++) {
+            for(int column=0; column<width; column++) {
+                if(blockGrid[row][column] == block) {
+                    blockClickedX = column;
+                    blockClickedY = row;
+                    blockClicked = true;
+                    System.out.println("Block found at: "+ column + "," + row);
+                }
+            }
+        }
+    }
+
 
     public int getHeight() {
         return height;
@@ -290,6 +312,9 @@ public class Grid {
         return width;
     }
 
+    // public Block[][] getGrid() {
+    //     return blockGrid;
+    // }
 
 
     public class InvalidGridStringException extends RuntimeException {

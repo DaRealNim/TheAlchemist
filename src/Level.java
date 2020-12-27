@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import javax.swing.*;
 
 public abstract class Level implements InputOutput, Game  {
     protected int packetGoal;
@@ -11,8 +12,9 @@ public abstract class Level implements InputOutput, Game  {
     protected int remainingLines;
     protected boolean hasScroll;
     protected Grid grid;
+    protected Window window;
 
-    public Level() {
+    public Level(Window window) {
         grid = new Grid(getGridStrings());
         deliveredPackets = 0;
         score = 0;
@@ -22,6 +24,8 @@ public abstract class Level implements InputOutput, Game  {
             scrollLastLine = 9;
             remainingLines = grid.getHeight() - scrollLastLine - 2;
         }
+        this.window = window;
+        outputGraphics();
     }
 
     public abstract String[] getGridStrings();
@@ -35,7 +39,14 @@ public abstract class Level implements InputOutput, Game  {
        System.out.flush();
     }
 
-    public void outputGraphics() {}
+    public void outputGraphics() {
+        if (hasScroll)
+            window.paintGrid(grid, scrollFirstLine, scrollLastLine);
+        else
+            window.paintGrid(grid, 0, grid.getHeight()-2);
+        window.revalidate();
+        window.repaint();
+    }
 
     public void outputText() {
         clearTerminal();
@@ -55,7 +66,20 @@ public abstract class Level implements InputOutput, Game  {
         System.out.println("\n");
     }
 
-    public void inputGraphics() {}
+    public void inputGraphics() {
+        System.out.println("Waiting for block...");
+        while(!grid.blockClicked) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {}
+        }
+        int x = grid.blockClickedX;
+        int y = grid.blockClickedY;
+        System.out.println("BLOCKCLICKED");
+        System.out.println(grid.getBlock(x,y).getType());
+        score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType());
+        grid.blockClicked = false;
+    }
 
     public void inputText() {
         Scanner scanner = new Scanner(System.in);
@@ -98,7 +122,8 @@ public abstract class Level implements InputOutput, Game  {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {}
             boolean state = grid.applyGravityStep();
-            outputText();
+            // outputText();
+            outputGraphics();
             if (state) break;
         }
     }
@@ -118,22 +143,26 @@ public abstract class Level implements InputOutput, Game  {
         boolean won = false;
         while (!won) {
             String boardString = grid.getBoardString();
-            System.out.println(boardString);
-            outputText();
-            inputText();
+            // System.out.println(boardString);
+            // outputText();
+            outputGraphics();
+            // inputText();
+            inputGraphics();
             while (true) {
                 // System.out.println("updateScroll");
                 updateScroll();
 
                 //when action is done, makes all blocks fall
                 // System.out.println("gravity");
-                outputText();
+                // outputText();
+                outputGraphics();
                 gravityWithDisplay();
 
                 // System.out.println("deliver");
                 //deliver packets, apply gravity again
                 deliveredPackets += grid.removePacketsOnLastLine();
-                outputText();
+                // outputText();
+                outputGraphics();
                 gravityWithDisplay();
 
                 // System.out.println("shift");
