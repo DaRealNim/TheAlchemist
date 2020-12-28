@@ -56,9 +56,9 @@ public class Menu implements InputOutput {
 
       switch(userOption) {
         case "1":
-          for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
-              if (gameProg.unlockedLevels[i])
-                System.out.println("Level " + (i + 1));
+          for (int i = 1; i < gameProg.unlockedLevels.length; i++) {
+              if (levelIsUnlocked(i))
+                System.out.println("Level " + i);
           }
           while (true)
           {
@@ -80,17 +80,7 @@ public class Menu implements InputOutput {
             }
 
             if (levelIsUnlocked(levelChosen))
-            {
-              try {
-                Class<?> level = Class.forName("Level" + levelChosenString);
-                Constructor<?> levelConstructor = level.getConstructor();
-                Object levelInstance = levelConstructor.newInstance();
-              }
-              catch (Exception e) {
-                System.out.println(e.getCause()); //Delete this! 4 debugging
-                System.out.println("The level you're trying to play doesn't exist.");
-              }
-            }
+              instanciateLevel(levelChosen);
             else
               System.out.println("This level is still locked!");
           }
@@ -108,17 +98,6 @@ public class Menu implements InputOutput {
     }
   }
 
-  private boolean levelChoiceIsValid(int levelId) {
-    return (levelId > gameProg.unlockedLevels.length || levelId < 1);
-  }
-
-  private boolean levelIsUnlocked(int levelId) {
-    return (gameProg.unlockedLevels[levelId - 1]);
-  }
-
-  private boolean isNumeric(String str) {
-        return (str != null && str.matches("[0-9.]+"));
-  }
 
 
   public void outputGraphics() {
@@ -146,20 +125,58 @@ public class Menu implements InputOutput {
     System.exit(0);
   }
 
+  private boolean levelChoiceIsValid(int levelId) {
+    return (levelId > gameProg.unlockedLevels.length || levelId < 1);
+  }
+
+  private boolean levelIsUnlocked(int levelId) {
+    return (gameProg.unlockedLevels[levelId - 1]);
+  }
+
+  private boolean isNumeric(String str) {
+        return (str != null && str.matches("[0-9.]+"));
+  }
+
   public void chooseLevel() {
     JPanel levelPanel = new JPanel();
 
     JMenuBar buttons = new JMenuBar();
 
     for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
-      buttons.add(new JButton("Level " + (i + 1)));
+      JButton levelButton = new JButton("Level " + (i + 1));
+
+      final int levelId = i;
+
+      levelButton.addActionListener((ActionEvent e) -> {if (levelIsUnlocked(levelId))
+                                                    instanciateLevel(levelId);
+                                                  else
+                                                    System.out.println("Level is locked!");});
+
+      buttons.add(levelButton);
+      System.out.print("button created!");
     }
 
+    mainWindow.getContentPane().removeAll();
     levelPanel.add(buttons);
     mainWindow.setContentPane(levelPanel);
+    mainWindow.repaint();
+    mainWindow.repaint();
   }
 
   public void inputGraphics() {
     System.out.println("hereneither");
+  }
+
+  public void instanciateLevel(int levelId)
+  {
+    try {
+      Class<?> level = Class.forName("Level" + (levelId));
+      Constructor<?> levelConstructor = level.getConstructor();
+      Object levelInstance = levelConstructor.newInstance();
+    }
+    catch (Exception e) {
+      System.out.println(e); //Delete this! 4 debugging
+      System.out.println("The level you're trying to play doesn't exist.");
+    }
   }
 }
