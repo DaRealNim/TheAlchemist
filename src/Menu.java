@@ -117,8 +117,10 @@ public class Menu implements InputOutput {
     buttons.add(quitGameButton);
 
     optionPanel.add(buttons);
-
-    mainWindow.setContentPane(optionPanel);
+    // mainWindow.getContentPane().add(optionPanel);
+    mainWindow.setJMenuBar(buttons);
+    // mainWindow.setContentPane(optionPanel);
+    mainWindow.repaint();
   }
 
   public void quitGame() {
@@ -145,12 +147,19 @@ public class Menu implements InputOutput {
     for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
       JButton levelButton = new JButton("Level " + (i + 1));
 
-      final int levelId = i;
+      final int levelId = i+1;
 
-      levelButton.addActionListener((ActionEvent e) -> {if (levelIsUnlocked(levelId))
-                                                    instanciateLevel(levelId);
-                                                  else
-                                                    System.out.println("Level is locked!");});
+      levelButton.addActionListener((ActionEvent e) -> {    if (levelIsUnlocked(levelId)) {
+                                                                Thread thread = new Thread() {
+                                                                    public void run() {
+                                                                        instanciateLevel(levelId);
+                                                                    }
+                                                                };
+                                                                thread.start();
+                                                            } else {
+                                                                System.out.println("Level is locked!");
+                                                            }
+                                                       });
 
       buttons.add(levelButton);
       System.out.print("button created!");
@@ -158,8 +167,9 @@ public class Menu implements InputOutput {
 
     mainWindow.getContentPane().removeAll();
     levelPanel.add(buttons);
-    mainWindow.setContentPane(levelPanel);
-    mainWindow.repaint();
+    // mainWindow.setContentPane(levelPanel);
+    mainWindow.setJMenuBar(buttons);
+    mainWindow.revalidate();
     mainWindow.repaint();
   }
 
@@ -171,8 +181,15 @@ public class Menu implements InputOutput {
   {
     try {
       Class<?> level = Class.forName("Level" + (levelId));
-      Constructor<?> levelConstructor = level.getConstructor();
-      Object levelInstance = levelConstructor.newInstance();
+      Constructor<?> levelConstructor;
+      Object levelInstance;
+      if (gui) {
+        levelConstructor = level.getConstructor(new Class[] {Window.class});
+        levelInstance = levelConstructor.newInstance(mainWindow);
+      } else {
+        levelConstructor = level.getConstructor();
+        levelInstance = levelConstructor.newInstance();
+      }
     }
     catch (Exception e) {
       System.out.println(e); //Delete this! 4 debugging

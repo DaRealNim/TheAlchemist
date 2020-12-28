@@ -24,6 +24,9 @@ public abstract class Level implements InputOutput, Game  {
             scrollLastLine = 9;
             remainingLines = grid.getHeight() - scrollLastLine - 2;
         }
+        window.setJMenuBar(null);
+        window.revalidate();
+        window.repaint();
         this.window = window;
         outputGraphics();
     }
@@ -59,6 +62,7 @@ public abstract class Level implements InputOutput, Game  {
             window.paintGrid(grid, 0, grid.getHeight()-2);
         window.revalidate();
         window.repaint();
+
     }
 
     public void outputText() {

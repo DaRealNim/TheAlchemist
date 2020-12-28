@@ -19,25 +19,26 @@ public class Window extends JFrame {
         setSize(800, 1000);
         setVisible(true);
 
-        setContentPane(new JPanel(null) {
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                int n = 9;
-                g.setColor(rgbToColor("#7a04eb"));
-                // for(int i=150; i<=950; i+=80) {
-                //     g.drawLine(0, i, 800, i);
-                // }
-                // for(int i=0; i<=800; i+=80) {
-                //     g.drawLine(i, 150, i, 950);
-                // }
-            };
-        }
+        setContentPane(new JPanel(null) //{
+        //     protected void paintComponent(Graphics g) {
+        //         super.paintComponent(g);
+        //         int n = 9;
+        //         g.setColor(rgbToColor("#7a04eb"));
+        //         // for(int i=150; i<=950; i+=80) {
+        //         //     g.drawLine(0, i, 800, i);
+        //         // }
+        //         // for(int i=0; i<=800; i+=80) {
+        //         //     g.drawLine(i, 150, i, 950);
+        //         // }
+        //     };
+        // }
 
         );
         getContentPane().setBackground(rgbToColor("#120458"));
     }
 
     public void paintGrid(Grid grid, int from, int to) {
+        System.out.println("paintGrid!");
         getContentPane().removeAll();
         for(int row=0; row<to+1; row++) {
             for(int column=0; column<grid.getWidth(); column++) {

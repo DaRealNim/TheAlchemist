@@ -4,6 +4,7 @@ public class Level1 extends Level {
         super(w);
         packetGoal = 3;
         scoreGoal = 1500;
+        super.play();
     }
 
     public Level1() {
