@@ -38,7 +38,7 @@ public class Window extends JFrame {
     }
 
     public void paintGrid(Grid grid, int from, int to) {
-        System.out.println("paintGrid!");
+        // System.out.println("paintGrid!");
         getContentPane().removeAll();
         for(int row=0; row<to+1; row++) {
             for(int column=0; column<grid.getWidth(); column++) {

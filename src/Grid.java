@@ -46,7 +46,9 @@ public class Grid {
         }
     }
 
-
+    public void display() {
+        display(0, height);
+    }
 
     public void display(int from, int to) {
         System.out.print("  ");
@@ -67,10 +69,6 @@ public class Grid {
             System.out.println();
             counter++;
         }
-    }
-
-    public void display() {
-        display(0, height);
     }
 
 
@@ -102,11 +100,25 @@ public class Grid {
         }
     }
 
+    public boolean isStuck() {
+        // System.out.println("isStuck");
+        for(int yPos = 0; yPos < height; yPos++) {
+            for(int xPos = 0; xPos < width; xPos++) {
+                if (canDestroyBlock(xPos, yPos)) {
+                    System.out.println("Not stuck: can destroy block " + xPos + "," + yPos);
+                    System.out.println(getBlock(xPos, yPos));
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     /**
      * Destroys selected block if it matches `type`, and recursively does the same
      * for adjacent blocks
      */
-    public int searchAndDestroyAdjacentBlocks(int xPos, int yPos, char type) {
+    public int searchAndDestroyAdjacentBlocks(int xPos, int yPos, char type, boolean begin) {
         if (type == ' ' || type == '#' || type == 'P')
             return 0; //can't destroy air, walls or packets
         Block currentBlock = getBlock(xPos, yPos);
@@ -114,34 +126,47 @@ public class Grid {
             return 0;
         int score = 0;
         if (currentBlock.getType() == type) {
+            if (begin) {
+                if(!canDestroyBlock(xPos, yPos))
+                    return 0;
+            }
             destroyBlock(xPos, yPos);
-            System.out.println("DESTROY");
+            // System.out.println("DESTROY");
             score += 10;
-            score += searchAndDestroyAdjacentBlocks(xPos - 1, yPos, type);
-            score += searchAndDestroyAdjacentBlocks(xPos + 1, yPos, type);
-            score += searchAndDestroyAdjacentBlocks(xPos, yPos - 1, type);
-            score += searchAndDestroyAdjacentBlocks(xPos, yPos + 1, type);
+            score += searchAndDestroyAdjacentBlocks(xPos - 1, yPos, type, false);
+            score += searchAndDestroyAdjacentBlocks(xPos + 1, yPos, type, false);
+            score += searchAndDestroyAdjacentBlocks(xPos, yPos - 1, type, false);
+            score += searchAndDestroyAdjacentBlocks(xPos, yPos + 1, type, false);
         }
         return score;
     }
 
-    private void shiftUpFromBlock(int column, int row) {
-        //move all blocks one step to left until there's no more or we hit a wall above
-        //if there's a wall blocking the shift at some point, we quit
-        for(int row2 = row - 1; row2 >= 0; row2--) {
-            Block block = getBlock(column, row2);
-            if(block == null) {
-                break;
-            } else if(block.isWall()) {
-                break;
-            } else {
-                if(getBlock(column - 1, row2) != null)
-                    return;
-                insertBlock(column - 1, row2, block);
-                destroyBlock(column, row2);
-            }
-        }
+    private boolean canDestroyBlock(int xPos, int yPos) {
+        int counter = 0;
+        Block block = getBlock(xPos, yPos);
+        if (block == null)
+            return false;
+        char type = block.getType();
+        if (type == '#')
+            return false;
+        try {
+            if (getBlock(xPos - 1, yPos).getType() == type)
+                counter++;
+        } catch (NullPointerException e) {}
+        try {
+            if (getBlock(xPos + 1, yPos).getType() == type)
+                counter++;
+        } catch (NullPointerException e) {}
+        try {
+            if (getBlock(xPos, yPos - 1).getType() == type)
+                counter++;
+        } catch (NullPointerException e) {}
+        try {
+            if (getBlock(xPos, yPos + 1).getType() == type)
+                counter++;
+        } catch (NullPointerException e) {}
 
+        return (counter != 0);
     }
 
     /**
@@ -183,6 +208,25 @@ public class Grid {
         return done;
     }
 
+    private void shiftUpFromBlock(int column, int row) {
+        //move all blocks one step to left until there's no more or we hit a wall above
+        //if there's a wall blocking the shift at some point, we quit
+        for(int row2 = row - 1; row2 >= 0; row2--) {
+            Block block = getBlock(column, row2);
+            if(block == null) {
+                break;
+            } else if(block.isWall()) {
+                break;
+            } else {
+                if(getBlock(column - 1, row2) != null)
+                    return;
+                insertBlock(column - 1, row2, block);
+                destroyBlock(column, row2);
+            }
+        }
+
+    }
+
     /**
      * Makes all blocks that have nothing below them fall one step
      * Returns false if some block still need to fall, true if we're done
@@ -215,20 +259,13 @@ public class Grid {
     }
 
     /**
-     * Applies gravity until all blocks are in place
-     */
-    public void applyGravity() {
-        while (!applyGravityStep());
-    }
-
-    /**
      * Remove packets on last line and returns the number of removed packets
      */
     public int removePacketsOnLastLine() {
         int counter = 0;
         for (int column = 0; column < width; column++) {
             Block currentBlock = getBlock(column, height-2);
-            System.out.println(column + ", " + (height-2));
+            // System.out.println(column + ", " + (height-2));
             if (currentBlock != null) {
                 if (currentBlock.getType() == 'P') {
                     System.out.println("PACKET");
@@ -290,14 +327,14 @@ public class Grid {
 
     public void setBlockClicked(Block block) {
         //search position of block in grid
-        System.out.println("setBlockClicked");
+        // System.out.println("setBlockClicked");
         for(int row=0; row<height; row++) {
             for(int column=0; column<width; column++) {
                 if(blockGrid[row][column] == block) {
                     blockClickedX = column;
                     blockClickedY = row;
                     blockClicked = true;
-                    System.out.println("Block found at: "+ column + "," + row);
+                    // System.out.println("Block found at: "+ column + "," + row);
                 }
             }
         }

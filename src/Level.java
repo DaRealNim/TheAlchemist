@@ -13,8 +13,10 @@ public abstract class Level implements InputOutput, Game  {
     protected boolean hasScroll;
     protected Grid grid;
     protected Window window;
+    protected Progression prog;
+    protected Inventory inv;
 
-    public Level(Window window) {
+    public Level(Window window, Progression prog, Inventory inv) {
         grid = new Grid(getGridStrings());
         deliveredPackets = 0;
         score = 0;
@@ -28,19 +30,23 @@ public abstract class Level implements InputOutput, Game  {
         window.revalidate();
         window.repaint();
         this.window = window;
+        this.prog = prog;
+        this.inv = inv;
         outputGraphics();
     }
 
-    public Level() {
-      grid = new Grid(getGridStrings());
-      deliveredPackets = 0;
-      score = 0;
-      hasScroll = (grid.getHeight() > 10);
-      if (hasScroll) {
-          scrollFirstLine = 0;
-          scrollLastLine = 9;
-          remainingLines = grid.getHeight() - scrollLastLine - 2;
-      }
+    public Level(Progression prog, Inventory inv) {
+        grid = new Grid(getGridStrings());
+        deliveredPackets = 0;
+        score = 0;
+        hasScroll = (grid.getHeight() > 10);
+        if (hasScroll) {
+            scrollFirstLine = 0;
+            scrollLastLine = 9;
+            remainingLines = grid.getHeight() - scrollLastLine - 2;
+        }
+        this.prog = prog;
+        this.inv = inv;
 
     }
 
@@ -51,8 +57,8 @@ public abstract class Level implements InputOutput, Game  {
     public abstract void unlockLevel();
 
     public static void clearTerminal() {
-       System.out.print("\033[H\033[2J");
-       System.out.flush();
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public void outputGraphics() {
@@ -93,8 +99,8 @@ public abstract class Level implements InputOutput, Game  {
         int x = grid.blockClickedX;
         int y = grid.blockClickedY;
         System.out.println("BLOCKCLICKED");
-        System.out.println(grid.getBlock(x,y).getType());
-        score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType());
+        // System.out.println(grid.getBlock(x,y).getType());
+        score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
         grid.blockClicked = false;
     }
 
@@ -113,10 +119,10 @@ public abstract class Level implements InputOutput, Game  {
                 y = Integer.parseInt(coordsArray[1], 16);
                 if (hasScroll) {
                     if (!(scrollFirstLine <= y && y <= scrollLastLine))
-                        return;
+                    return;
                 }
                 if (coordsArray.length == 2) {
-                    score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType());
+                    score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
                 }
                 break;
             case "f":
@@ -138,34 +144,24 @@ public abstract class Level implements InputOutput, Game  {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {}
-            boolean state = grid.applyGravityStep();
-            outputGraphics();
-            if (state)
-              break;
+                boolean state = grid.applyGravityStep();
+                outputGraphics();
+                if (state)
+                    break;
+            }
         }
-    }
 
     private void gravityWithDisplayText() {
         while(true) {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {}
-            boolean state = grid.applyGravityStep();
-            outputText();
-            if (state)
-              break;
+                boolean state = grid.applyGravityStep();
+                outputText();
+                if (state)
+                    break;
+            }
         }
-    }
-    // private void shiftWithDisplay() {
-    //     while(true) {
-    //         try {
-    //             TimeUnit.MILLISECONDS.sleep(500);
-    //         } catch (InterruptedException e) {}
-    //         boolean state = grid.shiftToLeft();
-    //         outputText();
-    //         if (state) break;
-    //     }
-    // }
 
     public void play() {
         boolean won = false;
@@ -198,13 +194,22 @@ public abstract class Level implements InputOutput, Game  {
             }
             if (deliveredPackets >= packetGoal && score >= scoreGoal) {
                 won = true;
+            } else if (grid.isStuck()) {
+                break;
             }
         }
-        System.out.println("GAGNE!!!!");
+        if (won) {
+            System.out.println("GAGNE!!!!");
+            win();
+        } else {
+            System.out.println("Perdu...");
+            loose();
+        }
     }
 
     public void playText() {
         boolean won = false;
+        boolean loose = false;
         while (!won) {
             String boardString = grid.getBoardString();
             outputText();
@@ -231,9 +236,26 @@ public abstract class Level implements InputOutput, Game  {
             }
             if (deliveredPackets >= packetGoal && score >= scoreGoal) {
                 won = true;
+            } else if (grid.isStuck()) {
+                break;
             }
         }
-        System.out.println("GAGNE!!!!");
+        if (won) {
+            System.out.println("GAGNE!!!!");
+            win();
+        } else {
+            System.out.println("Perdu...");
+            loose();
+        }
+    }
+
+    public void win() {
+        unlockLevel();
+        //TODO: save inventory and progression
+    }
+
+    public void loose() {
+        //TODO
     }
 
     public void scroll(int length) {
@@ -243,9 +265,9 @@ public abstract class Level implements InputOutput, Game  {
     }
 
     /**
-     * Checks if the last line of the current scrolls has empty blocs. if yes, and there's remaining space, then
-     * scroll the screen by that ammount of remaining space
-     */
+    * Checks if the last line of the current scrolls has empty blocs. if yes, and there's remaining space, then
+    * scroll the screen by that ammount of remaining space
+    */
     public void updateScroll() {
         if (hasScroll)  {
             if (grid.lineHasEmptyBlocs(scrollLastLine-1)) {
@@ -255,13 +277,13 @@ public abstract class Level implements InputOutput, Game  {
                     //     scrollLastLine = grid.getHeight()-1;
                     //     remainingLines = 0;
                     // } else {
-                        for(int line=1; line<=scrollLastLine-2; line++) {
-                            if (grid.isLineFullyEmpty(scrollFirstLine+line))
-                                scrollLength++;
-                            else
-                                break;
-                        }
-                        scroll(scrollLength);
+                    for(int line=1; line<=scrollLastLine-2; line++) {
+                        if (grid.isLineFullyEmpty(scrollFirstLine+line))
+                            scrollLength++;
+                        else
+                            break;
+                    }
+                    scroll(scrollLength);
                     // }
                 }
             }

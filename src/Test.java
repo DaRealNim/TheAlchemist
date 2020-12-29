@@ -49,9 +49,9 @@ public class Test {
         //     e.printStackTrace();
         // }
 
-        Window w = new Window();
-        Level1 level = new Level1(w);
-        level.play();
+        // Window w = new Window();
+        // Level1 level = new Level1(w);
+        // level.play();
 
 
 
