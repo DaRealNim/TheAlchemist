@@ -119,16 +119,19 @@ public abstract class Level implements InputOutput, Game  {
         switch (action) {
             case "c":
                 System.out.print("Coordonnées de la case (\"x,y\"): ");
-                String coords = scanner.nextLine();
-                String[] coordsArray = coords.split(",");
-                x = Integer.parseInt(coordsArray[0], 16);
-                y = Integer.parseInt(coordsArray[1], 16);
-                if (hasScroll) {
-                    if (!(scrollFirstLine <= y && y <= scrollLastLine))
-                    return;
+                try {
+                    String coords = scanner.nextLine();
+                    String[] coordsArray = coords.split(",");
+                    x = Integer.parseInt(coordsArray[0], 16);
+                    y = Integer.parseInt(coordsArray[1], 16);
+                    if (hasScroll) {
+                        if (!(scrollFirstLine <= y && y <= scrollLastLine))
+                        return;
+                    }
+                    if (coordsArray.length == 2)
+                        score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
                 }
-                if (coordsArray.length == 2) {
-                    score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
+                catch (Exception e) {
                 }
                 break;
             case "f":
