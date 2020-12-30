@@ -2,7 +2,7 @@ public class Level1 extends Level {
 
     public Level1(Window w, Menu m, Progression prog, Inventory inv, Integer id) {
         super(w, m, prog, inv, id);
-        packetGoal = 2;
+        packetGoal = 1;
         scoreGoal = 100;
         super.play();
     }
@@ -18,15 +18,7 @@ public class Level1 extends Level {
         return new String[]{"P    P   P",
         "BAAACAABAC",
         "CCADCAAABA",
-        "ADDDDDDDA#",
-        "DDBAD#####",
         "DACDDDDADA",
-        "ACCA#DDDCA",
-        "BAAC#CDCAA",
-        "DACDDDDADA",
-        "DACD#DDDAD",
-        "DACD#DDDAD",
-        "DACD#DDADA",
         "CAADAABCCA",
         "##########"};
     }

@@ -57,6 +57,26 @@ public class Window extends JFrame {
         }
     }
 
+    public void paintScore(int score, int scoreGoal) {
+        JLabel label = new JLabel("Score : " + score + " / " + scoreGoal);
+        label.setLocation(10,0);
+        label.setSize(800,50);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 30));
+        label.setVisible(true);
+        getContentPane().add(label);
+    }
+
+    public void paintPackets(int packets, int packetGoal) {
+        JLabel label = new JLabel("Delivered packets : " + packets + " / " + packetGoal);
+        label.setLocation(10,40);
+        label.setSize(800,50);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 30));
+        label.setVisible(true);
+        getContentPane().add(label);
+    }
+
 
 
 }

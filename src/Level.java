@@ -72,6 +72,8 @@ public abstract class Level implements InputOutput, Game  {
             window.paintGrid(grid, scrollFirstLine, scrollLastLine);
         else
             window.paintGrid(grid, 0, grid.getHeight()-2);
+        window.paintScore(score, scoreGoal);
+        window.paintPackets(deliveredPackets, packetGoal);
         window.revalidate();
         window.repaint();
 
@@ -188,14 +190,14 @@ public abstract class Level implements InputOutput, Game  {
                 deliveredPackets += grid.removePacketsOnLastLine();
 
                 delay();
-
                 outputGraphics();
+                delay();
                 gravityWithDisplay();
 
                 grid.shiftToLeft();
+                delay();
                 gravityWithDisplay();
-
-                updateScroll();
+                delay();
 
                 String boardString2 = grid.getBoardString();
                 if(boardString2.equals(boardString)) {
@@ -203,10 +205,12 @@ public abstract class Level implements InputOutput, Game  {
                 }
                 boardString = boardString2;
             }
-            if (deliveredPackets >= packetGoal && score >= scoreGoal) {
-                won = true;
-            } else if (grid.isStuck()) {
-                break;
+            if(grid.isStuck()) {
+                if (deliveredPackets >= packetGoal && score >= scoreGoal) {
+                    won = true;
+                } else {
+                    break;
+                }
             }
         }
         if (won) {
@@ -220,7 +224,7 @@ public abstract class Level implements InputOutput, Game  {
 
     private void delay() {
         try {
-            TimeUnit.MILLISECONDS.sleep(40);
+            TimeUnit.MILLISECONDS.sleep(50);
         } catch (InterruptedException e) {}
     }
 
@@ -271,26 +275,26 @@ public abstract class Level implements InputOutput, Game  {
         saveProgress();
 
         if (menu != null) {
-            JPopupMenu winPopup = new JPopupMenu("Congratulations!");
             JButton nextLevelButton = new JButton("Next level");
             JButton levelMenuButton = new JButton("Back to level menu");
+            CustomPopup pop = new CustomPopup("You win!", nextLevelButton, levelMenuButton);
 
             nextLevelButton.addActionListener((ActionEvent e) -> {
+                pop.setVisible(false);
                 changeLevel();
                 window.repaint();
-                winPopup.setVisible(false);
             });
 
             levelMenuButton.addActionListener((ActionEvent e) -> {
+                pop.setVisible(false);
                 menu.chooseLevel();
                 window.repaint();
-                winPopup.setVisible(false);
             });
 
-            winPopup.add(nextLevelButton);
-            winPopup.add(levelMenuButton);
-
-            winPopup.show(window, 200, 300);
+            pop.setVisible(true);
+            window.getContentPane().add(pop, 0);
+            window.revalidate();
+            window.repaint();
         }
 
     }
@@ -299,12 +303,14 @@ public abstract class Level implements InputOutput, Game  {
         saveProgress();
 
         if (menu != null) {
-            JPopupMenu losePopup = new JPopupMenu("Lost!");
             JButton retryButton = new JButton("Retry?");
             JButton levelMenuButton = new JButton("Back to level menu");
+            CustomPopup pop = new CustomPopup("You lose!", retryButton, levelMenuButton);
+
+            // JPopupMenu losePopup = new JPopupMenu("Lost!");
 
             retryButton.addActionListener((ActionEvent e) -> {
-                losePopup.setVisible(false);
+                pop.setVisible(false);
                 Thread thread = new Thread() {
                     public void run() {
                             menu.instanciateLevel(id);
@@ -314,15 +320,20 @@ public abstract class Level implements InputOutput, Game  {
             });
 
             levelMenuButton.addActionListener((ActionEvent e) -> {
+                pop.setVisible(false);
                 menu.chooseLevel();
                 window.repaint();
-                losePopup.setVisible(false);
             });
 
-            losePopup.add(retryButton);
-            losePopup.add(levelMenuButton);
+            pop.setVisible(true);
+            window.getContentPane().add(pop, 0);
+            window.revalidate();
+            window.repaint();
 
-            losePopup.show(window, 200, 300);
+            // losePopup.add(retryButton);
+            // losePopup.add(levelMenuButton);
+            //
+            // losePopup.show(window, 200, 300);
         }
     }
 
