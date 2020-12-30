@@ -1,8 +1,12 @@
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.io.PrintWriter;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.io.*;
 
 public abstract class Level implements InputOutput, Game  {
+    protected int id;
     protected int packetGoal;
     protected int scoreGoal;
     protected int deliveredPackets;
@@ -17,7 +21,7 @@ public abstract class Level implements InputOutput, Game  {
     protected Inventory inv;
     protected Menu menu;
 
-    public Level(Window window, Menu menu, Progression prog, Inventory inv) {
+    public Level(Window window, Menu menu, Progression prog, Inventory inv, Integer id) {
         grid = new Grid(getGridStrings());
         deliveredPackets = 0;
         score = 0;
@@ -30,6 +34,7 @@ public abstract class Level implements InputOutput, Game  {
         window.setJMenuBar(null);
         window.revalidate();
         window.repaint();
+        this.id = id;
         this.window = window;
         this.prog = prog;
         this.inv = inv;
@@ -49,7 +54,6 @@ public abstract class Level implements InputOutput, Game  {
         }
         this.prog = prog;
         this.inv = inv;
-
     }
 
     public abstract String[] getGridStrings();
@@ -205,7 +209,7 @@ public abstract class Level implements InputOutput, Game  {
             win();
         } else {
             System.out.println("Perdu...");
-            loose();
+            lose();
         }
     }
 
@@ -247,28 +251,69 @@ public abstract class Level implements InputOutput, Game  {
             win();
         } else {
             System.out.println("Perdu...");
-            loose();
+            lose();
         }
     }
 
     public void win() {
         unlockLevel();
-        //TODO: save inventory and progression
+        saveProgress();
+
         if (menu != null) {
-            window.getContentPane().removeAll();
-            // window.repaint();
-            menu.displayMenu();
+            JPopupMenu winPopup = new JPopupMenu("Congratulations!");
+            JButton nextLevelButton = new JButton("Next level");
+            JButton levelMenuButton = new JButton("Back to level menu");
+
+            nextLevelButton.addActionListener((ActionEvent e) -> {
+                changeLevel();
+                window.repaint();
+                winPopup.setVisible(false);
+            });
+
+            levelMenuButton.addActionListener((ActionEvent e) -> {
+                menu.chooseLevel();
+                window.repaint();
+                winPopup.setVisible(false);
+            });
+
+            winPopup.add(nextLevelButton);
+            winPopup.add(levelMenuButton);
+
+            winPopup.show(window, 200, 300);
         }
 
     }
 
-    public void loose() {
-        //TODO
+    public void lose() {
+        saveProgress();
+
+        if (menu != null) {
+            JPopupMenu losePopup = new JPopupMenu("Lost!");
+            JButton retryButton = new JButton("Retry?");
+            JButton levelMenuButton = new JButton("Back to level menu");
+
+            retryButton.addActionListener((ActionEvent e) -> {
+                menu.instanciateLevel(id);
+                window.repaint();
+                losePopup.setVisible(false);
+            });
+
+            levelMenuButton.addActionListener((ActionEvent e) -> {
+                menu.chooseLevel();
+                window.repaint();
+                losePopup.setVisible(false);
+            });
+
+            losePopup.add(retryButton);
+            losePopup.add(levelMenuButton);
+
+            losePopup.show(window, 200, 300);
+        }
     }
 
     public void scroll(int length) {
-        scrollFirstLine = Math.min(scrollFirstLine+length, grid.getHeight()-10-1);
-        scrollLastLine = Math.min(scrollLastLine+length, grid.getHeight()-2);
+        scrollFirstLine = Math.min(scrollFirstLine + length, grid.getHeight() - 11);
+        scrollLastLine = Math.min(scrollLastLine + length, grid.getHeight() - 2);
         remainingLines = grid.getHeight()-scrollLastLine-2;
     }
 
@@ -278,14 +323,14 @@ public abstract class Level implements InputOutput, Game  {
     */
     public void updateScroll() {
         if (hasScroll)  {
-            if (grid.lineHasEmptyBlocs(scrollLastLine-1)) {
+            if (grid.lineHasEmptyBlocs(scrollLastLine - 1)) {
                 if (grid.isLineFullyEmpty(scrollFirstLine)) {
                     int scrollLength = 1;
                     // if (scrollFirstLine >= grid.getHeight()-10-1) {
                     //     scrollLastLine = grid.getHeight()-1;
                     //     remainingLines = 0;
                     // } else {
-                    for(int line=1; line<=scrollLastLine-2; line++) {
+                    for(int line = 1; line<=scrollLastLine - 2; line++) {
                         if (grid.isLineFullyEmpty(scrollFirstLine+line))
                             scrollLength++;
                         else
@@ -298,6 +343,28 @@ public abstract class Level implements InputOutput, Game  {
         }
     }
 
+    public void saveProgress() {
+        try
+        {
+            PrintWriter writer = new PrintWriter("SavedGame.dat");
+            writer.print("");
+            writer.close();
+
+            File saveFile = new File("SavedGame.dat");
+
+            FileOutputStream savedFileOutputStream = new FileOutputStream(saveFile);
+            ObjectOutputStream savedObjectOutputStream = new ObjectOutputStream(savedFileOutputStream);
+
+            savedObjectOutputStream.writeObject(inv);
+            savedObjectOutputStream.writeObject(prog);
+
+            savedObjectOutputStream.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error saving progress");
+        }
+    }
 
 
 }

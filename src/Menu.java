@@ -162,7 +162,6 @@ public class Menu implements InputOutput {
                                                             });
 
             buttons.add(levelButton);
-            System.out.print("button created!");
         }
 
         mainWindow.getContentPane().removeAll();
@@ -184,8 +183,8 @@ public class Menu implements InputOutput {
             Constructor<?> levelConstructor;
             Object levelInstance;
             if (gui) {
-                levelConstructor = level.getConstructor(new Class[] {Window.class, Menu.class, Progression.class, Inventory.class});
-                levelInstance = levelConstructor.newInstance(mainWindow, this, gameProg, userInv);
+                levelConstructor = level.getConstructor(new Class[] {Window.class, Menu.class, Progression.class, Inventory.class, Integer.class});
+                levelInstance = levelConstructor.newInstance(mainWindow, this, gameProg, userInv, levelId);
             } else {
                 levelConstructor = level.getConstructor(new Class[] {Progression.class, Inventory.class});
                 levelInstance = levelConstructor.newInstance(gameProg, userInv);

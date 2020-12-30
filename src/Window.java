@@ -40,13 +40,16 @@ public class Window extends JFrame {
     public void paintGrid(Grid grid, int from, int to) {
         // System.out.println("paintGrid!");
         getContentPane().removeAll();
+        int blockSize = 80;
+        int startXPos = (blockSize / 2) * (10 - grid.getWidth());
+        int startYPos = 150 + ((grid.getHeight() < 10) ? (blockSize * (11 - grid.getHeight())) : 0);
         for(int row=0; row<to+1; row++) {
             for(int column=0; column<grid.getWidth(); column++) {
                 Block block = grid.getBlock(column, row+from);
                 if (block == null)
                     continue;
-                block.setSize(80,80);
-                block.setLocation((column*80), 150+(row*80));
+                block.setSize(blockSize,blockSize);
+                block.setLocation(startXPos + (column * blockSize), startYPos + (row * blockSize));
                 getContentPane().add(block);
             }
         }

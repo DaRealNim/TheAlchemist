@@ -8,7 +8,7 @@ public class Progression implements Serializable {
         try {
             unlockedLevels[i - 1] = true;
         } catch (RuntimeException e) {
-            System.out.println("ERROR: LEVEL "+i+" DOESN'T EXIST");
+            System.out.println("ERROR: LEVEL " + i + " DOESN'T EXIST");
         }
     }
 
