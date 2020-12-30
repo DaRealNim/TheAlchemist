@@ -293,9 +293,13 @@ public abstract class Level implements InputOutput, Game  {
             JButton levelMenuButton = new JButton("Back to level menu");
 
             retryButton.addActionListener((ActionEvent e) -> {
-                menu.instanciateLevel(id);
-                window.repaint();
                 losePopup.setVisible(false);
+                Thread thread = new Thread() {
+                    public void run() {
+                            menu.instanciateLevel(id);
+                        }
+                };
+                thread.start();
             });
 
             levelMenuButton.addActionListener((ActionEvent e) -> {
