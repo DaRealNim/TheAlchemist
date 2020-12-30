@@ -147,7 +147,7 @@ public class Grid {
         if (block == null)
             return false;
         char type = block.getType();
-        if (type == '#')
+        if (type == '#' || type == 'P')
             return false;
         try {
             if (getBlock(xPos - 1, yPos).getType() == type)
