@@ -150,24 +150,24 @@ public abstract class Level implements InputOutput, Game  {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {}
-                boolean state = grid.applyGravityStep();
-                outputGraphics();
-                if (state)
-                    break;
-            }
+            boolean state = grid.applyGravityStep();
+            outputGraphics();
+            if (state)
+                break;
         }
+    }
 
     private void gravityWithDisplayText() {
         while(true) {
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {}
-                boolean state = grid.applyGravityStep();
-                outputText();
-                if (state)
-                    break;
-            }
+            boolean state = grid.applyGravityStep();
+            outputText();
+            if (state)
+                break;
         }
+    }
 
     public void play() {
         boolean won = false;
@@ -183,6 +183,8 @@ public abstract class Level implements InputOutput, Game  {
                 gravityWithDisplay();
 
                 deliveredPackets += grid.removePacketsOnLastLine();
+
+                delay();
 
                 outputGraphics();
                 gravityWithDisplay();
@@ -211,6 +213,12 @@ public abstract class Level implements InputOutput, Game  {
             System.out.println("Perdu...");
             lose();
         }
+    }
+
+    private void delay() {
+        try {
+            TimeUnit.MILLISECONDS.sleep(40);
+        } catch (InterruptedException e) {}
     }
 
     public void playText() {
