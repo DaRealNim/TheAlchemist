@@ -16,7 +16,6 @@ public class Window extends JFrame {
     public Window() {
         setTitle("BORIS HAXX0R'S REVENGE 2077");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 1000);
         setVisible(true);
 
         setContentPane(new JPanel(null) //{
@@ -35,6 +34,9 @@ public class Window extends JFrame {
 
         );
         getContentPane().setBackground(rgbToColor("#120458"));
+        getContentPane().setPreferredSize(new Dimension(800, 1000));
+        pack();
+
     }
 
     public void paintGrid(Grid grid, int from, int to) {
@@ -42,7 +44,7 @@ public class Window extends JFrame {
         getContentPane().removeAll();
         int blockSize = 80;
         int startXPos = (blockSize / 2) * (10 - grid.getWidth());
-        int startYPos = 150 + ((grid.getHeight() < 10) ? (blockSize * (11 - grid.getHeight())) : 0);
+        int startYPos = 200 + ((grid.getHeight() < 10) ? (blockSize * (11 - grid.getHeight())) : 0);
         for(int row=0; row<to+1; row++) {
             for(int column=0; column<grid.getWidth(); column++) {
                 Block block = grid.getBlock(column, row+from);
