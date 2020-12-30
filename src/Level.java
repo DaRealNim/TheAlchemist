@@ -15,8 +15,9 @@ public abstract class Level implements InputOutput, Game  {
     protected Window window;
     protected Progression prog;
     protected Inventory inv;
+    protected Menu menu;
 
-    public Level(Window window, Progression prog, Inventory inv) {
+    public Level(Window window, Menu menu, Progression prog, Inventory inv) {
         grid = new Grid(getGridStrings());
         deliveredPackets = 0;
         score = 0;
@@ -32,6 +33,7 @@ public abstract class Level implements InputOutput, Game  {
         this.window = window;
         this.prog = prog;
         this.inv = inv;
+        this.menu = menu;
         outputGraphics();
     }
 
@@ -252,6 +254,12 @@ public abstract class Level implements InputOutput, Game  {
     public void win() {
         unlockLevel();
         //TODO: save inventory and progression
+        if (menu != null) {
+            window.getContentPane().removeAll();
+            // window.repaint();
+            menu.displayMenu();
+        }
+
     }
 
     public void loose() {

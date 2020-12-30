@@ -39,11 +39,11 @@ public class Launcher {
         Menu mainMenu;
 
         if (args.length == 0)
-            mainMenu = new Menu(true, prog, inv);
+            mainMenu = new Menu(true, prog, inv, new Window());
         else if (args[0].equals("text"))
-            mainMenu = new Menu(false, prog, inv);
+            mainMenu = new Menu(false, prog, inv, null);
         else
-            mainMenu = new Menu(true, prog, inv);
+            mainMenu = new Menu(true, prog, inv, new Window());
 
         mainMenu.displayMenu();
     }

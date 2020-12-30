@@ -1,8 +1,8 @@
 public class Level1 extends Level {
 
-    public Level1(Window w, Progression prog, Inventory inv) {
-        super(w, prog, inv);
-        packetGoal = 4;
+    public Level1(Window w, Menu m, Progression prog, Inventory inv) {
+        super(w, m, prog, inv);
+        packetGoal = 2;
         scoreGoal = 100;
         super.play();
     }

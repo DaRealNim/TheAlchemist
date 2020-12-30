@@ -13,10 +13,11 @@ public class Menu implements InputOutput {
     private Inventory userInv;
     private Window mainWindow;
 
-    public Menu(boolean userChoseGui, Progression prog, Inventory inv) {
+    public Menu(boolean userChoseGui, Progression prog, Inventory inv, Window w) {
         gui = userChoseGui;
         gameProg = prog;
         userInv = inv;
+        mainWindow = w;
     }
 
     public void displayMenu() {
@@ -100,7 +101,6 @@ public class Menu implements InputOutput {
 
 
     public void outputGraphics() {
-        mainWindow = new Window();
 
         JPanel optionPanel = new JPanel();
 
@@ -119,6 +119,7 @@ public class Menu implements InputOutput {
         // mainWindow.getContentPane().add(optionPanel);
         mainWindow.setJMenuBar(buttons);
         // mainWindow.setContentPane(optionPanel);
+        mainWindow.revalidate();
         mainWindow.repaint();
     }
 
@@ -183,8 +184,8 @@ public class Menu implements InputOutput {
             Constructor<?> levelConstructor;
             Object levelInstance;
             if (gui) {
-                levelConstructor = level.getConstructor(new Class[] {Window.class, Progression.class, Inventory.class});
-                levelInstance = levelConstructor.newInstance(mainWindow, gameProg, userInv);
+                levelConstructor = level.getConstructor(new Class[] {Window.class, Menu.class, Progression.class, Inventory.class});
+                levelInstance = levelConstructor.newInstance(mainWindow, this, gameProg, userInv);
             } else {
                 levelConstructor = level.getConstructor(new Class[] {Progression.class, Inventory.class});
                 levelInstance = levelConstructor.newInstance(gameProg, userInv);
