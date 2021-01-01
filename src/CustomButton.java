@@ -5,14 +5,16 @@ import java.awt.event.*;
 
 public class CustomButton extends JPanel implements MouseInputListener {
     JButton button;
+    Runnable action;
 
-    public CustomButton(JButton button) {
+    public CustomButton(String text, Runnable action) {
         this.button = button;
+        this.action = action;
         // setLocation(200, 250);
         setSize(200, 50);
         setBackground(new Color(128, 128, 128));
 
-        JLabel label = new JLabel(button.getText());
+        JLabel label = new JLabel(text);
         label.setLocation(10,0);
         label.setSize(800,50);
         label.setForeground(Color.WHITE);
@@ -26,8 +28,7 @@ public class CustomButton extends JPanel implements MouseInputListener {
     }
 
     public void mouseClicked(MouseEvent event) {
-        System.out.println("clicked!");
-        button.doClick();
+        action.run();
     }
     public void mouseEntered(MouseEvent event) {
 
