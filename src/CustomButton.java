@@ -11,8 +11,6 @@ public class CustomButton extends JPanel implements MouseInputListener {
     public CustomButton(String text, int sizeX, int sizeY, Runnable action) {
         this.button = button;
         this.action = action;
-        // setLocation(200, 250);
-        // setSize(200, 50);
         setSize(sizeX, sizeY);
         setBackground(new Color(128, 128, 128));
 

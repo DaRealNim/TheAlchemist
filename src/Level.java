@@ -78,7 +78,6 @@ public abstract class Level implements InputOutput, Game  {
             window.paintGrid(grid, 0, grid.getHeight()-2);
         window.paintScore(score, scoreGoal);
         window.paintPackets(deliveredPackets, packetGoal);
-        // JButton rocketInternalButton = new JButton("Use rocket");
         CustomButton rocketButton = new CustomButton("Use rocket", 200, 50, () -> {
             isUsingRocketGUI = !isUsingRocketGUI;
             System.out.println(isUsingRocketGUI);
@@ -104,7 +103,6 @@ public abstract class Level implements InputOutput, Game  {
         }
         System.out.println("Packets delivered: "+deliveredPackets);
         System.out.println("Score            : "+score);
-        // System.out.println(scrollFirstLine + ", "  + scrollLastLine);
         System.out.println("\n");
     }
 
@@ -121,7 +119,6 @@ public abstract class Level implements InputOutput, Game  {
         int x = grid.blockClickedX;
         int y = grid.blockClickedY;
         System.out.println("BLOCKCLICKED");
-        // System.out.println(grid.getBlock(x,y).getType());
         if (isUsingRocketGUI) {
             score += grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
             isUsingRocketGUI = false;
@@ -346,11 +343,6 @@ public abstract class Level implements InputOutput, Game  {
             window.getContentPane().add(pop, 0);
             window.revalidate();
             window.repaint();
-
-            // losePopup.add(retryButton);
-            // losePopup.add(levelMenuButton);
-            //
-            // losePopup.show(window, 200, 300);
         }
     }
 
@@ -369,10 +361,6 @@ public abstract class Level implements InputOutput, Game  {
             if (grid.lineHasEmptyBlocs(scrollLastLine - 1)) {
                 if (grid.isLineFullyEmpty(scrollFirstLine)) {
                     int scrollLength = 1;
-                    // if (scrollFirstLine >= grid.getHeight()-10-1) {
-                    //     scrollLastLine = grid.getHeight()-1;
-                    //     remainingLines = 0;
-                    // } else {
                     for(int line = 1; line<=scrollLastLine - 2; line++) {
                         if (grid.isLineFullyEmpty(scrollFirstLine+line))
                             scrollLength++;
@@ -380,7 +368,6 @@ public abstract class Level implements InputOutput, Game  {
                             break;
                     }
                     scroll(scrollLength);
-                    // }
                 }
             }
         }

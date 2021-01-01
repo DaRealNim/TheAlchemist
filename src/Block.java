@@ -54,7 +54,6 @@ public class Block extends JPanel implements MouseInputListener {
                 } catch (IOException ex) {}
                 break;
         }
-        // setBackground(color);
         setOpaque(false);
         addMouseListener(this);
     }
@@ -62,7 +61,7 @@ public class Block extends JPanel implements MouseInputListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(image, 0, 0, 80, 80, this); // see javadoc for more info on the parameters
+        g.drawImage(image, 0, 0, 80, 80, this);
     }
 
     public boolean isSameType(Block block) {

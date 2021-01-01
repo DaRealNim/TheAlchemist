@@ -22,21 +22,7 @@ public class Window extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
-        setContentPane(new JPanel(null) //{
-        //     protected void paintComponent(Graphics g) {
-        //         super.paintComponent(g);
-        //         int n = 9;
-        //         g.setColor(rgbToColor("#7a04eb"));
-        //         // for(int i=150; i<=950; i+=80) {
-        //         //     g.drawLine(0, i, 800, i);
-        //         // }
-        //         // for(int i=0; i<=800; i+=80) {
-        //         //     g.drawLine(i, 150, i, 950);
-        //         // }
-        //     };
-        // }
-
-        );
+        setContentPane(new JPanel(null));
         getContentPane().setBackground(rgbToColor("#120458"));
         getContentPane().setPreferredSize(new Dimension(800, 1000));
         pack();
@@ -104,7 +90,7 @@ public class Window extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(image, 0, 0, 800, 1000, this); // see javadoc for more info on the parameters
+            g.drawImage(image, 0, 0, 800, 1000, this);
         }
     }
 

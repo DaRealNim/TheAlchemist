@@ -102,10 +102,6 @@ public class Menu implements InputOutput {
 
     public void outputGraphics() {
 
-        // JPanel optionPanel = new JPanel();
-
-        // JMenuBar buttons = new JMenuBar();
-
         mainWindow.getContentPane().removeAll();
 
         CustomButton chooseLevelButton = new CustomButton("Play", 400, 100, () -> {
@@ -124,17 +120,6 @@ public class Menu implements InputOutput {
         mainWindow.getContentPane().add(quitGameButton);
 
         mainWindow.paintBackground("./res/images/bg_menu.png");
-
-        // chooseLevelButton.addActionListener((ActionEvent e) -> { chooseLevel(); });
-        // quitGameButton.addActionListener((ActionEvent e) -> { quitGame(); });
-
-        // buttons.add(chooseLevelButton);
-        // buttons.add(quitGameButton);
-
-        // optionPanel.add(buttons);
-        // mainWindow.getContentPane().add(optionPanel);
-        // mainWindow.setJMenuBar(buttons);
-        // mainWindow.setContentPane(optionPanel);
         mainWindow.revalidate();
         mainWindow.repaint();
     }
@@ -156,9 +141,6 @@ public class Menu implements InputOutput {
     }
 
     public void chooseLevel() {
-        // JPanel levelPanel = new JPanel();
-
-        // JMenuBar buttons = new JMenuBar();
         mainWindow.getContentPane().removeAll();
 
         for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
@@ -185,11 +167,8 @@ public class Menu implements InputOutput {
         levelButton.setLocation(300, 450+(gameProg.unlockedLevels.length*70));
         mainWindow.getContentPane().add(levelButton);
 
+        mainWindow.paintBackground("./res/images/bg_menu.png");
 
-
-        // levelPanel.add(buttons);
-        // mainWindow.setContentPane(levelPanel);
-        // mainWindow.setJMenuBar(buttons);
         mainWindow.revalidate();
         mainWindow.repaint();
     }
