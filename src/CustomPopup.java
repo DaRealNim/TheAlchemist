@@ -22,13 +22,14 @@ public class CustomPopup extends JPanel {
 
         changeOrRetryButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         add(label);
         add(Box.createRigidArea(new Dimension(0, 100)));
         add(changeOrRetryButton);
         add(Box.createRigidArea(new Dimension(0, 20)));
         add(menuButton);
 
+        setVisible(true);
 
     }
 }

@@ -15,6 +15,7 @@ public abstract class Level implements InputOutput, Game  {
     protected int scrollLastLine;
     protected int remainingLines;
     protected boolean hasScroll;
+    protected boolean isUsingRocketGUI;
     protected Grid grid;
     protected Window window;
     protected Progression prog;
@@ -25,6 +26,7 @@ public abstract class Level implements InputOutput, Game  {
         grid = new Grid(getGridStrings());
         deliveredPackets = 0;
         score = 0;
+        isUsingRocketGUI = false;
         hasScroll = (grid.getHeight() > 10);
         if (hasScroll) {
             scrollFirstLine = 0;
@@ -74,6 +76,14 @@ public abstract class Level implements InputOutput, Game  {
             window.paintGrid(grid, 0, grid.getHeight()-2);
         window.paintScore(score, scoreGoal);
         window.paintPackets(deliveredPackets, packetGoal);
+        JButton rocketInternalButton = new JButton("Use rocket");
+        rocketInternalButton.addActionListener((ActionEvent e) -> {
+            isUsingRocketGUI = !isUsingRocketGUI;
+            System.out.println(isUsingRocketGUI);
+        });
+        CustomButton rocketButton = new CustomButton(rocketInternalButton);
+        rocketButton.setLocation(600,10);
+        window.add(rocketButton);
         window.revalidate();
         window.repaint();
 
@@ -108,7 +118,12 @@ public abstract class Level implements InputOutput, Game  {
         int y = grid.blockClickedY;
         System.out.println("BLOCKCLICKED");
         // System.out.println(grid.getBlock(x,y).getType());
-        score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
+        if (isUsingRocketGUI) {
+            score += grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
+            isUsingRocketGUI = false;
+        } else {
+            score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
+        }
         grid.blockClicked = false;
     }
 
