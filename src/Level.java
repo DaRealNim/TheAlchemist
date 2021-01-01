@@ -64,6 +64,8 @@ public abstract class Level implements InputOutput, Game  {
 
     public abstract void unlockLevel();
 
+    public abstract String getBackGroundPath();
+
     public static void clearTerminal() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -83,9 +85,9 @@ public abstract class Level implements InputOutput, Game  {
         });
         rocketButton.setLocation(600,10);
         window.add(rocketButton);
+        window.paintBackground(getBackGroundPath());
         window.revalidate();
         window.repaint();
-
     }
 
     public void outputText() {
@@ -113,6 +115,9 @@ public abstract class Level implements InputOutput, Game  {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {}
         }
+        try {
+            TimeUnit.MILLISECONDS.sleep(40);
+        } catch (InterruptedException e) {}
         int x = grid.blockClickedX;
         int y = grid.blockClickedY;
         System.out.println("BLOCKCLICKED");
@@ -167,7 +172,7 @@ public abstract class Level implements InputOutput, Game  {
     private void gravityWithDisplay() {
         while(true) {
             try {
-                TimeUnit.MILLISECONDS.sleep(100);
+                TimeUnit.MILLISECONDS.sleep(50);
             } catch (InterruptedException e) {}
             boolean state = grid.applyGravityStep();
             outputGraphics();
@@ -179,7 +184,7 @@ public abstract class Level implements InputOutput, Game  {
     private void gravityWithDisplayText() {
         while(true) {
             try {
-                TimeUnit.MILLISECONDS.sleep(100);
+                TimeUnit.MILLISECONDS.sleep(300);
             } catch (InterruptedException e) {}
             boolean state = grid.applyGravityStep();
             outputText();
@@ -207,9 +212,7 @@ public abstract class Level implements InputOutput, Game  {
                 outputGraphics();
                 delay();
                 gravityWithDisplay();
-
                 grid.shiftToLeft();
-                delay();
                 gravityWithDisplay();
                 delay();
 

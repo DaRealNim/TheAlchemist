@@ -108,7 +108,7 @@ public class Menu implements InputOutput {
 
         mainWindow.getContentPane().removeAll();
 
-        CustomButton chooseLevelButton = new CustomButton("Serve Motherland", 400, 100, () -> {
+        CustomButton chooseLevelButton = new CustomButton("Play", 400, 100, () -> {
             chooseLevel();
         });
         CustomButton quitGameButton = new CustomButton("Exit game", 400, 100, () -> {
@@ -122,6 +122,8 @@ public class Menu implements InputOutput {
 
         mainWindow.getContentPane().add(chooseLevelButton);
         mainWindow.getContentPane().add(quitGameButton);
+
+        mainWindow.paintBackground("./res/images/bg_menu.png");
 
         // chooseLevelButton.addActionListener((ActionEvent e) -> { chooseLevel(); });
         // quitGameButton.addActionListener((ActionEvent e) -> { quitGame(); });

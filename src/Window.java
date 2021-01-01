@@ -3,6 +3,10 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.imageio.*;
+import java.awt.image.*;
+import java.io.*;
+
 public class Window extends JFrame {
 
     public static Color rgbToColor(String rgbString) {
@@ -75,6 +79,33 @@ public class Window extends JFrame {
         label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 30));
         label.setVisible(true);
         getContentPane().add(label);
+    }
+
+    public void paintBackground(String path) {
+        BufferedImage myPicture = null;
+        try {
+            myPicture = ImageIO.read(new File(path));
+        } catch (IOException ex) { System.out.println("INVALID PATH");}
+        BackgroundPane bgp = new BackgroundPane(myPicture);
+        bgp.setBounds(0, 0, 800, 1000);
+        bgp.setVisible(true);
+        getContentPane().add(bgp);
+    }
+
+
+    public class BackgroundPane extends JPanel {
+        private BufferedImage image;
+
+        public BackgroundPane(BufferedImage image) {
+            super();
+            this.image = image;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(image, 0, 0, 800, 1000, this); // see javadoc for more info on the parameters
+        }
     }
 
 
