@@ -77,7 +77,7 @@ public abstract class Level implements InputOutput, Game  {
         window.paintScore(score, scoreGoal);
         window.paintPackets(deliveredPackets, packetGoal);
         // JButton rocketInternalButton = new JButton("Use rocket");
-        CustomButton rocketButton = new CustomButton("Use rocket", () -> {
+        CustomButton rocketButton = new CustomButton("Use rocket", 200, 50, () -> {
             isUsingRocketGUI = !isUsingRocketGUI;
             System.out.println(isUsingRocketGUI);
         });

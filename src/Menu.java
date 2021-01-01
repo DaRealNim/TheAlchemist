@@ -102,22 +102,36 @@ public class Menu implements InputOutput {
 
     public void outputGraphics() {
 
-        JPanel optionPanel = new JPanel();
+        // JPanel optionPanel = new JPanel();
 
-        JMenuBar buttons = new JMenuBar();
+        // JMenuBar buttons = new JMenuBar();
 
-        JButton chooseLevelButton = new JButton("Serve Motherland");
-        JButton quitGameButton = new JButton("Exit game");
+        mainWindow.getContentPane().removeAll();
 
-        chooseLevelButton.addActionListener((ActionEvent e) -> { chooseLevel(); });
-        quitGameButton.addActionListener((ActionEvent e) -> { quitGame(); });
+        CustomButton chooseLevelButton = new CustomButton("Serve Motherland", 400, 100, () -> {
+            chooseLevel();
+        });
+        CustomButton quitGameButton = new CustomButton("Exit game", 400, 100, () -> {
+            quitGame();
+        });
 
-        buttons.add(chooseLevelButton);
-        buttons.add(quitGameButton);
+        chooseLevelButton.setLocation(200,600);
+        chooseLevelButton.setFontSize(40);
+        quitGameButton.setLocation(200,750);
+        quitGameButton.setFontSize(40);
 
-        optionPanel.add(buttons);
+        mainWindow.getContentPane().add(chooseLevelButton);
+        mainWindow.getContentPane().add(quitGameButton);
+
+        // chooseLevelButton.addActionListener((ActionEvent e) -> { chooseLevel(); });
+        // quitGameButton.addActionListener((ActionEvent e) -> { quitGame(); });
+
+        // buttons.add(chooseLevelButton);
+        // buttons.add(quitGameButton);
+
+        // optionPanel.add(buttons);
         // mainWindow.getContentPane().add(optionPanel);
-        mainWindow.setJMenuBar(buttons);
+        // mainWindow.setJMenuBar(buttons);
         // mainWindow.setContentPane(optionPanel);
         mainWindow.revalidate();
         mainWindow.repaint();
@@ -140,34 +154,40 @@ public class Menu implements InputOutput {
     }
 
     public void chooseLevel() {
-        JPanel levelPanel = new JPanel();
+        // JPanel levelPanel = new JPanel();
 
-        JMenuBar buttons = new JMenuBar();
+        // JMenuBar buttons = new JMenuBar();
+        mainWindow.getContentPane().removeAll();
 
         for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
-            JButton levelButton = new JButton("Level " + (i + 1));
-
             final int levelId = i+1;
-
-            levelButton.addActionListener((ActionEvent e) -> {  if (levelIsUnlocked(levelId)) {
-                                                                    Thread thread = new Thread() {
-                                                                        public void run() {
-                                                                            instanciateLevel(levelId);
-                                                                        }
-                                                                    };
-                                                                    thread.start();
-                                                                } else {
-                                                                    System.out.println("Level is locked!");
-                                                                }
-                                                            });
-
-            buttons.add(levelButton);
+            CustomButton levelButton = new CustomButton("Level " + (i + 1), 200, 50, () -> {
+                if (levelIsUnlocked(levelId)) {
+                    Thread thread = new Thread() {
+                        public void run() {
+                            instanciateLevel(levelId);
+                        }
+                    };
+                    thread.start();
+                } else {
+                    System.out.println("Level is locked!");
+                }
+            });
+            levelButton.setLocation(300, 400+(i*70));
+            mainWindow.getContentPane().add(levelButton);
         }
 
-        mainWindow.getContentPane().removeAll();
-        levelPanel.add(buttons);
+        CustomButton levelButton = new CustomButton("Back", 200, 50, () -> {
+            displayMenu();
+        });
+        levelButton.setLocation(300, 450+(gameProg.unlockedLevels.length*70));
+        mainWindow.getContentPane().add(levelButton);
+
+
+
+        // levelPanel.add(buttons);
         // mainWindow.setContentPane(levelPanel);
-        mainWindow.setJMenuBar(buttons);
+        // mainWindow.setJMenuBar(buttons);
         mainWindow.revalidate();
         mainWindow.repaint();
     }
