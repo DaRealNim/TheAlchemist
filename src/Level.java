@@ -2,7 +2,8 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.io.PrintWriter;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
+import java.awt.*;
 import java.io.*;
 
 public abstract class Level implements InputOutput, Game  {
@@ -78,12 +79,28 @@ public abstract class Level implements InputOutput, Game  {
             window.paintGrid(grid, 0, grid.getHeight()-2);
         window.paintScore(score, scoreGoal);
         window.paintPackets(deliveredPackets, packetGoal);
+
+        CustomButton quitButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 45, () -> {
+            menu.chooseLevel();
+            window.repaint();
+        });
+        quitButton.setLocation(600, 10);
+        window.add(quitButton);
+
         CustomButton rocketButton = new CustomButton("", "./res/images/potion_red.png", 46, 75, () -> {
-            isUsingRocketGUI = !isUsingRocketGUI;
+            if (inv.redPotions > 0) {
+                isUsingRocketGUI = !isUsingRocketGUI;
+                if (isUsingRocketGUI)
+                    window.updateMouseIcon("redpotion");
+                else
+                    window.updateMouseIcon("");
+            }
             System.out.println(isUsingRocketGUI);
         });
-        rocketButton.setLocation(600,10);
+        rocketButton.setLocation(600, 75);
         window.add(rocketButton);
+
+        window.paintItems(inv.redPotions);
         window.paintBackground(getBackGroundPath());
         window.revalidate();
         window.repaint();
@@ -109,9 +126,11 @@ public abstract class Level implements InputOutput, Game  {
     public void inputGraphics() {
         System.out.println("Waiting for block...");
         while(!grid.blockClicked) {
-            try {
-                TimeUnit.MILLISECONDS.sleep(100);
-            } catch (InterruptedException e) {}
+            // try {
+            //     TimeUnit.MILLISECONDS.sleep(100);
+            // } catch (InterruptedException e) {}
+            window.repaintMouseIcon();
+
         }
         try {
             TimeUnit.MILLISECONDS.sleep(40);
@@ -119,9 +138,11 @@ public abstract class Level implements InputOutput, Game  {
         int x = grid.blockClickedX;
         int y = grid.blockClickedY;
         System.out.println("BLOCKCLICKED");
-        if (isUsingRocketGUI) {
+        if (isUsingRocketGUI && inv.redPotions > 0) {
             score += grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
             isUsingRocketGUI = false;
+            inv.redPotions--;
+            window.updateMouseIcon("");
         } else {
             score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
         }
@@ -196,8 +217,9 @@ public abstract class Level implements InputOutput, Game  {
             String boardString = grid.getBoardString();
             outputGraphics();
             inputGraphics();
-
+            window.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             while (true) {
+                System.out.println("Cycle!");
                 updateScroll();
 
                 outputGraphics();
@@ -226,6 +248,7 @@ public abstract class Level implements InputOutput, Game  {
                     break;
                 }
             }
+            window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
         if (won) {
             System.out.println("GAGNE!!!!");
