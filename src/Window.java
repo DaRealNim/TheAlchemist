@@ -58,16 +58,15 @@ public class Window extends JFrame {
     public void paintGrid(Grid grid, int from, int to) {
         // System.out.println("paintGrid!");
         getContentPane().removeAll();
-        int blockSize = 80;
-        int startXPos = (blockSize / 2) * (10 - grid.getWidth());
-        int startYPos = 200 + ((grid.getHeight() < 10) ? (blockSize * (11 - grid.getHeight())) : 0);
-        for(int row=0; row<to+1; row++) {
+        int startXPos = (800 - (grid.getWidth()*Block.BLOCKSIZE))/2;
+        int startYPos = 180 + (80 - Block.BLOCKSIZE) + ((grid.getHeight() < 10) ? (Block.BLOCKSIZE * (11 - grid.getHeight())) : 0);
+        for(int row=from; row<=to; row++) {
             for(int column=0; column<grid.getWidth(); column++) {
-                Block block = grid.getBlock(column, row+from);
+                Block block = grid.getBlock(column, row);
                 if (block == null)
                     continue;
-                block.setSize(blockSize,blockSize);
-                block.setLocation(startXPos + (column * blockSize), startYPos + (row * blockSize));
+                block.setSize(Block.BLOCKSIZE,Block.BLOCKSIZE);
+                block.setLocation(startXPos + (column * Block.BLOCKSIZE), startYPos + ((row-from) * Block.BLOCKSIZE));
                 getContentPane().add(block);
             }
         }
@@ -115,17 +114,28 @@ public class Window extends JFrame {
     }
 
     public void updateMouseIcon(String icon) {
-        if(!mouseIcon.icon.equals(icon)) {
-            System.out.println("Update!");
-            mouseIcon.icon = icon;
-            getContentPane().add(mouseIcon);
-            repaintMouseIcon();
+        // if(!mouseIcon.icon.equals(icon)) {
+        //     System.out.println("Update!");
+        //     mouseIcon.icon = icon;
+        //     getContentPane().add(mouseIcon);
+        //     repaintMouseIcon();
+        // }
+        System.out.println(getToolkit().getMaximumCursorColors());
+        switch(icon) {
+            case "redpotion":
+                Image cursorImage = new ImageIcon("./res/images/potion_red.png").getImage();
+                setCursor(getToolkit().createCustomCursor(cursorImage, new Point(0,0), "Red potion"));
+                break;
+            case "":
+                setCursor(Cursor.DEFAULT_CURSOR);
+                break;
         }
     }
 
     public void repaintMouseIcon()  {
-        Point p = MouseInfo.getPointerInfo().getLocation();
-        mouseIcon.setLocation((int)p.getX()-20, (int)p.getY()-70);
+        Point p = getMousePosition();
+        if (p != null)
+            mouseIcon.setLocation((int)p.getX()-20, (int)p.getY()-70);
         mouseIcon.repaint();
     }
 

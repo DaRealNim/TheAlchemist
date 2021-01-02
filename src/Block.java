@@ -12,6 +12,7 @@ public class Block extends JPanel implements MouseInputListener {
     private Color color;
     private Grid parentGrid;
     private BufferedImage image;
+    public static final int BLOCKSIZE = 70;
 
     public Block(char type, Grid parentGrid) {
         this.type = type;
@@ -61,7 +62,7 @@ public class Block extends JPanel implements MouseInputListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(image, 0, 0, 80, 80, this);
+        g.drawImage(image, 0, 0, BLOCKSIZE, BLOCKSIZE, this);
     }
 
     public boolean isSameType(Block block) {

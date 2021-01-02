@@ -68,9 +68,11 @@ public class CustomButton extends JPanel implements MouseInputListener {
         action.run();
     }
     public void mouseEntered(MouseEvent event) {
-
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
-    public void mouseExited(MouseEvent event) {}
+    public void mouseExited(MouseEvent event) {
+        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
     public void mousePressed(MouseEvent event) {}
     public void mouseReleased(MouseEvent event) {}
     public void mouseDragged(MouseEvent event) {}

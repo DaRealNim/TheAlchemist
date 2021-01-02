@@ -101,6 +101,7 @@ public class Menu implements InputOutput {
 
 
     public void outputGraphics() {
+        mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
         mainWindow.getContentPane().removeAll();
 
@@ -141,6 +142,7 @@ public class Menu implements InputOutput {
     }
 
     public void chooseLevel() {
+        mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         mainWindow.getContentPane().removeAll();
 
         for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
@@ -192,7 +194,7 @@ public class Menu implements InputOutput {
             }
         }
         catch (Exception e) {
-            System.out.println(e); //Delete this! 4 debugging
+            e.printStackTrace();
             System.out.println("The level you're trying to play doesn't exist.");
         }
     }

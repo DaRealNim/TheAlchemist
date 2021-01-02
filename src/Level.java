@@ -250,6 +250,7 @@ public abstract class Level implements InputOutput, Game  {
             }
             window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         }
+        window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         if (won) {
             System.out.println("GAGNE!!!!");
             win();
@@ -390,6 +391,7 @@ public abstract class Level implements InputOutput, Game  {
                         else
                             break;
                     }
+                    System.out.println("scrollLength="+scrollLength);
                     scroll(scrollLength);
                 }
             }
