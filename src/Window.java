@@ -114,21 +114,11 @@ public class Window extends JFrame {
     }
 
     public void updateMouseIcon(String icon) {
-        // if(!mouseIcon.icon.equals(icon)) {
-        //     System.out.println("Update!");
-        //     mouseIcon.icon = icon;
-        //     getContentPane().add(mouseIcon);
-        //     repaintMouseIcon();
-        // }
-        System.out.println(getToolkit().getMaximumCursorColors());
-        switch(icon) {
-            case "redpotion":
-                Image cursorImage = new ImageIcon("./res/images/potion_red.png").getImage();
-                setCursor(getToolkit().createCustomCursor(cursorImage, new Point(0,0), "Red potion"));
-                break;
-            case "":
-                setCursor(Cursor.DEFAULT_CURSOR);
-                break;
+        if(!mouseIcon.icon.equals(icon)) {
+            System.out.println("Update!");
+            mouseIcon.icon = icon;
+            getContentPane().add(mouseIcon);
+            repaintMouseIcon();
         }
     }
 
