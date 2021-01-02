@@ -78,7 +78,7 @@ public abstract class Level implements InputOutput, Game  {
             window.paintGrid(grid, 0, grid.getHeight()-2);
         window.paintScore(score, scoreGoal);
         window.paintPackets(deliveredPackets, packetGoal);
-        CustomButton rocketButton = new CustomButton("Use rocket", 200, 50, () -> {
+        CustomButton rocketButton = new CustomButton("", "./res/images/potion_red.png", 46, 75, () -> {
             isUsingRocketGUI = !isUsingRocketGUI;
             System.out.println(isUsingRocketGUI);
         });

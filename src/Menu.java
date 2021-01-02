@@ -104,10 +104,10 @@ public class Menu implements InputOutput {
 
         mainWindow.getContentPane().removeAll();
 
-        CustomButton chooseLevelButton = new CustomButton("Play", 400, 100, () -> {
+        CustomButton chooseLevelButton = new CustomButton("Play", "./res/images/button.png", 400, 100, () -> {
             chooseLevel();
         });
-        CustomButton quitGameButton = new CustomButton("Exit game", 400, 100, () -> {
+        CustomButton quitGameButton = new CustomButton("Exit game", "./res/images/button.png", 400, 100, () -> {
             quitGame();
         });
 
@@ -145,7 +145,7 @@ public class Menu implements InputOutput {
 
         for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
             final int levelId = i+1;
-            CustomButton levelButton = new CustomButton("Level " + (i + 1), 200, 50, () -> {
+            CustomButton levelButton = new CustomButton("Level " + (i + 1), "./res/images/button.png", 200, 50, () -> {
                 if (levelIsUnlocked(levelId)) {
                     Thread thread = new Thread() {
                         public void run() {
@@ -161,7 +161,7 @@ public class Menu implements InputOutput {
             mainWindow.getContentPane().add(levelButton);
         }
 
-        CustomButton levelButton = new CustomButton("Back", 200, 50, () -> {
+        CustomButton levelButton = new CustomButton("Back", "./res/images/button.png", 200, 50, () -> {
             displayMenu();
         });
         levelButton.setLocation(300, 450+(gameProg.unlockedLevels.length*70));

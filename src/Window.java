@@ -58,7 +58,7 @@ public class Window extends JFrame {
     }
 
     public void paintPackets(int packets, int packetGoal) {
-        JLabel label = new JLabel("Delivered packets : " + packets + " / " + packetGoal);
+        JLabel label = new JLabel("Spirits saved : " + packets + " / " + packetGoal);
         label.setLocation(10,40);
         label.setSize(800,50);
         label.setForeground(Color.WHITE);
