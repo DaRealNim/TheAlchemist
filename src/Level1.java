@@ -2,37 +2,33 @@ public class Level1 extends Level {
 
     public Level1(Window w, Menu m, Progression prog, Inventory inv, Integer id) {
         super(w, m, prog, inv, id);
-        packetGoal = 3;
-        scoreGoal = 950;
+        packetGoal = 2;
+        scoreGoal = 180;
         super.play();
     }
 
     public Level1(Progression prog, Inventory inv) {
         super(prog, inv);
-        packetGoal = 3;
-        scoreGoal = 950;
+        packetGoal = 2;
+        scoreGoal = 200;
         super.playText();
     }
 
     public String[] getGridStrings() {
-        return new String[]{"P    P   P",
-                            "BAAACAABAC",
-                            "CCADCAAABA",
-                            "ADDDDDDDA#",
-                            "DDBAD#####",
-                            "DACDDDDADA",
-                            "ACCA#DDDCA",
-                            "BAAC#CDCAA",
-                            "DACDDDDADA",
-                            "DACD#DDDAD",
-                            "DACD#DDDAD",
-                            "DACD#DDADA",
-                            "CAADAABCCA",
-                            "##########"};
+        return new String[]{"P  P  ",
+                            "BAAACA",
+                            "CCADCA",
+                            "CBADAA",
+                            "######"};
         }
 
     public void changeLevel() {
-        //Goto level 2
+        Thread thread = new Thread() {
+            public void run() {
+                    menu.instanciateLevel(2);
+                }
+        };
+        thread.start();
     }
 
     public void unlockLevel() {
