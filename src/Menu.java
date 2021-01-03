@@ -5,6 +5,9 @@ import javax.swing.*;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
+import javax.imageio.*;
+import java.awt.image.*;
+import java.io.*;
 
 public class Menu implements InputOutput {
 
@@ -104,6 +107,18 @@ public class Menu implements InputOutput {
         mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
         mainWindow.getContentPane().removeAll();
+
+        BufferedImage myPicture = null;
+        try {
+            myPicture = ImageIO.read(new File("./res/images/logo.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        picLabel.setSize(600,600);
+        picLabel.setPreferredSize(new Dimension(600,600));
+        picLabel.setLocation(100,0);
+        mainWindow.add(picLabel);
 
         CustomButton chooseLevelButton = new CustomButton("Play", "./res/images/button.png", 400, 100, () -> {
             chooseLevel();

@@ -313,21 +313,27 @@ public abstract class Level implements InputOutput, Game  {
         saveProgress();
 
         if (menu != null) {
-            JButton nextLevelButton = new JButton("Next level");
-            JButton levelMenuButton = new JButton("Back to level menu");
-            CustomPopup pop = new CustomPopup("You win!", nextLevelButton, levelMenuButton);
-
-            nextLevelButton.addActionListener((ActionEvent e) -> {
-                pop.setVisible(false);
+            CustomButton nextLevelButton = new CustomButton("Next level", "./res/images/button.png", 200, 50, () -> {
                 changeLevel();
                 window.repaint();
             });
-
-            levelMenuButton.addActionListener((ActionEvent e) -> {
-                pop.setVisible(false);
+            CustomButton levelMenuButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 50, () -> {
                 menu.chooseLevel();
                 window.repaint();
             });
+            CustomPopup pop = new CustomPopup("You win!", nextLevelButton, levelMenuButton);
+
+            // nextLevelButton.addActionListener((ActionEvent e) -> {
+            //     pop.setVisible(false);
+            //     changeLevel();
+            //     window.repaint();
+            // });
+            //
+            // levelMenuButton.addActionListener((ActionEvent e) -> {
+            //     pop.setVisible(false);
+            //     menu.chooseLevel();
+            //     window.repaint();
+            // });
 
             pop.setVisible(true);
             window.getContentPane().add(pop, 0);
@@ -341,14 +347,7 @@ public abstract class Level implements InputOutput, Game  {
         saveProgress();
 
         if (menu != null) {
-            JButton retryButton = new JButton("Retry?");
-            JButton levelMenuButton = new JButton("Back to level menu");
-            CustomPopup pop = new CustomPopup("You lose!", retryButton, levelMenuButton);
-
-            // JPopupMenu losePopup = new JPopupMenu("Lost!");
-
-            retryButton.addActionListener((ActionEvent e) -> {
-                pop.setVisible(false);
+            CustomButton retryButton = new CustomButton("Retry?", "./res/images/button.png", 200, 50, () -> {
                 Thread thread = new Thread() {
                     public void run() {
                             menu.instanciateLevel(id);
@@ -356,12 +355,29 @@ public abstract class Level implements InputOutput, Game  {
                 };
                 thread.start();
             });
-
-            levelMenuButton.addActionListener((ActionEvent e) -> {
-                pop.setVisible(false);
+            CustomButton levelMenuButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 50, () -> {
                 menu.chooseLevel();
                 window.repaint();
             });
+            CustomPopup pop = new CustomPopup("You lose!", retryButton, levelMenuButton);
+
+            // JPopupMenu losePopup = new JPopupMenu("Lost!");
+
+            // retryButton.addActionListener((ActionEvent e) -> {
+            //     pop.setVisible(false);
+            //     Thread thread = new Thread() {
+            //         public void run() {
+            //                 menu.instanciateLevel(id);
+            //             }
+            //     };
+            //     thread.start();
+            // });
+            //
+            // levelMenuButton.addActionListener((ActionEvent e) -> {
+            //     pop.setVisible(false);
+            //     menu.chooseLevel();
+            //     window.repaint();
+            // });
 
             pop.setVisible(true);
             window.getContentPane().add(pop, 0);

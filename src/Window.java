@@ -21,8 +21,9 @@ public class Window extends JFrame {
 
 
     public Window() {
-        setTitle("TITLE ");
+        setTitle("The Alchemist");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         setVisible(true);
 
         setContentPane(new JPanel(null));
@@ -113,6 +114,21 @@ public class Window extends JFrame {
         getContentPane().add(bgp);
     }
 
+    // public void paintLogo() {
+    //     BufferedImage myPicture = null;
+    //     try {
+    //         myPicture = ImageIO.read(new File("./res/images/logo.png"));
+    //     } catch (IOException ex) { System.out.println("INVALID PATH");}
+    //     BackgroundPane logo = new BackgroundPane(myPicture);
+    //     // logo.setBounds(0, 0, 600, 800);
+    //     logo.setLocation(0,0);
+    //     logo.setSize(200,200);
+    //     logo.setVisible(true);
+    //     logo.setBackground(new Color(0,0,0,0));
+    //     getContentPane().add(logo);
+    //     logo.revalidate();
+    // }
+
     public void updateMouseIcon(String icon) {
         if(!mouseIcon.icon.equals(icon)) {
             System.out.println("Update!");
@@ -144,6 +160,23 @@ public class Window extends JFrame {
             g.drawImage(image, 0, 0, 800, 1000, this);
         }
     }
+
+    // public class LogoPane extends JPanel {
+    //     private BufferedImage image;
+    //
+    //     public LogoPane(BufferedImage image) {
+    //         super();
+    //         this.image = image;
+    //         // setLocation(0,0);
+    //         // setSize(200,200);
+    //     }
+    //
+    //     @Override
+    //     protected void paintComponent(Graphics g) {
+    //         super.paintComponent(g);
+    //         g.drawImage(image, 0, 0, this);
+    //     }
+    // }
 
     public class MouseIcon extends JPanel {
         private BufferedImage redPotionIcon;

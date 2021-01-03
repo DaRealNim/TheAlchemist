@@ -16,6 +16,7 @@ public class CustomButton extends JPanel implements MouseInputListener {
     int sizeY;
 
     public CustomButton(String text, String spritePath, int sizeX, int sizeY, Runnable action) {
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.button = button;
         this.action = action;
         setSize(sizeX, sizeY);
@@ -40,20 +41,20 @@ public class CustomButton extends JPanel implements MouseInputListener {
         font = font.deriveFont(30f);
 
         JLabel label = new JLabel(text, SwingConstants.CENTER);
-        label.setLocation(10,0);
+        // label.setLocation(0,20);
         label.setSize(800,50);
         label.setForeground(Color.WHITE);
         label.setFont(font);
         label.setVisible(true);
-        setAlignmentX(CENTER_ALIGNMENT);
-        setAlignmentY(CENTER_ALIGNMENT);
+        label.setAlignmentX(CENTER_ALIGNMENT);
+        label.setAlignmentY(CENTER_ALIGNMENT);
         this.label = label;
 
         try {
             sprite = ImageIO.read(new File(spritePath));
         } catch (IOException ex) { System.out.println("INVALID PATH");}
 
-
+        add(Box.createRigidArea(new Dimension(0, (sizeY > 50) ? 30 : 10)));
         add(label);
         setOpaque(false);
         setVisible(true);
