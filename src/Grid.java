@@ -1,4 +1,8 @@
 import java.util.Arrays;
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class Grid {
     private int width;
@@ -119,6 +123,8 @@ public class Grid {
      * for adjacent blocks
      */
     public int searchAndDestroyAdjacentBlocks(int xPos, int yPos, char type, boolean begin) {
+        if (begin)
+            playDestroySound(type);
         if (type == ' ' || type == '#' || type == 'P')
             return 0; //can't destroy air, walls or packets
         Block currentBlock = getBlock(xPos, yPos);
@@ -309,6 +315,7 @@ public class Grid {
                 }
             }
         }
+        playDestroySound('R');
         return score;
     }
 
@@ -353,6 +360,82 @@ public class Grid {
     //     return blockGrid;
     // }
 
+    public void playDestroySound(char type)
+    {
+        String soundPath;
+        File soundFile;
+
+        switch(type) {
+            case 'A':
+                try {
+                    soundPath = "./res/sounds/plant.wav";
+                    soundFile = new File(soundPath);
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+
+                    clip.start();
+              } catch (Exception e) {
+                  System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
+              }
+                break;
+            case 'B':
+                try {
+                    soundPath = "./res/sounds/fire.wav";
+                    soundFile = new File(soundPath);
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+
+                    clip.start();
+                } catch (Exception e) {
+                    System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
+                    e.printStackTrace();
+                }
+                break;
+            case 'C':
+                try {
+                    soundPath = "./res/sounds/windgust.wav";
+                    soundFile = new File(soundPath);
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+
+                    clip.start();
+                } catch (Exception e) {
+                    System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
+                    e.printStackTrace();
+                }
+                break;
+            case 'D':
+                try {
+                    soundPath = "./res/sounds/waterbubble.wav";
+                    soundFile = new File(soundPath);
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+
+                    clip.start();
+                } catch (Exception e) {
+                    System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
+                    e.printStackTrace();
+                }
+                break;
+            case 'R':
+                try {
+                    soundPath = "./res/sounds/rocketsound.wav";
+                    soundFile = new File(soundPath);
+                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+
+                    clip.start();
+                } catch (Exception e) {
+                    System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
+                    e.printStackTrace();
+                }
+        }
+    }
 
     public class InvalidGridStringException extends RuntimeException {
         public InvalidGridStringException(String message) {
