@@ -11,7 +11,6 @@ public class Level2 extends Level {
         super(w, m, prog, inv, id);
         packetGoal = 3;
         scoreGoal = 950;
-        super.play();
 
         String musicPath;
         File musicFile;
@@ -30,6 +29,8 @@ public class Level2 extends Level {
         {
             e.printStackTrace();
         }
+        
+        super.play();
     }
 
     public Level2(Progression prog, Inventory inv) {

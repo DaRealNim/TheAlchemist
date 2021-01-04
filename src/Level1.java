@@ -11,7 +11,6 @@ public class Level1 extends Level {
         super(w, m, prog, inv, id);
         packetGoal = 2;
         scoreGoal = 180;
-        super.play();
 
         String musicPath;
         File musicFile;
@@ -22,6 +21,7 @@ public class Level1 extends Level {
             musicFile = new File(musicPath);
             audioInputStream = AudioSystem.getAudioInputStream(musicFile.toURI().toURL());
 
+            System.out.println(level1Music);
             level1Music = AudioSystem.getClip();
             level1Music.open(audioInputStream);
             level1Music.start();
@@ -30,6 +30,8 @@ public class Level1 extends Level {
         {
             e.printStackTrace();
         }
+        
+        super.play();
     }
 
     public Level1(Progression prog, Inventory inv) {
