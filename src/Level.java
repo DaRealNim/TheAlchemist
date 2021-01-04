@@ -26,7 +26,6 @@ public abstract class Level implements InputOutput, Game  {
     protected Progression prog;
     protected Inventory inv;
     protected Menu menu;
-    protected Clip levelMusic;
 
     public Level(Window window, Menu menu, Progression prog, Inventory inv, Integer id) {
         grid = new Grid(getGridStrings());
@@ -72,7 +71,7 @@ public abstract class Level implements InputOutput, Game  {
 
     public abstract String getBackGroundPath();
 
-    public abstract Clip getLevelMusic();
+    public abstract String getMusicIdentifier();
 
     public static void clearTerminal() {
         System.out.print("\033[H\033[2J");
@@ -88,7 +87,7 @@ public abstract class Level implements InputOutput, Game  {
         window.paintPackets(deliveredPackets, packetGoal);
 
         CustomButton quitButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 45, () -> {
-            levelMusic.stop();
+            AudioManager.stopSound(getMusicIdentifier());
             menu.chooseLevel();
             window.repaint();
         });
@@ -134,15 +133,9 @@ public abstract class Level implements InputOutput, Game  {
     public void inputGraphics() {
         System.out.println("Waiting for block...");
         while(!grid.blockClicked) {
-            // try {
-            //     TimeUnit.MILLISECONDS.sleep(100);
-            // } catch (InterruptedException e) {}
             window.repaintMouseIcon();
-
         }
-        try {
-            TimeUnit.MILLISECONDS.sleep(40);
-        } catch (InterruptedException e) {}
+        delay();
         int x = grid.blockClickedX;
         int y = grid.blockClickedY;
         System.out.println("BLOCKCLICKED");
@@ -197,9 +190,7 @@ public abstract class Level implements InputOutput, Game  {
 
     private void gravityWithDisplay() {
         while(true) {
-            try {
-                TimeUnit.MILLISECONDS.sleep(50);
-            } catch (InterruptedException e) {}
+            delay();
             boolean state = grid.applyGravityStep();
             outputGraphics();
             if (state)
@@ -209,9 +200,7 @@ public abstract class Level implements InputOutput, Game  {
 
     private void gravityWithDisplayText() {
         while(true) {
-            try {
-                TimeUnit.MILLISECONDS.sleep(300);
-            } catch (InterruptedException e) {}
+            delay();
             boolean state = grid.applyGravityStep();
             outputText();
             if (state)
@@ -220,8 +209,7 @@ public abstract class Level implements InputOutput, Game  {
     }
 
     public void play() {
-        levelMusic = getLevelMusic();
-        levelMusic.start();
+        AudioManager.playSound(getMusicIdentifier(), true);
         boolean won = false;
         while (!won) {
             String boardString = grid.getBoardString();
@@ -278,7 +266,6 @@ public abstract class Level implements InputOutput, Game  {
 
     public void playText() {
         boolean won = false;
-        boolean loose = false;
         while (!won) {
             String boardString = grid.getBoardString();
             outputText();
@@ -324,12 +311,12 @@ public abstract class Level implements InputOutput, Game  {
 
         if (menu != null) {
             CustomButton nextLevelButton = new CustomButton("Next level", "./res/images/button.png", 200, 50, () -> {
-                levelMusic.stop();
+                AudioManager.stopSound(getMusicIdentifier());
                 changeLevel();
                 window.repaint();
             });
             CustomButton levelMenuButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 50, () -> {
-                levelMusic.stop();
+                AudioManager.stopSound(getMusicIdentifier());
                 menu.chooseLevel();
                 window.repaint();
             });
@@ -341,16 +328,7 @@ public abstract class Level implements InputOutput, Game  {
             window.revalidate();
             window.repaint();
 
-            try {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("./res/sounds/win.wav").toURI().toURL());
-                Clip sound = AudioSystem.getClip();
-                sound.open(audioInputStream);
-                sound.start();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            AudioManager.playSound("win", false);
         }
 
     }
@@ -360,7 +338,7 @@ public abstract class Level implements InputOutput, Game  {
 
         if (menu != null) {
             CustomButton retryButton = new CustomButton("Retry?", "./res/images/button.png", 200, 50, () -> {
-                levelMusic.stop();
+                AudioManager.stopSound(getMusicIdentifier());
                 Thread thread = new Thread() {
                     public void run() {
                             menu.instanciateLevel(id);
@@ -369,7 +347,7 @@ public abstract class Level implements InputOutput, Game  {
                 thread.start();
             });
             CustomButton levelMenuButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 50, () -> {
-                levelMusic.stop();
+                AudioManager.stopSound(getMusicIdentifier());
                 menu.chooseLevel();
                 window.repaint();
             });
@@ -380,16 +358,7 @@ public abstract class Level implements InputOutput, Game  {
             window.revalidate();
             window.repaint();
 
-            try {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("./res/sounds/lose.wav").toURI().toURL());
-                Clip sound = AudioSystem.getClip();
-                sound.open(audioInputStream);
-                sound.start();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            AudioManager.playSound("lose", false);
         }
     }
 

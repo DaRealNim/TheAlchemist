@@ -70,17 +70,7 @@ public class CustomButton extends JPanel implements MouseInputListener {
     }
 
     public void mouseClicked(MouseEvent event) {
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("./res/sounds/click.wav").toURI().toURL());
-            Clip sound = AudioSystem.getClip();
-            sound.open(audioInputStream);
-            sound.start();
-            System.out.println("played!");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        AudioManager.playSound("click", false);
         action.run();
     }
     public void mouseEntered(MouseEvent event) {

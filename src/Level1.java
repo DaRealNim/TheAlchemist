@@ -44,25 +44,8 @@ public class Level1 extends Level {
         return "./res/images/bg_level1.png";
     }
 
-    public Clip getLevelMusic() {
-        String musicPath;
-        File musicFile;
-        AudioInputStream audioInputStream;
-
-        try {
-            musicPath = "./res/sounds/music/DestinationUnknown.wav";
-            musicFile = new File(musicPath);
-            audioInputStream = AudioSystem.getAudioInputStream(musicFile.toURI().toURL());
-
-            Clip clipMusic = AudioSystem.getClip();
-            clipMusic.open(audioInputStream);
-            return clipMusic;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
+    public String getMusicIdentifier() {
+        return "level1music";
     }
 
 }

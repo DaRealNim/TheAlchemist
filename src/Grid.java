@@ -340,7 +340,7 @@ public class Grid {
 
         for (int i = topLeftX; i < (topLeftX + 3); i++) {
             Block block = getBlock(topLeftX, topLeftY);
-            
+
             for (int j = topLeftY; j < (topLeftY + 3); j++) {
                 if (block.getType() != 'P' && block.getType() != '#') {
                     destroyBlock(i, j);
@@ -402,73 +402,20 @@ public class Grid {
 
         switch(type) {
             case 'A':
-                try {
-                    soundPath = "./res/sounds/plant.wav";
-                    soundFile = new File(soundPath);
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(audioInputStream);
-
-                    clip.start();
-              } catch (Exception e) {
-                  System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
-              }
+                AudioManager.playSound("plant", false);
                 break;
             case 'B':
-                try {
-                    soundPath = "./res/sounds/fire.wav";
-                    soundFile = new File(soundPath);
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(audioInputStream);
-
-                    clip.start();
-                } catch (Exception e) {
-                    System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
-                    e.printStackTrace();
-                }
+                AudioManager.playSound("fire", false);
                 break;
             case 'C':
-                try {
-                    soundPath = "./res/sounds/windgust.wav";
-                    soundFile = new File(soundPath);
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(audioInputStream);
-
-                    clip.start();
-                } catch (Exception e) {
-                    System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
-                    e.printStackTrace();
-                }
+                AudioManager.playSound("air", false);
                 break;
             case 'D':
-                try {
-                    soundPath = "./res/sounds/waterbubble.wav";
-                    soundFile = new File(soundPath);
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(audioInputStream);
-
-                    clip.start();
-                } catch (Exception e) {
-                    System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
-                    e.printStackTrace();
-                }
+                AudioManager.playSound("water", false);
                 break;
             case 'R':
-                try {
-                    soundPath = "./res/sounds/rocketsound.wav";
-                    soundFile = new File(soundPath);
-                    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile.toURI().toURL());
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(audioInputStream);
-
-                    clip.start();
-                } catch (Exception e) {
-                    System.out.println("Error playing sound" + e + System.getProperty("java.class.path"));
-                    e.printStackTrace();
-                }
+                AudioManager.playSound("potion", false);
+                break;
         }
     }
 

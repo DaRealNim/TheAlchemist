@@ -21,18 +21,39 @@ public class Menu implements InputOutput {
     private Progression gameProg;
     private Inventory userInv;
     private Window mainWindow;
-    private String menuMusicPath;
-    private File menuMusicFile;
-    private AudioInputStream audioInputStream;
-    private Clip mainMenuMusic;
-    private boolean musicActive;
 
     public Menu(boolean userChoseGui, Progression prog, Inventory inv, Window w) {
         gui = userChoseGui;
         gameProg = prog;
         userInv = inv;
         mainWindow = w;
-        musicActive = false;
+
+        if (gui) {
+            AudioManager.registerSound("click", "./res/sounds/click.wav");
+            AudioManager.registerSound("fire", "./res/sounds/fire.wav");
+            AudioManager.registerSound("plant", "./res/sounds/plant.wav");
+            AudioManager.registerSound("rock", "./res/sounds/rock.wav");
+            AudioManager.registerSound("water", "./res/sounds/waterbubble.wav");
+            AudioManager.registerSound("air", "./res/sounds/windgust.wav");
+            AudioManager.registerSound("win", "./res/sounds/win.wav");
+            AudioManager.registerSound("lose", "./res/sounds/lose.wav");
+            AudioManager.registerSound("potion", "./res/sounds/rocketsound.wav");
+            AudioManager.registerSound("level1music", "./res/sounds/music/DestinationUnknown.wav");
+            AudioManager.registerSound("level2music", "./res/sounds/music/EgyptianCrawl.wav");
+
+            Random rd = new Random();
+            switch(rd.nextInt(3)) {
+                case 0:
+                    AudioManager.registerSound("menumusic", "./res/sounds/music/HouseOfEvil (Menu).wav");
+                break;
+                case 1:
+                    AudioManager.registerSound("menumusic", "./res/sounds/music/BeforeDawn (Menu).wav");
+                break;
+                case 2:
+                    AudioManager.registerSound("menumusic", "./res/sounds/music/AdagioInC (Menu).wav");
+                break;
+            }
+        }
     }
 
     public void displayMenu() {
@@ -115,52 +136,7 @@ public class Menu implements InputOutput {
 
     public void outputGraphics() {
 
-        Random rd = new Random();
-        if(mainMenuMusic == null) {
-            try {
-                switch(rd.nextInt(3)) {
-                    case 0:
-                        menuMusicPath = "./res/sounds/music/HouseOfEvil (Menu).wav";
-                        menuMusicFile = new File(menuMusicPath);
-                        audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
-
-                        mainMenuMusic = AudioSystem.getClip();
-                        mainMenuMusic.open(audioInputStream);
-                        mainMenuMusic.loop(Clip.LOOP_CONTINUOUSLY);
-                        mainMenuMusic.start();
-                        musicActive = true;
-                    break;
-                    case 1:
-                        menuMusicPath = "./res/sounds/music/BeforeDawn (Menu).wav";
-                        menuMusicFile = new File(menuMusicPath);
-
-                        audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
-                        mainMenuMusic = AudioSystem.getClip();
-                        mainMenuMusic.open(audioInputStream);
-                        mainMenuMusic.loop(Clip.LOOP_CONTINUOUSLY);
-                        mainMenuMusic.start();
-                        musicActive = true;
-                    break;
-                    case 2:
-                        menuMusicPath = "./res/sounds/music/AdagioInC (Menu).wav";
-                        menuMusicFile = new File(menuMusicPath);
-                        audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
-
-                        mainMenuMusic = AudioSystem.getClip();
-                        mainMenuMusic.open(audioInputStream);
-                        mainMenuMusic.loop(Clip.LOOP_CONTINUOUSLY);
-                        mainMenuMusic.start();
-                        musicActive = true;
-                    break;
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (!musicActive) {
-            mainMenuMusic.start();
-            musicActive = true;
-        }
+        AudioManager.playSound("menumusic", true);
 
         mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
@@ -215,12 +191,8 @@ public class Menu implements InputOutput {
     }
 
     public void chooseLevel() {
-        System.out.println(musicActive);
-        if(!musicActive) {
-            mainMenuMusic.setFramePosition(0);
-            mainMenuMusic.start();
-            musicActive = true;
-        }
+
+        AudioManager.playSound("menumusic", true);
 
         mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         mainWindow.getContentPane().removeAll();
@@ -260,8 +232,8 @@ public class Menu implements InputOutput {
     }
 
     public void instanciateLevel(int levelId) {
-        mainMenuMusic.stop();
-        musicActive = false;
+        AudioManager.stopSound("menumusic");
+
         try {
             Class<?> level = Class.forName("Level" + (levelId));
             Constructor<?> levelConstructor;
@@ -278,9 +250,5 @@ public class Menu implements InputOutput {
             e.printStackTrace();
             System.out.println("The level you're trying to play doesn't exist.");
         }
-    }
-
-    public Clip getMusic() {
-        return mainMenuMusic;
     }
 }
