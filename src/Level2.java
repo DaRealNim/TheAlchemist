@@ -1,10 +1,35 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
+
 public class Level2 extends Level {
+
+    Clip level2Music;
 
     public Level2(Window w, Menu m, Progression prog, Inventory inv, Integer id) {
         super(w, m, prog, inv, id);
         packetGoal = 3;
         scoreGoal = 950;
         super.play();
+
+        String musicPath;
+        File musicFile;
+        AudioInputStream audioInputStream;
+
+        try {
+            musicPath = "./res/sounds/music/EgyptianCrawl.wav";
+            musicFile = new File(musicPath);
+            audioInputStream = AudioSystem.getAudioInputStream(musicFile.toURI().toURL());
+
+            level2Music = AudioSystem.getClip();
+            level2Music.open(audioInputStream);
+            level2Music.start();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public Level2(Progression prog, Inventory inv) {
@@ -42,6 +67,7 @@ public class Level2 extends Level {
 
     public void unlockLevel() {
         prog.unlockLevel(3);
+        level2Music.close();
     }
 
     public String getBackGroundPath() {

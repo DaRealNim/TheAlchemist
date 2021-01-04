@@ -108,8 +108,52 @@ public class Menu implements InputOutput {
     }
 
 
+    String menuMusicPath;
+    File menuMusicFile;
+    AudioInputStream audioInputStream;
+    Clip mainMenuMusic;
 
     public void outputGraphics() {
+
+        Random rd = new Random();
+        try {
+            switch(rd.nextInt(3)) {
+                case 0:
+                    menuMusicPath = "./res/sounds/music/HouseOfEvil (Menu).wav";
+                    menuMusicFile = new File(menuMusicPath);
+                    audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
+
+                    mainMenuMusic = AudioSystem.getClip();
+                    mainMenuMusic.open(audioInputStream);
+                    mainMenuMusic.loop(Clip.LOOP_CONTINUOUSLY);
+                    mainMenuMusic.start();
+                break;
+                case 1:
+                    menuMusicPath = "./res/sounds/music/BeforeDawn (Menu).wav";
+                    menuMusicFile = new File(menuMusicPath);
+
+                    audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
+                    mainMenuMusic = AudioSystem.getClip();
+                    mainMenuMusic.open(audioInputStream);
+                    mainMenuMusic.loop(Clip.LOOP_CONTINUOUSLY);
+                    mainMenuMusic.start();
+                break;
+                case 2:
+                    menuMusicPath = "./res/sounds/music/AdagioInC (Menu).wav";
+                    menuMusicFile = new File(menuMusicPath);
+                    audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
+
+                    mainMenuMusic = AudioSystem.getClip();
+                    mainMenuMusic.open(audioInputStream);
+                    mainMenuMusic.loop(Clip.LOOP_CONTINUOUSLY);
+                    mainMenuMusic.start();
+                break;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
         mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
         mainWindow.getContentPane().removeAll();
@@ -145,47 +189,6 @@ public class Menu implements InputOutput {
         mainWindow.paintBackground("./res/images/bg_menu.png");
         mainWindow.revalidate();
         mainWindow.repaint();
-
-        String menuMusicPath;
-        File menuMusicFile;
-        AudioInputStream audioInputStream;
-        Clip mainMenuMusic;
-
-        Random rd = new Random();
-        try {
-            switch(rd.nextInt(4)) {
-                case 0:
-                    menuMusicPath = "./res/sounds/music/HouseOfEvil (Menu).wav";
-                    menuMusicFile = new File(menuMusicPath);
-                    audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
-
-                    mainMenuMusic = AudioSystem.getClip();
-                    mainMenuMusic.open(audioInputStream);
-                    mainMenuMusic.start();
-                break;
-                case 1:
-                    menuMusicPath = "./res/sounds/music/BeforeDawn (Menu).wav";
-                    menuMusicFile = new File(menuMusicPath);
-
-                    audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
-                    mainMenuMusic = AudioSystem.getClip();
-                    mainMenuMusic.open(audioInputStream);
-                    mainMenuMusic.start();
-                break;
-                case 2:
-                    menuMusicPath = "./res/sounds/music/AdagioInC (Menu).wav";
-                    menuMusicFile = new File(menuMusicPath);
-                    audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
-
-                    mainMenuMusic = AudioSystem.getClip();
-                    mainMenuMusic.open(audioInputStream);
-                    mainMenuMusic.start();
-                break;
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void quitGame() {
@@ -244,6 +247,7 @@ public class Menu implements InputOutput {
 
     public void instanciateLevel(int levelId)
     {
+        mainMenuMusic.close();
         try {
             Class<?> level = Class.forName("Level" + (levelId));
             Constructor<?> levelConstructor;

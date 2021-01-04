@@ -1,10 +1,35 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
+
 public class Level1 extends Level {
+
+    Clip level1Music;
 
     public Level1(Window w, Menu m, Progression prog, Inventory inv, Integer id) {
         super(w, m, prog, inv, id);
         packetGoal = 2;
         scoreGoal = 180;
         super.play();
+
+        String musicPath;
+        File musicFile;
+        AudioInputStream audioInputStream;
+
+        try {
+            musicPath = "./res/sounds/music/DestinationUnknown.wav";
+            musicFile = new File(musicPath);
+            audioInputStream = AudioSystem.getAudioInputStream(musicFile.toURI().toURL());
+
+            level1Music = AudioSystem.getClip();
+            level1Music.open(audioInputStream);
+            level1Music.start();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public Level1(Progression prog, Inventory inv) {
@@ -33,6 +58,7 @@ public class Level1 extends Level {
 
     public void unlockLevel() {
         prog.unlockLevel(2);
+        level1Music.close();
     }
 
     public String getBackGroundPath() {
