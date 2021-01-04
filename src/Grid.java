@@ -322,7 +322,7 @@ public class Grid {
     public int destroyLine(int line, int from, int to) {
         int score = 0;
         for (int i = from; i <= to; i++) {
-            Block block = getBlock(column, i);
+            Block block = getBlock(line, i);
 
             if (block != null) {
                 if (block.getType() != 'P' && block.getType() != '#') {
@@ -339,6 +339,8 @@ public class Grid {
         int score = 0;
 
         for (int i = topLeftX; i < (topLeftX + 3); i++) {
+            Block block = getBlock(topLeftX, topLeftY);
+            
             for (int j = topLeftY; j < (topLeftY + 3); j++) {
                 if (block.getType() != 'P' && block.getType() != '#') {
                     destroyBlock(i, j);

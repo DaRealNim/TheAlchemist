@@ -9,6 +9,12 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
+import java.util.Random;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
+
 public class Menu implements InputOutput {
 
     private boolean gui;
@@ -108,6 +114,7 @@ public class Menu implements InputOutput {
 
         mainWindow.getContentPane().removeAll();
 
+
         BufferedImage myPicture = null;
         try {
             myPicture = ImageIO.read(new File("./res/images/logo.png"));
@@ -138,6 +145,47 @@ public class Menu implements InputOutput {
         mainWindow.paintBackground("./res/images/bg_menu.png");
         mainWindow.revalidate();
         mainWindow.repaint();
+
+        String menuMusicPath;
+        File menuMusicFile;
+        AudioInputStream audioInputStream;
+        Clip mainMenuMusic;
+
+        Random rd = new Random();
+        try {
+            switch(rd.nextInt(4)) {
+                case 0:
+                    menuMusicPath = "./res/sounds/music/HouseOfEvil (Menu).wav";
+                    menuMusicFile = new File(menuMusicPath);
+                    audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
+
+                    mainMenuMusic = AudioSystem.getClip();
+                    mainMenuMusic.open(audioInputStream);
+                    mainMenuMusic.start();
+                break;
+                case 1:
+                    menuMusicPath = "./res/sounds/music/BeforeDawn (Menu).wav";
+                    menuMusicFile = new File(menuMusicPath);
+
+                    audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
+                    mainMenuMusic = AudioSystem.getClip();
+                    mainMenuMusic.open(audioInputStream);
+                    mainMenuMusic.start();
+                break;
+                case 2:
+                    menuMusicPath = "./res/sounds/music/AdagioInC (Menu).wav";
+                    menuMusicFile = new File(menuMusicPath);
+                    audioInputStream = AudioSystem.getAudioInputStream(menuMusicFile.toURI().toURL());
+
+                    mainMenuMusic = AudioSystem.getClip();
+                    mainMenuMusic.open(audioInputStream);
+                    mainMenuMusic.start();
+                break;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void quitGame() {
