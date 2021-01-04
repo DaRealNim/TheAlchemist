@@ -305,7 +305,7 @@ public class Grid {
 
     public int destroyColumn(int column, int from, int to) {
         int score = 0;
-        for(int i=from; i<=to; i++) {
+        for (int i = from; i <= to; i++) {
             Block block = getBlock(column, i);
 
             if (block != null) {
@@ -318,6 +318,37 @@ public class Grid {
         playDestroySound('R');
         return score;
     }
+
+    public int destroyLine(int line, int from, int to) {
+        int score = 0;
+        for (int i = from; i <= to; i++) {
+            Block block = getBlock(column, i);
+
+            if (block != null) {
+                if (block.getType() != 'P' && block.getType() != '#') {
+                    destroyBlock(line, i);
+                    score += 10;
+                }
+            }
+        }
+        playDestroySound('R');
+        return score;
+    }
+
+    public int destroySquare(int topLeftX, int topLeftY) {
+        int score = 0;
+
+        for (int i = topLeftX; i < (topLeftX + 3); i++) {
+            for (int j = topLeftY; j < (topLeftY + 3); j++) {
+                if (block.getType() != 'P' && block.getType() != '#') {
+                    destroyBlock(i, j);
+                    score += 10;
+                }
+            }
+        }
+    }
+
+
 
     public String getBoardString() {
         String ret = "";
