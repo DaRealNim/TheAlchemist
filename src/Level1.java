@@ -5,32 +5,10 @@ import java.io.File;
 
 public class Level1 extends Level {
 
-    Clip level1Music;
-
     public Level1(Window w, Menu m, Progression prog, Inventory inv, Integer id) {
         super(w, m, prog, inv, id);
         packetGoal = 2;
         scoreGoal = 180;
-
-        String musicPath;
-        File musicFile;
-        AudioInputStream audioInputStream;
-
-        try {
-            musicPath = "./res/sounds/music/DestinationUnknown.wav";
-            musicFile = new File(musicPath);
-            audioInputStream = AudioSystem.getAudioInputStream(musicFile.toURI().toURL());
-
-            System.out.println(level1Music);
-            level1Music = AudioSystem.getClip();
-            level1Music.open(audioInputStream);
-            level1Music.start();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        
         super.play();
     }
 
@@ -60,11 +38,31 @@ public class Level1 extends Level {
 
     public void unlockLevel() {
         prog.unlockLevel(2);
-        level1Music.close();
     }
 
     public String getBackGroundPath() {
         return "./res/images/bg_level1.png";
+    }
+
+    public Clip getLevelMusic() {
+        String musicPath;
+        File musicFile;
+        AudioInputStream audioInputStream;
+
+        try {
+            musicPath = "./res/sounds/music/DestinationUnknown.wav";
+            musicFile = new File(musicPath);
+            audioInputStream = AudioSystem.getAudioInputStream(musicFile.toURI().toURL());
+
+            Clip clipMusic = AudioSystem.getClip();
+            clipMusic.open(audioInputStream);
+            return clipMusic;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

@@ -25,12 +25,14 @@ public class Menu implements InputOutput {
     private File menuMusicFile;
     private AudioInputStream audioInputStream;
     private Clip mainMenuMusic;
+    private boolean musicActive;
 
     public Menu(boolean userChoseGui, Progression prog, Inventory inv, Window w) {
         gui = userChoseGui;
         gameProg = prog;
         userInv = inv;
         mainWindow = w;
+        musicActive = false;
     }
 
     public void displayMenu() {
@@ -126,6 +128,7 @@ public class Menu implements InputOutput {
                         mainMenuMusic.open(audioInputStream);
                         mainMenuMusic.loop(Clip.LOOP_CONTINUOUSLY);
                         mainMenuMusic.start();
+                        musicActive = true;
                     break;
                     case 1:
                         menuMusicPath = "./res/sounds/music/BeforeDawn (Menu).wav";
@@ -136,6 +139,7 @@ public class Menu implements InputOutput {
                         mainMenuMusic.open(audioInputStream);
                         mainMenuMusic.loop(Clip.LOOP_CONTINUOUSLY);
                         mainMenuMusic.start();
+                        musicActive = true;
                     break;
                     case 2:
                         menuMusicPath = "./res/sounds/music/AdagioInC (Menu).wav";
@@ -146,14 +150,16 @@ public class Menu implements InputOutput {
                         mainMenuMusic.open(audioInputStream);
                         mainMenuMusic.loop(Clip.LOOP_CONTINUOUSLY);
                         mainMenuMusic.start();
+                        musicActive = true;
                     break;
                 }
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (!mainMenuMusic.isRunning()) {
+        } else if (!musicActive) {
             mainMenuMusic.start();
+            musicActive = true;
         }
 
         mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -209,6 +215,13 @@ public class Menu implements InputOutput {
     }
 
     public void chooseLevel() {
+        System.out.println(musicActive);
+        if(!musicActive) {
+            mainMenuMusic.setFramePosition(0);
+            mainMenuMusic.start();
+            musicActive = true;
+        }
+
         mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         mainWindow.getContentPane().removeAll();
 
@@ -240,10 +253,6 @@ public class Menu implements InputOutput {
 
         mainWindow.revalidate();
         mainWindow.repaint();
-
-        if(!mainMenuMusic.isRunning()) {
-            mainMenuMusic.start();
-        }
     }
 
     public void inputGraphics() {
@@ -251,7 +260,8 @@ public class Menu implements InputOutput {
     }
 
     public void instanciateLevel(int levelId) {
-        mainMenuMusic.close();
+        mainMenuMusic.stop();
+        musicActive = false;
         try {
             Class<?> level = Class.forName("Level" + (levelId));
             Constructor<?> levelConstructor;

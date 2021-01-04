@@ -6,6 +6,10 @@ import java.awt.event.*;
 import java.awt.*;
 import java.io.*;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 public abstract class Level implements InputOutput, Game  {
     protected int id;
     protected int packetGoal;
@@ -22,6 +26,7 @@ public abstract class Level implements InputOutput, Game  {
     protected Progression prog;
     protected Inventory inv;
     protected Menu menu;
+    protected Clip levelMusic;
 
     public Level(Window window, Menu menu, Progression prog, Inventory inv, Integer id) {
         grid = new Grid(getGridStrings());
@@ -67,6 +72,8 @@ public abstract class Level implements InputOutput, Game  {
 
     public abstract String getBackGroundPath();
 
+    public abstract Clip getLevelMusic();
+
     public static void clearTerminal() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -81,6 +88,7 @@ public abstract class Level implements InputOutput, Game  {
         window.paintPackets(deliveredPackets, packetGoal);
 
         CustomButton quitButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 45, () -> {
+            levelMusic.stop();
             menu.chooseLevel();
             window.repaint();
         });
@@ -212,6 +220,8 @@ public abstract class Level implements InputOutput, Game  {
     }
 
     public void play() {
+        levelMusic = getLevelMusic();
+        levelMusic.start();
         boolean won = false;
         while (!won) {
             String boardString = grid.getBoardString();
@@ -314,31 +324,33 @@ public abstract class Level implements InputOutput, Game  {
 
         if (menu != null) {
             CustomButton nextLevelButton = new CustomButton("Next level", "./res/images/button.png", 200, 50, () -> {
+                levelMusic.stop();
                 changeLevel();
                 window.repaint();
             });
             CustomButton levelMenuButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 50, () -> {
+                levelMusic.stop();
                 menu.chooseLevel();
                 window.repaint();
             });
             CustomPopup pop = new CustomPopup("You win!", nextLevelButton, levelMenuButton);
 
-            // nextLevelButton.addActionListener((ActionEvent e) -> {
-            //     pop.setVisible(false);
-            //     changeLevel();
-            //     window.repaint();
-            // });
-            //
-            // levelMenuButton.addActionListener((ActionEvent e) -> {
-            //     pop.setVisible(false);
-            //     menu.chooseLevel();
-            //     window.repaint();
-            // });
 
             pop.setVisible(true);
             window.getContentPane().add(pop, 0);
             window.revalidate();
             window.repaint();
+
+            try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("./res/sounds/win.wav").toURI().toURL());
+                Clip sound = AudioSystem.getClip();
+                sound.open(audioInputStream);
+                sound.start();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -348,6 +360,7 @@ public abstract class Level implements InputOutput, Game  {
 
         if (menu != null) {
             CustomButton retryButton = new CustomButton("Retry?", "./res/images/button.png", 200, 50, () -> {
+                levelMusic.stop();
                 Thread thread = new Thread() {
                     public void run() {
                             menu.instanciateLevel(id);
@@ -356,33 +369,27 @@ public abstract class Level implements InputOutput, Game  {
                 thread.start();
             });
             CustomButton levelMenuButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 50, () -> {
+                levelMusic.stop();
                 menu.chooseLevel();
                 window.repaint();
             });
             CustomPopup pop = new CustomPopup("You lose!", retryButton, levelMenuButton);
 
-            // JPopupMenu losePopup = new JPopupMenu("Lost!");
-
-            // retryButton.addActionListener((ActionEvent e) -> {
-            //     pop.setVisible(false);
-            //     Thread thread = new Thread() {
-            //         public void run() {
-            //                 menu.instanciateLevel(id);
-            //             }
-            //     };
-            //     thread.start();
-            // });
-            //
-            // levelMenuButton.addActionListener((ActionEvent e) -> {
-            //     pop.setVisible(false);
-            //     menu.chooseLevel();
-            //     window.repaint();
-            // });
-
             pop.setVisible(true);
             window.getContentPane().add(pop, 0);
             window.revalidate();
             window.repaint();
+
+            try {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("./res/sounds/lose.wav").toURI().toURL());
+                Clip sound = AudioSystem.getClip();
+                sound.open(audioInputStream);
+                sound.start();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
