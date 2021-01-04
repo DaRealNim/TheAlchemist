@@ -346,6 +346,8 @@ public class Grid {
                 }
             }
         }
+        playDestroySound('R');
+        return score;
     }
 
 
