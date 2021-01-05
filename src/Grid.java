@@ -14,20 +14,6 @@ public class Grid {
     public static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public Grid(String[] boardStringRepresentationLines) throws InvalidGridStringException {
-        /*  Visual representation of the grid
-            blockGrid[height][width] =
-            [
-                    <--width--->
-                [Block, ... , Block],
-                        .
-                        .          ^
-                        .          | height
-                        .          v
-                        .
-                [Block, ... , Block],
-
-            ]
-        */
 
         if (boardStringRepresentationLines.length == 0)
             throw new InvalidGridStringException("Array is empty");
@@ -73,44 +59,6 @@ public class Grid {
             System.out.println();
             counter++;
         }
-    }
-
-
-    public Block getBlock(int xPos, int yPos) {
-        try {
-            return blockGrid[yPos][xPos];
-        } catch(ArrayIndexOutOfBoundsException e) {
-            return null;
-        }
-    }
-
-    private void destroyBlock(int xPos, int yPos) {
-        try {
-            blockGrid[yPos][xPos] = null;
-        } catch(ArrayIndexOutOfBoundsException e) {
-            System.out.println("ERROR: selected coordinates aren't in array");
-            e.printStackTrace();
-        }
-    }
-
-    private void insertBlock(int xPos, int yPos, Block block) {
-        try {
-            blockGrid[yPos][xPos] = block;
-        } catch(ArrayIndexOutOfBoundsException e) {
-            System.out.println("ERROR: selected coordinates aren't in array");
-            e.printStackTrace();
-        }
-    }
-
-    public boolean isStuck() {
-        for(int yPos = 0; yPos < height; yPos++) {
-            for(int xPos = 0; xPos < width; xPos++) {
-                if (canDestroyBlock(xPos, yPos)) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     /**
@@ -267,6 +215,7 @@ public class Grid {
         return counter;
     }
 
+
     public boolean lineHasEmptyBlocs(int lineNumber) {
         for(Block block : blockGrid[lineNumber]) {
             if(block == null) return true;
@@ -337,7 +286,42 @@ public class Grid {
         return score;
     }
 
+    public Block getBlock(int xPos, int yPos) {
+        try {
+            return blockGrid[yPos][xPos];
+        } catch(ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
+    }
 
+    private void destroyBlock(int xPos, int yPos) {
+        try {
+            blockGrid[yPos][xPos] = null;
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println("ERROR: selected coordinates aren't in array");
+            e.printStackTrace();
+        }
+    }
+
+    private void insertBlock(int xPos, int yPos, Block block) {
+        try {
+            blockGrid[yPos][xPos] = block;
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println("ERROR: selected coordinates aren't in array");
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isStuck() {
+        for(int yPos = 0; yPos < height; yPos++) {
+            for(int xPos = 0; xPos < width; xPos++) {
+                if (canDestroyBlock(xPos, yPos)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     public String getBoardString() {
         String ret = "";
@@ -373,10 +357,6 @@ public class Grid {
     public int getWidth() {
         return width;
     }
-
-    // public Block[][] getGrid() {
-    //     return blockGrid;
-    // }
 
     public void playDestroySound(char type)
     {
