@@ -31,19 +31,7 @@ public class Window extends JFrame {
         getContentPane().setPreferredSize(new Dimension(800, 1000));
         pack();
 
-        try {
-            File ttf = new File("./res/fonts/planewalker.ttf");
-            InputStream is = new FileInputStream(ttf);
-            font = Font.createFont(Font.TRUETYPE_FONT, is);
-        } catch (FileNotFoundException e) {
-            System.out.println("Can't find font.tff");
-        } catch (FontFormatException e) {
-            System.out.println("Wrong font format");
-        } catch (IOException e) {
-            System.out.println("NOT FOUND");
-        }
-        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        genv.registerFont(font);
+        font = FontManager.getFont("fnt_planewalker");
         font = font.deriveFont(30f);
 
         mouseIcon = new MouseIcon();

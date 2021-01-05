@@ -11,13 +11,16 @@ public class AudioManager {
     private static HashMap<String, Clip> sounds = new HashMap<String, Clip>();
 
     public static boolean registerSound(String identifier, String path) {
-        if (sounds.containsKey(identifier))
+        if (sounds.containsKey(identifier)) {
+            System.out.println("[AudioManager] WARNING: Sound with identifier "+identifier+" was already registered");
             return false;
+        }
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(path).toURI().toURL());
             Clip sound = AudioSystem.getClip();
             sound.open(audioInputStream);
             sounds.put(identifier, sound);
+            System.out.println("[AudioManager] Registered sound "+identifier+" with path "+path);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -26,8 +29,11 @@ public class AudioManager {
     }
 
     public static boolean playSound(String identifier, boolean loop) {
-        if (!sounds.containsKey(identifier))
+        if (!sounds.containsKey(identifier)) {
+            System.out.println("[AudioManager] ERROR: Can't find sound with identifier "+identifier);
             return false;
+        }
+
         Clip sound = sounds.get(identifier);
         AudioListener listener = new AudioListener(sound);
         if (loop) {
@@ -41,8 +47,10 @@ public class AudioManager {
     }
 
     public static boolean stopSound(String identifier) {
-        if (!sounds.containsKey(identifier))
+        if (!sounds.containsKey(identifier)) {
+            System.out.println("[SpriteManager] ERROR: Can't find sprite with identifier "+identifier);
             return false;
+        }
         Clip sound = sounds.get(identifier);
         sound.stop();
         sound.setFramePosition(0);

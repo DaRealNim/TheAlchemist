@@ -80,8 +80,6 @@ public class Grid {
         try {
             return blockGrid[yPos][xPos];
         } catch(ArrayIndexOutOfBoundsException e) {
-            // System.out.println("Error: selected coordinates aren't in array");
-            // e.printStackTrace();
             return null;
         }
     }
@@ -90,7 +88,7 @@ public class Grid {
         try {
             blockGrid[yPos][xPos] = null;
         } catch(ArrayIndexOutOfBoundsException e) {
-            System.out.println("Error: selected coordinates aren't in array");
+            System.out.println("ERROR: selected coordinates aren't in array");
             e.printStackTrace();
         }
     }
@@ -99,18 +97,15 @@ public class Grid {
         try {
             blockGrid[yPos][xPos] = block;
         } catch(ArrayIndexOutOfBoundsException e) {
-            System.out.println("Error: selected coordinates aren't in array");
+            System.out.println("ERROR: selected coordinates aren't in array");
             e.printStackTrace();
         }
     }
 
     public boolean isStuck() {
-        // System.out.println("isStuck");
         for(int yPos = 0; yPos < height; yPos++) {
             for(int xPos = 0; xPos < width; xPos++) {
                 if (canDestroyBlock(xPos, yPos)) {
-                    System.out.println("Not stuck: can destroy block " + xPos + "," + yPos);
-                    System.out.println(getBlock(xPos, yPos));
                     return false;
                 }
             }
@@ -137,7 +132,6 @@ public class Grid {
                     return 0;
             }
             destroyBlock(xPos, yPos);
-            // System.out.println("DESTROY");
             score += 10;
             score += searchAndDestroyAdjacentBlocks(xPos - 1, yPos, type, false);
             score += searchAndDestroyAdjacentBlocks(xPos + 1, yPos, type, false);
@@ -271,10 +265,9 @@ public class Grid {
         int counter = 0;
         for (int column = 0; column < width; column++) {
             Block currentBlock = getBlock(column, height-2);
-            // System.out.println(column + ", " + (height-2));
             if (currentBlock != null) {
                 if (currentBlock.getType() == 'P') {
-                    System.out.println("PACKET");
+                    System.out.println("[Event] Spirit saved!");
                     counter++;
                     destroyBlock(column, height-2);
                 }
@@ -370,14 +363,12 @@ public class Grid {
 
     public void setBlockClicked(Block block) {
         //search position of block in grid
-        // System.out.println("setBlockClicked");
         for(int row=0; row<height; row++) {
             for(int column=0; column<width; column++) {
                 if(blockGrid[row][column] == block) {
                     blockClickedX = column;
                     blockClickedY = row;
                     blockClicked = true;
-                    // System.out.println("Block found at: "+ column + "," + row);
                 }
             }
         }

@@ -64,7 +64,7 @@ public class Block extends JPanel implements MouseInputListener {
 	}
 
     public void mouseClicked(MouseEvent event) {
-        System.out.println("Block clicked!");
+        System.out.println("[Event] Block clicked!");
         parentGrid.setBlockClicked(this);
 
     }

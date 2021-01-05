@@ -179,7 +179,6 @@ public abstract class Level {
             delay();
             x = grid.blockClickedX;
             y = grid.blockClickedY;
-            System.out.println("Block click "+x + ", " + y);
         } while (grid.getBlock(x, y) == null);
         if (isUsingRedPotion) {
             score += grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
@@ -267,7 +266,6 @@ public abstract class Level {
             delay();
             window.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             while (true) {
-                System.out.println("Cycle!");
                 updateScroll();
                 outputGraphics();
                 delay();
@@ -300,10 +298,8 @@ public abstract class Level {
         }
         window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         if (won) {
-            System.out.println("GAGNE!!!!");
             win();
         } else {
-            System.out.println("Perdu...");
             lose();
         }
     }
@@ -347,10 +343,8 @@ public abstract class Level {
             }
         }
         if (won) {
-            System.out.println("GAGNE!!!!");
             win();
         } else {
-            System.out.println("Perdu...");
             lose();
         }
     }
@@ -430,7 +424,6 @@ public abstract class Level {
                         else
                             break;
                     }
-                    System.out.println("scrollLength="+scrollLength);
                     scroll(scrollLength);
                 }
             }

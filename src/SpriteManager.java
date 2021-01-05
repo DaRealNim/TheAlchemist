@@ -8,23 +8,24 @@ public class SpriteManager {
 
     public static boolean registerSprite(String identifier, String path) {
         if (sprites.containsKey(identifier)) {
-            System.out.println("WARNING: Sprite with identifier "+identifier+" was already registered");
+            System.out.println("[SpriteManager] WARNING: Sprite with identifier "+identifier+" was already registered");
             return false;
         }
         BufferedImage sprite;
         try {
             sprite = ImageIO.read(new File(path));
             sprites.put(identifier, sprite);
+            System.out.println("[SpriteManager] Registered sprite "+identifier+" with path "+path);
             return true;
         } catch (IOException ex) {
-            System.out.println("ERROR: Can't load sprite "+path);
+            System.out.println("[SpriteManager] ERROR: Can't load sprite "+path);
         }
         return false;
     }
 
     public static BufferedImage getSprite(String identifier) {
         if (!sprites.containsKey(identifier)) {
-            System.out.println("ERROR: Can't find sprite with identifier "+identifier);
+            System.out.println("[SpriteManager] ERROR: Can't find sprite with identifier "+identifier);
             return null;
         }
         return sprites.get(identifier);

@@ -20,20 +20,7 @@ public class CustomPopup extends JPanel {
 
         sprite = SpriteManager.getSprite("spr_popup");
 
-        Font font = null;
-        try {
-            File ttf = new File("./res/fonts/planewalker.ttf");
-            InputStream is = new FileInputStream(ttf);
-            font = Font.createFont(Font.TRUETYPE_FONT, is);
-        } catch (FileNotFoundException e) {
-            System.out.println("Can't find font.tff");
-        } catch (FontFormatException e) {
-            System.out.println("Wrong font format");
-        } catch (IOException e) {
-            System.out.println("NOT FOUND");
-        }
-        GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        genv.registerFont(font);
+        Font font = FontManager.getFont("fnt_planewalker");
         font = font.deriveFont(40f);
 
         JLabel label = new JLabel(title);

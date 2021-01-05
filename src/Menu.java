@@ -8,8 +8,6 @@ import java.awt.event.*;
 import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
-
-import java.util.Random;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -27,53 +25,6 @@ public class Menu {
         gameProg = prog;
         userInv = inv;
         mainWindow = w;
-
-        if (gui) {
-            SpriteManager.registerSprite("spr_arrow", "./res/images/arrow.png");
-            SpriteManager.registerSprite("bg_level1", "./res/images/bg_level1.png");
-            SpriteManager.registerSprite("bg_level2", "./res/images/bg_level2.png");
-            SpriteManager.registerSprite("bg_level3", "./res/images/bg_level3.png");
-            SpriteManager.registerSprite("bg_level4", "./res/images/bg_level4.png");
-            SpriteManager.registerSprite("bg_menu", "./res/images/bg_menu.png");
-            SpriteManager.registerSprite("spr_air", "./res/images/block_air_jelly.png");
-            SpriteManager.registerSprite("spr_demon", "./res/images/block_demon_jelly.png");
-            SpriteManager.registerSprite("spr_fire", "./res/images/block_fire_jelly.png");
-            SpriteManager.registerSprite("spr_forest", "./res/images/block_forest_jelly.png");
-            SpriteManager.registerSprite("spr_spirit", "./res/images/block_spirit_jelly.png");
-            SpriteManager.registerSprite("spr_water", "./res/images/block_water_jelly.png");
-            SpriteManager.registerSprite("spr_button", "./res/images/button.png");
-            SpriteManager.registerSprite("spr_logo", "./res/images/logo.png");
-            SpriteManager.registerSprite("spr_popup", "./res/images/popup.png");
-            SpriteManager.registerSprite("spr_potion_blue", "./res/images/potion_blue.png");
-            SpriteManager.registerSprite("spr_potion_green", "./res/images/potion_green.png");
-            SpriteManager.registerSprite("spr_potion_red", "./res/images/potion_red.png");
-            SpriteManager.registerSprite("spr_padlock", "./res/images/padlock.png");
-
-            AudioManager.registerSound("click", "./res/sounds/click.wav");
-            AudioManager.registerSound("fire", "./res/sounds/fire.wav");
-            AudioManager.registerSound("plant", "./res/sounds/plant.wav");
-            AudioManager.registerSound("rock", "./res/sounds/rock.wav");
-            AudioManager.registerSound("water", "./res/sounds/waterbubble.wav");
-            AudioManager.registerSound("air", "./res/sounds/windgust.wav");
-            AudioManager.registerSound("win", "./res/sounds/win.wav");
-            AudioManager.registerSound("lose", "./res/sounds/lose.wav");
-            AudioManager.registerSound("potion", "./res/sounds/rocketsound.wav");
-            AudioManager.registerSound("level1music", "./res/sounds/music/DestinationUnknown.wav");
-            AudioManager.registerSound("level2music", "./res/sounds/music/EgyptianCrawl.wav");
-
-            Random rd = new Random();
-            switch(rd.nextInt(3)) {
-                case 0:
-                    AudioManager.registerSound("menumusic", "./res/sounds/music/HouseOfEvil (Menu).wav");
-                break;
-                case 1:
-                    AudioManager.registerSound("menumusic", "./res/sounds/music/BeforeDawn (Menu).wav");
-                break;
-                case 2:
-                    AudioManager.registerSound("menumusic", "./res/sounds/music/AdagioInC (Menu).wav");
-                break;
-            }
-        }
     }
 
     public void displayMenu() {
