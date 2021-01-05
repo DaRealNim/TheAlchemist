@@ -15,7 +15,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 
-public class Menu implements InputOutput {
+public class Menu {
 
     private boolean gui;
     private Progression gameProg;
