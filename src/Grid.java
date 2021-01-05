@@ -358,8 +358,7 @@ public class Grid {
         return width;
     }
 
-    public void playDestroySound(char type)
-    {
+    public void playDestroySound(char type) {
         String soundPath;
         File soundFile;
 
