@@ -9,7 +9,6 @@ import javax.imageio.*;
 
 public class Block extends JPanel implements MouseInputListener {
     private final char type;
-    private Color color;
     private Grid parentGrid;
     private BufferedImage image;
     public static final int BLOCKSIZE = 70;
@@ -19,37 +18,31 @@ public class Block extends JPanel implements MouseInputListener {
         this.parentGrid = parentGrid;
         switch(type) {
             case 'A':
-                color = Window.rgbToColor("#fe75fe");
                 try {
                     image = ImageIO.read(new File("./res/images/block_forest_jelly.png"));
               } catch (IOException ex) { System.out.println("INVALID PATH");}
                 break;
             case 'B':
-                color = Window.rgbToColor("#860029");
                 try {
                     image = ImageIO.read(new File("./res/images/block_fire_jelly.png"));
                 } catch (IOException ex) {}
                 break;
             case 'C':
-                color = Window.rgbToColor("#de004e");
                 try {
                     image = ImageIO.read(new File("./res/images/block_air_jelly.png"));
                 } catch (IOException ex) {}
                 break;
             case 'D':
-                color = Window.rgbToColor("#0b468c");
                 try {
                     image = ImageIO.read(new File("./res/images/block_water_jelly.png"));
                 } catch (IOException ex) {}
                 break;
             case 'P':
-                color = Window.rgbToColor("#ff9760");
                 try {
                     image = ImageIO.read(new File("./res/images/block_spirit_jelly.png"));
                 } catch (IOException ex) {}
                 break;
             case '#':
-                color = Window.rgbToColor("#464646");
                 try {
                     image = ImageIO.read(new File("./res/images/block_demon_jelly.png"));
                 } catch (IOException ex) {}
