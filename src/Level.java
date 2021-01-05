@@ -11,7 +11,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public abstract class Level {
+public abstract class Level implements InputOutput {
     protected int id;
     protected int packetGoal;
     protected int scoreGoal;
