@@ -130,6 +130,22 @@ public class Window extends JFrame {
         getContentPane().add(bgp);
     }
 
+    public void paintArrow(int remainingLines) {
+        BufferedImage arrow = null;
+        try {
+            arrow = ImageIO.read(new File("./res/images/arrow.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JLabel linesLabel = new JLabel(remainingLines + " lines left", new ImageIcon(arrow), SwingConstants.LEADING);
+        linesLabel.setSize(253,71);
+        linesLabel.setPreferredSize(new Dimension(253,71));
+        linesLabel.setLocation(100,900);
+        linesLabel.setForeground(Color.WHITE);
+        linesLabel.setFont(font);
+        add(linesLabel);
+    }
+
     public void updateMouseIcon(String icon) {
         if(!mouseIcon.icon.equals(icon)) {
             System.out.println("Update!");

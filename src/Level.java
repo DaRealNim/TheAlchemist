@@ -5,6 +5,8 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -139,6 +141,10 @@ public abstract class Level implements InputOutput, Game  {
         });
         greenPotionButton.setLocation(640, 75);
         window.add(greenPotionButton);
+
+        if(hasScroll) {
+            window.paintArrow(remainingLines);
+        }
 
         window.paintItems(inv.redPotions, inv.bluePotions, inv.greenPotions);
         window.paintBackground(getBackGroundPath());
