@@ -265,12 +265,13 @@ public abstract class Level {
             String boardString = grid.getBoardString();
             outputGraphics();
             inputGraphics();
+            delay();
             window.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             while (true) {
                 System.out.println("Cycle!");
                 updateScroll();
-
                 outputGraphics();
+                delay();
                 gravityWithDisplay();
 
                 deliveredPackets += grid.removePacketsOnLastLine();
