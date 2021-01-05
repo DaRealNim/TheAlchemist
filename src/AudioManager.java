@@ -23,6 +23,7 @@ public class AudioManager {
             System.out.println("[AudioManager] Registered sound "+identifier+" with path "+path);
             return true;
         } catch (Exception e) {
+            System.out.println("[AudioManager] ERROR: Could not register "+identifier+" with path "+path+":");
             e.printStackTrace();
         }
         return false;
@@ -40,9 +41,11 @@ public class AudioManager {
             sound.loop(Clip.LOOP_CONTINUOUSLY);
         } else {
             sound.loop(0);
+            sound.setFramePosition(0);
             sound.addLineListener(listener);
         }
         sound.start();
+        System.out.println("[AudioManager] Playing "+identifier);
         return true;
     }
 
