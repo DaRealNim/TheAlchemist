@@ -85,6 +85,64 @@ public abstract class Level implements InputOutput {
         System.out.flush();
     }
 
+    public void play() {
+        AudioManager.playSound(getMusicIdentifier(), true);
+        boolean won = false;
+        while (!won) {
+            String boardString = grid.getBoardString();
+            outputGraphics();
+            inputGraphics();
+            delay();
+            window.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+            while (true) {
+                updateScroll();
+                outputGraphics();
+                delay();
+                gravityWithDisplay();
+
+                deliveredPackets += grid.removePacketsOnLastLine();
+
+                delay();
+                outputGraphics();
+                delay();
+                gravityWithDisplay();
+                grid.shiftToLeft();
+                gravityWithDisplay();
+                delay();
+
+                String boardString2 = grid.getBoardString();
+                if(boardString2.equals(boardString)) {
+                    break;
+                }
+                boardString = boardString2;
+            }
+            if(grid.isStuck()) {
+                if (deliveredPackets >= packetGoal && score >= scoreGoal) {
+                    won = true;
+                } else {
+                    break;
+                }
+            }
+            window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
+        window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        if (won) {
+            win();
+        } else {
+            lose();
+        }
+    }
+
+    private void gravityWithDisplay() {
+        while(true) {
+            delay();
+            boolean state = grid.applyGravityStep();
+            outputGraphics();
+            if (state)
+                break;
+        }
+    }
+
     public void outputGraphics() {
         if (hasScroll)
             window.paintGrid(grid, scrollFirstLine, scrollLastLine);
@@ -153,73 +211,6 @@ public abstract class Level implements InputOutput {
         window.repaint();
     }
 
-    public void play() {
-        AudioManager.playSound(getMusicIdentifier(), true);
-        boolean won = false;
-        while (!won) {
-            String boardString = grid.getBoardString();
-            outputGraphics();
-            inputGraphics();
-            delay();
-            window.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-            while (true) {
-                updateScroll();
-                outputGraphics();
-                delay();
-                gravityWithDisplay();
-
-                deliveredPackets += grid.removePacketsOnLastLine();
-
-                delay();
-                outputGraphics();
-                delay();
-                gravityWithDisplay();
-                grid.shiftToLeft();
-                gravityWithDisplay();
-                delay();
-
-                String boardString2 = grid.getBoardString();
-                if(boardString2.equals(boardString)) {
-                    break;
-                }
-                boardString = boardString2;
-            }
-            if(grid.isStuck()) {
-                if (deliveredPackets >= packetGoal && score >= scoreGoal) {
-                    won = true;
-                } else {
-                    break;
-                }
-            }
-            window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        }
-        window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        if (won) {
-            win();
-        } else {
-            lose();
-        }
-    }
-    public void outputText() {
-        clearTerminal();
-        if (hasScroll)
-            grid.display(scrollFirstLine, scrollLastLine);
-        else
-            grid.display();
-        System.out.println();
-        if (hasScroll && remainingLines != 0) {
-            System.out.println("| "+remainingLines);
-            System.out.println("v");
-            System.out.println();
-        }
-        System.out.println("Packets delivered: "+deliveredPackets);
-        System.out.println("Score            : "+score);
-        System.out.println("Potions rouge    : "+inv.redPotions);
-        System.out.println("Potions bleues   : "+inv.bluePotions);
-        System.out.println("Potions vertes   : "+inv.greenPotions);
-        System.out.println("\n");
-    }
-
     public void inputGraphics() {
         int x;
         int y;
@@ -248,6 +239,75 @@ public abstract class Level implements InputOutput {
             score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
         }
         window.updateMouseIcon("");
+    }
+
+    public void playText() {
+        boolean won = false;
+        while (!won) {
+            String boardString = grid.getBoardString();
+            outputText();
+            inputText();
+            while (true) {
+                updateScroll();
+                outputText();
+                gravityWithDisplayText();
+
+                deliveredPackets += grid.removePacketsOnLastLine();
+                outputText();
+                gravityWithDisplayText();
+
+                grid.shiftToLeft();
+                gravityWithDisplayText();
+
+                updateScroll();
+
+                String boardString2 = grid.getBoardString();
+                if(boardString2.equals(boardString)) {
+                    break;
+                }
+                boardString = boardString2;
+            }
+            if (deliveredPackets >= packetGoal && score >= scoreGoal) {
+                won = true;
+            } else if (grid.isStuck()) {
+                break;
+            }
+        }
+        if (won) {
+            win();
+        } else {
+            lose();
+        }
+    }
+
+    private void gravityWithDisplayText() {
+        while(true) {
+            delay();
+            boolean state = grid.applyGravityStep();
+            outputText();
+            if (state)
+                break;
+        }
+    }
+
+    public void outputText() {
+        clearTerminal();
+        if (hasScroll)
+            grid.display(scrollFirstLine, scrollLastLine);
+        else
+            grid.display();
+        System.out.println();
+        if (hasScroll && remainingLines != 0) {
+            System.out.println("| "+remainingLines);
+            System.out.println("v");
+            System.out.println();
+        }
+        System.out.println("Packets delivered: "+deliveredPackets);
+        System.out.println("Score            : "+score);
+        System.out.println("Potions rouge    : "+inv.redPotions);
+        System.out.println("Potions bleues   : "+inv.bluePotions);
+        System.out.println("Potions vertes   : "+inv.greenPotions);
+        System.out.println("\n");
     }
 
     public void inputText() {
@@ -325,26 +385,6 @@ public abstract class Level implements InputOutput {
                 for(int i=0; i<grid.getWidth(); i++) {
                     score += grid.destroyColumn(i, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
                 }
-                break;
-        }
-    }
-
-    private void gravityWithDisplay() {
-        while(true) {
-            delay();
-            boolean state = grid.applyGravityStep();
-            outputGraphics();
-            if (state)
-                break;
-        }
-    }
-
-    private void gravityWithDisplayText() {
-        while(true) {
-            delay();
-            boolean state = grid.applyGravityStep();
-            outputText();
-            if (state)
                 break;
         }
     }
@@ -461,45 +501,6 @@ public abstract class Level implements InputOutput {
         catch (Exception e)
         {
             System.out.println("Error saving progress");
-        }
-    }
-
-    public void playText() {
-        boolean won = false;
-        while (!won) {
-            String boardString = grid.getBoardString();
-            outputText();
-            inputText();
-            while (true) {
-                updateScroll();
-                outputText();
-                gravityWithDisplayText();
-
-                deliveredPackets += grid.removePacketsOnLastLine();
-                outputText();
-                gravityWithDisplayText();
-
-                grid.shiftToLeft();
-                gravityWithDisplayText();
-
-                updateScroll();
-
-                String boardString2 = grid.getBoardString();
-                if(boardString2.equals(boardString)) {
-                    break;
-                }
-                boardString = boardString2;
-            }
-            if (deliveredPackets >= packetGoal && score >= scoreGoal) {
-                won = true;
-            } else if (grid.isStuck()) {
-                break;
-            }
-        }
-        if (won) {
-            win();
-        } else {
-            lose();
         }
     }
 
