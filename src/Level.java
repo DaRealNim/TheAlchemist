@@ -153,6 +153,53 @@ public abstract class Level {
         window.repaint();
     }
 
+    public void play() {
+        AudioManager.playSound(getMusicIdentifier(), true);
+        boolean won = false;
+        while (!won) {
+            String boardString = grid.getBoardString();
+            outputGraphics();
+            inputGraphics();
+            delay();
+            window.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+            while (true) {
+                updateScroll();
+                outputGraphics();
+                delay();
+                gravityWithDisplay();
+
+                deliveredPackets += grid.removePacketsOnLastLine();
+
+                delay();
+                outputGraphics();
+                delay();
+                gravityWithDisplay();
+                grid.shiftToLeft();
+                gravityWithDisplay();
+                delay();
+
+                String boardString2 = grid.getBoardString();
+                if(boardString2.equals(boardString)) {
+                    break;
+                }
+                boardString = boardString2;
+            }
+            if(grid.isStuck()) {
+                if (deliveredPackets >= packetGoal && score >= scoreGoal) {
+                    won = true;
+                } else {
+                    break;
+                }
+            }
+            window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
+        window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        if (won) {
+            win();
+        } else {
+            lose();
+        }
+    }
     public void outputText() {
         clearTerminal();
         if (hasScroll)
@@ -302,97 +349,10 @@ public abstract class Level {
         }
     }
 
-    public void play() {
-        AudioManager.playSound(getMusicIdentifier(), true);
-        boolean won = false;
-        while (!won) {
-            String boardString = grid.getBoardString();
-            outputGraphics();
-            inputGraphics();
-            delay();
-            window.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-            while (true) {
-                updateScroll();
-                outputGraphics();
-                delay();
-                gravityWithDisplay();
-
-                deliveredPackets += grid.removePacketsOnLastLine();
-
-                delay();
-                outputGraphics();
-                delay();
-                gravityWithDisplay();
-                grid.shiftToLeft();
-                gravityWithDisplay();
-                delay();
-
-                String boardString2 = grid.getBoardString();
-                if(boardString2.equals(boardString)) {
-                    break;
-                }
-                boardString = boardString2;
-            }
-            if(grid.isStuck()) {
-                if (deliveredPackets >= packetGoal && score >= scoreGoal) {
-                    won = true;
-                } else {
-                    break;
-                }
-            }
-            window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        }
-        window.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        if (won) {
-            win();
-        } else {
-            lose();
-        }
-    }
-
     private void delay() {
         try {
             TimeUnit.MILLISECONDS.sleep(50);
         } catch (InterruptedException e) {}
-    }
-
-    public void playText() {
-        boolean won = false;
-        while (!won) {
-            String boardString = grid.getBoardString();
-            outputText();
-            inputText();
-            while (true) {
-                updateScroll();
-                outputText();
-                gravityWithDisplayText();
-
-                deliveredPackets += grid.removePacketsOnLastLine();
-                outputText();
-                gravityWithDisplayText();
-
-                grid.shiftToLeft();
-                gravityWithDisplayText();
-
-                updateScroll();
-
-                String boardString2 = grid.getBoardString();
-                if(boardString2.equals(boardString)) {
-                    break;
-                }
-                boardString = boardString2;
-            }
-            if (deliveredPackets >= packetGoal && score >= scoreGoal) {
-                won = true;
-            } else if (grid.isStuck()) {
-                break;
-            }
-        }
-        if (won) {
-            win();
-        } else {
-            lose();
-        }
     }
 
     public void win() {
@@ -504,5 +464,43 @@ public abstract class Level {
         }
     }
 
+    public void playText() {
+        boolean won = false;
+        while (!won) {
+            String boardString = grid.getBoardString();
+            outputText();
+            inputText();
+            while (true) {
+                updateScroll();
+                outputText();
+                gravityWithDisplayText();
+
+                deliveredPackets += grid.removePacketsOnLastLine();
+                outputText();
+                gravityWithDisplayText();
+
+                grid.shiftToLeft();
+                gravityWithDisplayText();
+
+                updateScroll();
+
+                String boardString2 = grid.getBoardString();
+                if(boardString2.equals(boardString)) {
+                    break;
+                }
+                boardString = boardString2;
+            }
+            if (deliveredPackets >= packetGoal && score >= scoreGoal) {
+                won = true;
+            } else if (grid.isStuck()) {
+                break;
+            }
+        }
+        if (won) {
+            win();
+        } else {
+            lose();
+        }
+    }
 
 }
