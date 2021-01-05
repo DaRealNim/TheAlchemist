@@ -16,28 +16,30 @@ public class Block extends JPanel implements MouseInputListener {
     public Block(char type, Grid parentGrid) {
         this.type = type;
         this.parentGrid = parentGrid;
-        switch(type) {
-            case 'A':
-                image = SpriteManager.getSprite("spr_forest");
-                break;
-            case 'B':
-                image = SpriteManager.getSprite("spr_fire");
-                break;
-            case 'C':
-                image = SpriteManager.getSprite("spr_air");
-                break;
-            case 'D':
-                image = SpriteManager.getSprite("spr_water");
-                break;
-            case 'P':
-                image = SpriteManager.getSprite("spr_spirit");
-                break;
-            case '#':
-                image = SpriteManager.getSprite("spr_demon");
-                break;
+        if(Launcher.GUI) {
+            switch(type) {
+                case 'A':
+                    image = SpriteManager.getSprite("spr_forest");
+                    break;
+                case 'B':
+                    image = SpriteManager.getSprite("spr_fire");
+                    break;
+                case 'C':
+                    image = SpriteManager.getSprite("spr_air");
+                    break;
+                case 'D':
+                    image = SpriteManager.getSprite("spr_water");
+                    break;
+                case 'P':
+                    image = SpriteManager.getSprite("spr_spirit");
+                    break;
+                case '#':
+                    image = SpriteManager.getSprite("spr_demon");
+                    break;
+            }
+            setOpaque(false);
+            addMouseListener(this);
         }
-        setOpaque(false);
-        addMouseListener(this);
     }
 
     @Override

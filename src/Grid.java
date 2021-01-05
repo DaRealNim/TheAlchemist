@@ -51,7 +51,7 @@ public class Grid {
     }
 
     public void display() {
-        display(0, height);
+        display(0, height-2);
     }
 
     public void display(int from, int to) {

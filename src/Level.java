@@ -59,10 +59,12 @@ public abstract class Level {
         deliveredPackets = 0;
         score = 0;
         hasScroll = (grid.getHeight() > 10);
+        scrollFirstLine = 0;
         if (hasScroll) {
-            scrollFirstLine = 0;
             scrollLastLine = 9;
             remainingLines = grid.getHeight() - scrollLastLine - 2;
+        } else {
+            scrollLastLine = grid.getHeight() - 2;
         }
         this.prog = prog;
         this.inv = inv;
@@ -165,6 +167,9 @@ public abstract class Level {
         }
         System.out.println("Packets delivered: "+deliveredPackets);
         System.out.println("Score            : "+score);
+        System.out.println("Potions rouge    : "+inv.redPotions);
+        System.out.println("Potions bleues   : "+inv.bluePotions);
+        System.out.println("Potions vertes   : "+inv.greenPotions);
         System.out.println("\n");
     }
 
@@ -200,7 +205,7 @@ public abstract class Level {
 
     public void inputText() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("(c)liquer sur un bloc ou utiliser une (f)usée?: ");
+        System.out.print("(c)liquer, (pr)ouge, (pb)pbleues, (pv)ertes :");
         String action = scanner.nextLine();
         int x;
         int y;
@@ -222,11 +227,52 @@ public abstract class Level {
                 catch (Exception e) {
                 }
                 break;
-            case "f":
-                System.out.print("Colone: ");
-                String column = scanner.nextLine();
-                x = Integer.parseInt(column, 16);
-                score += grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
+            case "pr":
+                if(inv.redPotions > 0) {
+                    System.out.print("Colone: ");
+                    String column = scanner.nextLine();
+                    x = Integer.parseInt(column, 16);
+                    x = Math.max(0, x);
+                    x = Math.min(x, grid.getWidth()-1);
+                    score += grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
+                    inv.redPotions--;
+                } else {
+                    System.out.println("Plus de potions rouges !");
+                }
+                break;
+            case "pb":
+                if(inv.bluePotions > 0) {
+                    System.out.print("Line: ");
+                    String column = scanner.nextLine();
+                    y = Integer.parseInt(column, 16);
+                    y = Math.max(scrollFirstLine, y);
+                    y = Math.min(y, scrollLastLine);
+
+                    score += grid.destroyLine(y);
+                    inv.bluePotions--;
+                } else {
+                    System.out.println("Plus de potions bleues !");
+                }
+                break;
+            case "pv":
+                if(inv.greenPotions > 0) {
+                    System.out.print("Ou jeter la potion verte? (\"x,y\"): ");
+                    try {
+                        String coords = scanner.nextLine();
+                        String[] coordsArray = coords.split(",");
+                        x = Integer.parseInt(coordsArray[0], 16);
+                        y = Integer.parseInt(coordsArray[1], 16);
+                        if (hasScroll) {
+                            if (!(scrollFirstLine <= y && y <= scrollLastLine))
+                            return;
+                        }
+                        if (coordsArray.length == 2)
+                            score += grid.destroySquare(x-1, y-1);
+                            inv.greenPotions--;
+                    }
+                    catch (Exception e) {
+                    }
+                }
                 break;
             case "d":
                 for(int i=0; i<grid.getWidth(); i++) {
@@ -353,7 +399,7 @@ public abstract class Level {
         unlockLevel();
         saveProgress();
 
-        if (menu != null) {
+        if (Launcher.GUI) {
             CustomButton nextLevelButton = new CustomButton("Next level", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 AudioManager.stopSound(getMusicIdentifier());
                 changeLevel();
@@ -371,6 +417,8 @@ public abstract class Level {
             window.repaint();
 
             AudioManager.playSound("win", false);
+        } else {
+            System.out.println("You win!");
         }
 
     }
@@ -378,7 +426,7 @@ public abstract class Level {
     public void lose() {
         saveProgress();
 
-        if (menu != null) {
+        if (Launcher.GUI) {
             CustomButton retryButton = new CustomButton("Retry?", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 AudioManager.stopSound(getMusicIdentifier());
                 Thread thread = new Thread() {
@@ -400,6 +448,8 @@ public abstract class Level {
             window.repaint();
 
             AudioManager.playSound("lose", false);
+        } else {
+            System.out.println("You lose...");
         }
     }
 

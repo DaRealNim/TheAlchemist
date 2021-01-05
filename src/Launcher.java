@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class Launcher {
 
+    public static boolean GUI;
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -55,6 +57,8 @@ public class Launcher {
     }
 
     private static Menu instanciateMenuGUI(Progression prog, Inventory inv) {
+        GUI = true;
+
         FontManager.registerFont("fnt_planewalker", "./res/fonts/planewalker.ttf");
 
         SpriteManager.registerSprite("spr_arrow", "./res/images/arrow.png");
@@ -108,6 +112,7 @@ public class Launcher {
     }
 
     private static Menu instanciateMenuText(Progression prog, Inventory inv) {
+        GUI = false;
         return new Menu(false, prog, inv, null);
     }
 

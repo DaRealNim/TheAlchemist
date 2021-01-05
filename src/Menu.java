@@ -37,20 +37,20 @@ public class Menu {
     }
 
     public void outputText() {
-        System.out.println("        -. .");
-        System.out.println("     ______',' ,");
-        System.out.println("  ,'      ,'  ', ',");
-        System.out.println(",'      ,'      |  |");
-        System.out.println("\\       \\       |  |");
-        System.out.println(" \\ /^\\   \\     ,' ,'");
-        System.out.println("      \\    \\ ,' ,'");
-        System.out.println("/ ~-.___\\.-'  ,'");
-        System.out.println("/   .______.- \\");
-        System.out.println("/  /'      \\   \\");
-        System.out.println("\\./         \\/'\n");
+        System.out.println("      _____");
+        System.out.println("     `.___,'");
+        System.out.println("      (___)");
+        System.out.println("      <   >    _____ _           ___  _      _                    _     _   ");
+        System.out.println("       ) (    |_   _| |         / _ \\| |    | |                  (_)   | |  ");
+        System.out.println("      /`-.\\     | | | |__   ___/ /_\\ \\ | ___| |__   ___ _ __ ___  _ ___| |_ ");
+        System.out.println("     /     \\    | | | '_ \\ / _ \\  _  | |/ __| '_ \\ / _ \\ '_ ` _ \\| / __| __|");
+        System.out.println("    / _    _\\   | | | | | |  __/ | | | | (__| | | |  __/ | | | | | \\__ \\ |_ ");
+        System.out.println("   :,' `-.' `:  \\_/ |_| |_|\\___\\_| |_/_|\\___|_| |_|\\___|_| |_| |_|_|___/\\__|");
+        System.out.println("   |         |   ");
+        System.out.println("   :         ;   ");
+        System.out.println("    \\       /   ");
+        System.out.println("     `.___.'");
 
-        System.out.println("==================Welcome 2 ebic haxx0r simul4t0re !111 !!!============");
-        System.out.println("====================Я хотел бы узнать тебя получше.====================");
     }
 
     public void inputText() {
@@ -58,17 +58,16 @@ public class Menu {
 
         while (true)
         {
-            System.out.println("1. Serve Motherland (Choose level) \n2. Settings  \n3. Exit ");
-            System.out.print("\n выберите\n >>>");
+            System.out.println("1. Play\n2. Exit ");
+            System.out.print("\n Choice >>>");
             String userOption = userMenuInput.nextLine();
 
             switch(userOption) {
                 case "1":
-                    for (int i = 1; i < gameProg.unlockedLevels.length; i++) {
-                        if (levelIsUnlocked(i))
-                            System.out.println("Level " + i);
-                    }
                     while (true) {
+                        for (int i = 1; i <= gameProg.unlockedLevels.length; i++) {
+                            System.out.println("Level " + i + (levelIsUnlocked(i) ? "" : " (locked)"));
+                        }
                         System.out.print(">>>");
 
                         String levelChosenString = userMenuInput.nextLine();
@@ -93,9 +92,6 @@ public class Menu {
                     }
                     break;
                 case "2":
-                    System.out.println("хахаха, ты правда думал, что в этой игре есть настройки?");
-                    break;
-                case "3":
                     System.exit(0);
                     break;
                 default:
@@ -203,13 +199,13 @@ public class Menu {
     }
 
     public void instanciateLevel(int levelId) {
-        AudioManager.stopSound("menumusic");
 
         try {
             Class<?> level = Class.forName("Level" + (levelId));
             Constructor<?> levelConstructor;
             Object levelInstance;
             if (gui) {
+                AudioManager.stopSound("menumusic");
                 levelConstructor = level.getConstructor(new Class[] {Window.class, Menu.class, Progression.class, Inventory.class, Integer.class});
                 levelInstance = levelConstructor.newInstance(mainWindow, this, gameProg, userInv, levelId);
             } else {
