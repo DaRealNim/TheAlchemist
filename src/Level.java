@@ -419,6 +419,7 @@ public abstract class Level {
                 if (grid.isLineFullyEmpty(scrollFirstLine)) {
                     int scrollLength = 1;
                     for(int line = 1; line<=scrollLastLine - 2; line++) {
+                        if(scrollFirstLine+line >= grid.getHeight()) break;
                         if (grid.isLineFullyEmpty(scrollFirstLine+line))
                             scrollLength++;
                         else

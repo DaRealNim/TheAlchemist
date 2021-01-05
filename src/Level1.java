@@ -8,23 +8,28 @@ public class Level1 extends Level {
     public Level1(Window w, Menu m, Progression prog, Inventory inv, Integer id) {
         super(w, m, prog, inv, id);
         packetGoal = 2;
-        scoreGoal = 180;
+        scoreGoal = 420;
         super.play();
     }
 
     public Level1(Progression prog, Inventory inv) {
         super(prog, inv);
         packetGoal = 2;
-        scoreGoal = 200;
+        scoreGoal = 420;
         super.playText();
     }
 
     public String[] getGridStrings() {
-        return new String[]{"P  P  ",
-                            "BAAACA",
-                            "CCADCA",
-                            "CBADAA",
-                            "######"};
+        return new String[] {
+                                " P   P ",
+                                "AABBBCC",
+                                "AADDDCC",
+                                "BBDDDBB",
+                                "BBDDDBB",
+                                "ACCBAAB",
+                                "ACCBAAB",
+                                "#######"
+                            };
         }
 
     public void changeLevel() {

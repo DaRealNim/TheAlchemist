@@ -88,6 +88,8 @@ public class Launcher {
         AudioManager.registerSound("potion", "./res/sounds/rocketsound.wav");
         AudioManager.registerSound("level1music", "./res/sounds/music/DestinationUnknown.wav");
         AudioManager.registerSound("level2music", "./res/sounds/music/EgyptianCrawl.wav");
+        AudioManager.registerSound("level3music", "./res/sounds/music/DarkMusic.wav");
+        AudioManager.registerSound("level4music", "./res/sounds/music/InnerJourney.wav");
 
         Random rd = new Random();
         switch(rd.nextInt(3)) {
