@@ -93,11 +93,27 @@ public class Window extends JFrame {
         getContentPane().add(label);
     }
 
-    public void paintItems(int redPotions)  {
+    public void paintItems(int redPotions, int bluePotions, int greenPotions)  {
         JLabel label = new JLabel(""+redPotions);
-        label.setLocation(660, 100);
+        label.setLocation(460, 100);
         label.setSize(800,50);
         label.setForeground(Color.RED);
+        label.setFont(font);
+        label.setVisible(true);
+        getContentPane().add(label);
+
+        label = new JLabel(""+bluePotions);
+        label.setLocation(580, 100);
+        label.setSize(800,50);
+        label.setForeground(Color.BLUE);
+        label.setFont(font);
+        label.setVisible(true);
+        getContentPane().add(label);
+
+        label = new JLabel(""+greenPotions);
+        label.setLocation(700, 100);
+        label.setSize(800,50);
+        label.setForeground(Color.GREEN);
         label.setFont(font);
         label.setVisible(true);
         getContentPane().add(label);
@@ -113,21 +129,6 @@ public class Window extends JFrame {
         bgp.setVisible(true);
         getContentPane().add(bgp);
     }
-
-    // public void paintLogo() {
-    //     BufferedImage myPicture = null;
-    //     try {
-    //         myPicture = ImageIO.read(new File("./res/images/logo.png"));
-    //     } catch (IOException ex) { System.out.println("INVALID PATH");}
-    //     BackgroundPane logo = new BackgroundPane(myPicture);
-    //     // logo.setBounds(0, 0, 600, 800);
-    //     logo.setLocation(0,0);
-    //     logo.setSize(200,200);
-    //     logo.setVisible(true);
-    //     logo.setBackground(new Color(0,0,0,0));
-    //     getContentPane().add(logo);
-    //     logo.revalidate();
-    // }
 
     public void updateMouseIcon(String icon) {
         if(!mouseIcon.icon.equals(icon)) {
@@ -161,25 +162,11 @@ public class Window extends JFrame {
         }
     }
 
-    // public class LogoPane extends JPanel {
-    //     private BufferedImage image;
-    //
-    //     public LogoPane(BufferedImage image) {
-    //         super();
-    //         this.image = image;
-    //         // setLocation(0,0);
-    //         // setSize(200,200);
-    //     }
-    //
-    //     @Override
-    //     protected void paintComponent(Graphics g) {
-    //         super.paintComponent(g);
-    //         g.drawImage(image, 0, 0, this);
-    //     }
-    // }
 
     public class MouseIcon extends JPanel {
         private BufferedImage redPotionIcon;
+        private BufferedImage bluePotionIcon;
+        private BufferedImage greenPotionIcon;
         private String icon;
 
         public MouseIcon() {
@@ -190,6 +177,12 @@ public class Window extends JFrame {
             try {
                 redPotionIcon = ImageIO.read(new File("./res/images/potion_red.png"));
             } catch (IOException ex) { System.out.println("INVALID PATH");}
+            try {
+                bluePotionIcon = ImageIO.read(new File("./res/images/potion_blue.png"));
+            } catch (IOException ex) { System.out.println("INVALID PATH");}
+            try {
+                greenPotionIcon = ImageIO.read(new File("./res/images/potion_green.png"));
+            } catch (IOException ex) { System.out.println("INVALID PATH");}
         }
 
         @Override
@@ -199,6 +192,12 @@ public class Window extends JFrame {
             switch(icon) {
                 case "redpotion":
                     g.drawImage(redPotionIcon, 0, 0, 46, 75, this);
+                    break;
+                case "bluepotion":
+                    g.drawImage(bluePotionIcon, 0, 0, 46, 75, this);
+                    break;
+                case "greenpotion":
+                    g.drawImage(greenPotionIcon, 0, 0, 46, 75, this);
                     break;
             }
         }

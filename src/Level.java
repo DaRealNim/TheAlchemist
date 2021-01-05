@@ -20,7 +20,9 @@ public abstract class Level implements InputOutput, Game  {
     protected int scrollLastLine;
     protected int remainingLines;
     protected boolean hasScroll;
-    protected boolean isUsingRocketGUI;
+    protected boolean isUsingRedPotion;
+    protected boolean isUsingBluePotion;
+    protected boolean isUsingGreenPotion;
     protected Grid grid;
     protected Window window;
     protected Progression prog;
@@ -31,7 +33,9 @@ public abstract class Level implements InputOutput, Game  {
         grid = new Grid(getGridStrings());
         deliveredPackets = 0;
         score = 0;
-        isUsingRocketGUI = false;
+        isUsingRedPotion = false;
+        isUsingBluePotion = false;
+        isUsingGreenPotion = false;
         hasScroll = (grid.getHeight() > 10);
         if (hasScroll) {
             scrollFirstLine = 0;
@@ -94,20 +98,49 @@ public abstract class Level implements InputOutput, Game  {
         quitButton.setLocation(600, 10);
         window.add(quitButton);
 
-        CustomButton rocketButton = new CustomButton("", "./res/images/potion_red.png", 46, 75, () -> {
+        CustomButton redpotionButton = new CustomButton("", "./res/images/potion_red.png", 46, 75, () -> {
             if (inv.redPotions > 0) {
-                isUsingRocketGUI = !isUsingRocketGUI;
-                if (isUsingRocketGUI)
+                isUsingRedPotion = !isUsingRedPotion;
+                isUsingBluePotion = false;
+                isUsingGreenPotion = false;
+                if (isUsingRedPotion)
                     window.updateMouseIcon("redpotion");
                 else
                     window.updateMouseIcon("");
             }
-            System.out.println(isUsingRocketGUI);
         });
-        rocketButton.setLocation(600, 75);
-        window.add(rocketButton);
+        redpotionButton.setLocation(400, 75);
+        window.add(redpotionButton);
 
-        window.paintItems(inv.redPotions);
+        CustomButton bluePotionButton = new CustomButton("", "./res/images/potion_blue.png", 46, 75, () -> {
+            if (inv.bluePotions > 0) {
+                isUsingBluePotion = !isUsingBluePotion;
+                isUsingRedPotion = false;
+                isUsingGreenPotion = false;
+                if (isUsingBluePotion)
+                    window.updateMouseIcon("bluepotion");
+                else
+                    window.updateMouseIcon("");
+            }
+        });
+        bluePotionButton.setLocation(520, 75);
+        window.add(bluePotionButton);
+
+        CustomButton greenPotionButton = new CustomButton("", "./res/images/potion_green.png", 46, 75, () -> {
+            if (inv.greenPotions > 0) {
+                isUsingGreenPotion = !isUsingGreenPotion;
+                isUsingRedPotion = false;
+                isUsingBluePotion = false;
+                if (isUsingGreenPotion)
+                    window.updateMouseIcon("greenpotion");
+                else
+                    window.updateMouseIcon("");
+            }
+        });
+        greenPotionButton.setLocation(640, 75);
+        window.add(greenPotionButton);
+
+        window.paintItems(inv.redPotions, inv.bluePotions, inv.greenPotions);
         window.paintBackground(getBackGroundPath());
         window.revalidate();
         window.repaint();
@@ -131,22 +164,29 @@ public abstract class Level implements InputOutput, Game  {
     }
 
     public void inputGraphics() {
-        System.out.println("Waiting for block...");
         while(!grid.blockClicked) {
             window.repaintMouseIcon();
         }
         delay();
         int x = grid.blockClickedX;
         int y = grid.blockClickedY;
-        System.out.println("BLOCKCLICKED");
-        if (isUsingRocketGUI && inv.redPotions > 0) {
+        System.out.println("Block click "+x + ", " + y);
+        if (isUsingRedPotion) {
             score += grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
-            isUsingRocketGUI = false;
+            isUsingRedPotion = false;
             inv.redPotions--;
-            window.updateMouseIcon("");
-        } else {
+        } else if (isUsingBluePotion) {
+            score += grid.destroyLine(y);
+            isUsingBluePotion = false;
+            inv.bluePotions--;
+        } else if (isUsingGreenPotion) {
+            score += grid.destroySquare(x-1, y-1);
+            isUsingGreenPotion = false;
+            inv.greenPotions--;
+        } else{
             score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
         }
+        window.updateMouseIcon("");
         grid.blockClicked = false;
     }
 

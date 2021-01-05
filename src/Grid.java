@@ -319,14 +319,13 @@ public class Grid {
         return score;
     }
 
-    public int destroyLine(int line, int from, int to) {
+    public int destroyLine(int line) {
         int score = 0;
-        for (int i = from; i <= to; i++) {
-            Block block = getBlock(line, i);
-
+        for (int i = 0; i < width; i++) {
+            Block block = getBlock(i, line);
             if (block != null) {
                 if (block.getType() != 'P' && block.getType() != '#') {
-                    destroyBlock(line, i);
+                    destroyBlock(i, line);
                     score += 10;
                 }
             }
@@ -337,14 +336,16 @@ public class Grid {
 
     public int destroySquare(int topLeftX, int topLeftY) {
         int score = 0;
-
+        topLeftX = Math.max(0, topLeftX);
+        topLeftY = Math.max(0, topLeftY);
         for (int i = topLeftX; i < (topLeftX + 3); i++) {
-            Block block = getBlock(topLeftX, topLeftY);
-
             for (int j = topLeftY; j < (topLeftY + 3); j++) {
-                if (block.getType() != 'P' && block.getType() != '#') {
-                    destroyBlock(i, j);
-                    score += 10;
+                Block block = getBlock(i, j);
+                if (block != null) {
+                    if (block.getType() != 'P' && block.getType() != '#') {
+                        destroyBlock(i, j);
+                        score += 10;
+                    }
                 }
             }
         }
