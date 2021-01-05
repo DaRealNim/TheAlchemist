@@ -56,7 +56,7 @@ public class CustomButton extends JPanel implements MouseInputListener {
 
         this.sprite = sprite;
 
-        add(Box.createRigidArea(new Dimension(0, (sizeY > 50) ? 30 : 10)));
+        add(Box.createRigidArea(new Dimension(0, (int)(sizeY/4) )));
         add(label);
         setOpaque(false);
         setVisible(true);
