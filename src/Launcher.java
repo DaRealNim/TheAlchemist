@@ -7,13 +7,12 @@ public class Launcher {
 
     public static void main(String[] args) {
 
-        // SwingUtilities.invokeLater(new Runnable() {
-        //     public void run() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
 
                 File saveFile = new File("SavedGame.dat");
                 Inventory inv = new Inventory();
                 Progression prog = new Progression();
-
 
                 try {
                     if (saveFile.createNewFile()) {
@@ -50,7 +49,7 @@ public class Launcher {
                     mainMenu = new Menu(true, prog, inv, new Window());
 
                 mainMenu.displayMenu();
-        //     }
-        // });
+            }
+        });
     }
 }
