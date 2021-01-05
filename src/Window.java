@@ -35,17 +35,11 @@ public class Window extends JFrame {
         font = font.deriveFont(30f);
 
         mouseIcon = new MouseIcon();
-        // addMouseMotionListener(new MouseMotionAdapter() {
-        //     public void mouseMoved(MouseEvent e) {
-        //         mouseIcon.setLocation(e.getX(), e.getY());
-        //     }
-        // });
         getContentPane().add(mouseIcon);
 
     }
 
     public void paintGrid(Grid grid, int from, int to) {
-        // System.out.println("paintGrid!");
         getContentPane().removeAll();
         int startXPos = (800 - (grid.getWidth()*Block.BLOCKSIZE))/2;
         int startYPos = 180 + (80 - Block.BLOCKSIZE) + ((grid.getHeight() < 10) ? (Block.BLOCKSIZE * (11 - grid.getHeight())) : 0);
@@ -173,7 +167,6 @@ public class Window extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            // System.out.println("test");
             switch(icon) {
                 case "redpotion":
                     g.drawImage(SpriteManager.getSprite("spr_potion_red"), 0, 0, 46, 75, this);
