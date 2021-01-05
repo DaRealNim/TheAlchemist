@@ -174,25 +174,24 @@ public class Grid {
      * If there is a wall with a block on top and empty space or wall on the lower left, shift everything
      * on top of it until the next wall or when we reach another empty space or the top of the grid
      */
-     public boolean shiftToLeft()
-     {
+     public boolean shiftToLeft() {
          boolean done = true;
          for(int row = height - 1; row >= 0; row--) {
              for(int column = 0; column < width; column++) {
                  try {
                      Block block = getBlock(column, row);
-                     Block leftBlock = getBlock(column, row - 1);
-                     Block upperBlock = getBlock(column - 1, row);
+                     Block upperBlock = getBlock(column, row - 1);
+                     Block leftBlock = getBlock(column - 1, row);
                      Block leftUpperBlock = getBlock(column - 1, row - 1);
 
                      if (block.isWall()) {
-                         if (!leftBlock.isWall()) {
+                         if (!upperBlock.isWall()) {
                              if (column != 0) {
                                  shiftUpFromBlock(column, row);
                                  done = false;
                              }
                          }
-                         else if (upperBlock.isWall()) {
+                         else if (leftBlock.isWall()) {
                              if(leftUpperBlock == null) {
                                  shiftUpFromBlock(column, row);
                                  done = false;
