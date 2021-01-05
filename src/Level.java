@@ -363,12 +363,10 @@ public abstract class Level {
             CustomButton nextLevelButton = new CustomButton("Next level", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 AudioManager.stopSound(getMusicIdentifier());
                 changeLevel();
-                window.repaint();
             });
             CustomButton levelMenuButton = new CustomButton("Back to menu", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 AudioManager.stopSound(getMusicIdentifier());
                 menu.chooseLevel();
-                window.repaint();
             });
             CustomPopup pop = new CustomPopup("You win!", nextLevelButton, levelMenuButton);
 
@@ -399,7 +397,6 @@ public abstract class Level {
             CustomButton levelMenuButton = new CustomButton("Back to menu", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 AudioManager.stopSound(getMusicIdentifier());
                 menu.chooseLevel();
-                window.repaint();
             });
             CustomPopup pop = new CustomPopup("You lose!", retryButton, levelMenuButton);
 

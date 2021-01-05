@@ -20,13 +20,13 @@ public class CustomButton extends JPanel implements MouseInputListener {
     int sizeY;
 
     public CustomButton(String text, BufferedImage sprite, int sizeX, int sizeY, Runnable action) {
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setLayout(new GridBagLayout());
         this.button = button;
         this.action = action;
-        setSize(sizeX, sizeY);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        // setBackground(new Color(128, 128, 128));
+        setSize(sizeX, sizeY);
+        setMaximumSize(new Dimension(sizeX, sizeY));
 
         Font font = null;
         try {
@@ -44,22 +44,16 @@ public class CustomButton extends JPanel implements MouseInputListener {
         genv.registerFont(font);
         font = font.deriveFont(30f);
 
-        JLabel label = new JLabel(text, SwingConstants.CENTER);
-        // label.setLocation(0,20);
-        label.setSize(800,50);
+        JLabel label = new JLabel(text);
+        label.setSize(sizeX,50);
         label.setForeground(Color.WHITE);
         label.setFont(font);
-        label.setVisible(true);
-        label.setAlignmentX(CENTER_ALIGNMENT);
-        label.setAlignmentY(CENTER_ALIGNMENT);
-        this.label = label;
 
+        this.label = label;
         this.sprite = sprite;
 
-        add(Box.createRigidArea(new Dimension(0, (int)(sizeY/4) )));
         add(label);
         setOpaque(false);
-        setVisible(true);
         addMouseListener(this);
     }
 

@@ -16,7 +16,6 @@ public class CustomPopup extends JPanel {
 
         setLocation(200, 250);
         setSize(400, 500);
-        // setBackground(new Color(128, 128, 128));
         setBackground(new Color(0,0,0,0));
 
         sprite = SpriteManager.getSprite("spr_popup");
@@ -38,21 +37,21 @@ public class CustomPopup extends JPanel {
         font = font.deriveFont(40f);
 
         JLabel label = new JLabel(title);
-        label.setLocation(10,0);
-        label.setSize(200,50);
+        label.setSize(400,50);
         label.setForeground(Color.WHITE);
         label.setFont(font);
         label.setVisible(true);
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-        add(Box.createRigidArea(new Dimension(0, 30)));
+        changeOrRetryButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        add(Box.createRigidArea(new Dimension(0, 50)));
         add(label);
         add(Box.createRigidArea(new Dimension(0, 100)));
         add(changeOrRetryButton);
-        add(Box.createRigidArea(new Dimension(0, 20)));
+        add(Box.createRigidArea(new Dimension(0, 50)));
         add(menuButton);
-
-        setVisible(true);
     }
 
     @Override
