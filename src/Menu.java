@@ -29,6 +29,25 @@ public class Menu {
         mainWindow = w;
 
         if (gui) {
+            SpriteManager.registerSprite("spr_arrow", "./res/images/arrow.png");
+            SpriteManager.registerSprite("bg_level1", "./res/images/bg_level1.png");
+            SpriteManager.registerSprite("bg_level2", "./res/images/bg_level2.png");
+            SpriteManager.registerSprite("bg_level3", "./res/images/bg_level3.png");
+            SpriteManager.registerSprite("bg_level4", "./res/images/bg_level4.png");
+            SpriteManager.registerSprite("bg_menu", "./res/images/bg_menu.png");
+            SpriteManager.registerSprite("spr_air", "./res/images/block_air_jelly.png");
+            SpriteManager.registerSprite("spr_demon", "./res/images/block_demon_jelly.png");
+            SpriteManager.registerSprite("spr_fire", "./res/images/block_fire_jelly.png");
+            SpriteManager.registerSprite("spr_forest", "./res/images/block_forest_jelly.png");
+            SpriteManager.registerSprite("spr_spirit", "./res/images/block_spirit_jelly.png");
+            SpriteManager.registerSprite("spr_water", "./res/images/block_water_jelly.png");
+            SpriteManager.registerSprite("spr_button", "./res/images/button.png");
+            SpriteManager.registerSprite("spr_logo", "./res/images/logo.png");
+            SpriteManager.registerSprite("spr_popup", "./res/images/popup.png");
+            SpriteManager.registerSprite("spr_potion_blue", "./res/images/potion_blue.png");
+            SpriteManager.registerSprite("spr_potion_green", "./res/images/potion_green.png");
+            SpriteManager.registerSprite("spr_potion_red", "./res/images/potion_red.png");
+
             AudioManager.registerSound("click", "./res/sounds/click.wav");
             AudioManager.registerSound("fire", "./res/sounds/fire.wav");
             AudioManager.registerSound("plant", "./res/sounds/plant.wav");
@@ -142,22 +161,16 @@ public class Menu {
 
         mainWindow.getContentPane().removeAll();
 
-        BufferedImage myPicture = null;
-        try {
-            myPicture = ImageIO.read(new File("./res/images/logo.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        JLabel picLabel = new JLabel(new ImageIcon(SpriteManager.getSprite("spr_logo")));
         picLabel.setSize(600,600);
         picLabel.setPreferredSize(new Dimension(600,600));
         picLabel.setLocation(100,0);
         mainWindow.add(picLabel);
 
-        CustomButton chooseLevelButton = new CustomButton("Play", "./res/images/button.png", 400, 100, () -> {
+        CustomButton chooseLevelButton = new CustomButton("Play", SpriteManager.getSprite("spr_button"), 400, 100, () -> {
             chooseLevel();
         });
-        CustomButton quitGameButton = new CustomButton("Exit game", "./res/images/button.png", 400, 100, () -> {
+        CustomButton quitGameButton = new CustomButton("Exit game", SpriteManager.getSprite("spr_button"), 400, 100, () -> {
             quitGame();
         });
 
@@ -169,7 +182,7 @@ public class Menu {
         mainWindow.getContentPane().add(chooseLevelButton);
         mainWindow.getContentPane().add(quitGameButton);
 
-        mainWindow.paintBackground("./res/images/bg_menu.png");
+        mainWindow.paintBackground("bg_menu");
         mainWindow.revalidate();
         mainWindow.repaint();
     }
@@ -199,7 +212,7 @@ public class Menu {
 
         for (int i = 0; i < gameProg.unlockedLevels.length; i++) {
             final int levelId = i+1;
-            CustomButton levelButton = new CustomButton("Level " + (i + 1), "./res/images/button.png", 200, 50, () -> {
+            CustomButton levelButton = new CustomButton("Level " + (i + 1), SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 if (levelIsUnlocked(levelId)) {
                     Thread thread = new Thread() {
                         public void run() {
@@ -215,13 +228,13 @@ public class Menu {
             mainWindow.getContentPane().add(levelButton);
         }
 
-        CustomButton levelButton = new CustomButton("Back", "./res/images/button.png", 200, 50, () -> {
+        CustomButton levelButton = new CustomButton("Back", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
             displayMenu();
         });
         levelButton.setLocation(300, 450+(gameProg.unlockedLevels.length*70));
         mainWindow.getContentPane().add(levelButton);
 
-        mainWindow.paintBackground("./res/images/bg_menu.png");
+        mainWindow.paintBackground("bg_menu");
 
         mainWindow.revalidate();
         mainWindow.repaint();

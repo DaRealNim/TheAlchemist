@@ -119,25 +119,15 @@ public class Window extends JFrame {
         getContentPane().add(label);
     }
 
-    public void paintBackground(String path) {
-        BufferedImage myPicture = null;
-        try {
-            myPicture = ImageIO.read(new File(path));
-        } catch (IOException ex) { System.out.println("INVALID PATH");}
-        BackgroundPane bgp = new BackgroundPane(myPicture);
+    public void paintBackground(String id) {
+        BackgroundPane bgp = new BackgroundPane(SpriteManager.getSprite(id));
         bgp.setBounds(0, 0, 800, 1000);
         bgp.setVisible(true);
         getContentPane().add(bgp);
     }
 
     public void paintArrow(int remainingLines) {
-        BufferedImage arrow = null;
-        try {
-            arrow = ImageIO.read(new File("./res/images/arrow.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        JLabel linesLabel = new JLabel(remainingLines + " lines left", new ImageIcon(arrow), SwingConstants.LEADING);
+        JLabel linesLabel = new JLabel(remainingLines + " lines left", new ImageIcon(SpriteManager.getSprite("spr_arrow")), SwingConstants.LEADING);
         linesLabel.setSize(253,71);
         linesLabel.setPreferredSize(new Dimension(253,71));
         linesLabel.setLocation(100,900);
@@ -190,15 +180,6 @@ public class Window extends JFrame {
             setBackground(new Color(0,0,0,0));
             setVisible(true);
             setSize(46, 75);
-            try {
-                redPotionIcon = ImageIO.read(new File("./res/images/potion_red.png"));
-            } catch (IOException ex) { System.out.println("INVALID PATH");}
-            try {
-                bluePotionIcon = ImageIO.read(new File("./res/images/potion_blue.png"));
-            } catch (IOException ex) { System.out.println("INVALID PATH");}
-            try {
-                greenPotionIcon = ImageIO.read(new File("./res/images/potion_green.png"));
-            } catch (IOException ex) { System.out.println("INVALID PATH");}
         }
 
         @Override
@@ -207,13 +188,13 @@ public class Window extends JFrame {
             // System.out.println("test");
             switch(icon) {
                 case "redpotion":
-                    g.drawImage(redPotionIcon, 0, 0, 46, 75, this);
+                    g.drawImage(SpriteManager.getSprite("spr_potion_red"), 0, 0, 46, 75, this);
                     break;
                 case "bluepotion":
-                    g.drawImage(bluePotionIcon, 0, 0, 46, 75, this);
+                    g.drawImage(SpriteManager.getSprite("spr_potion_blue"), 0, 0, 46, 75, this);
                     break;
                 case "greenpotion":
-                    g.drawImage(greenPotionIcon, 0, 0, 46, 75, this);
+                    g.drawImage(SpriteManager.getSprite("spr_potion_green"), 0, 0, 46, 75, this);
                     break;
             }
         }

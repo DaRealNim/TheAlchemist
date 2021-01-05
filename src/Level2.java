@@ -49,8 +49,8 @@ public class Level2 extends Level {
         prog.unlockLevel(3);
     }
 
-    public String getBackGroundPath() {
-        return "./res/images/bg_level2.png";
+    public String getBackGroundIdentifier() {
+        return "bg_level2";
     }
 
     public String getMusicIdentifier() {

@@ -19,9 +19,7 @@ public class CustomPopup extends JPanel {
         // setBackground(new Color(128, 128, 128));
         setBackground(new Color(0,0,0,0));
 
-        try {
-            sprite = ImageIO.read(new File("./res/images/popup.png"));
-        } catch (IOException ex) { System.out.println("INVALID PATH");}
+        sprite = SpriteManager.getSprite("spr_popup");
 
         Font font = null;
         try {

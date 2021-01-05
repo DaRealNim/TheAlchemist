@@ -5,7 +5,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.*;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 import javax.sound.sampled.AudioInputStream;
@@ -75,7 +74,7 @@ public abstract class Level {
 
     public abstract void unlockLevel();
 
-    public abstract String getBackGroundPath();
+    public abstract String getBackGroundIdentifier();
 
     public abstract String getMusicIdentifier();
 
@@ -92,7 +91,7 @@ public abstract class Level {
         window.paintScore(score, scoreGoal);
         window.paintPackets(deliveredPackets, packetGoal);
 
-        CustomButton quitButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 45, () -> {
+        CustomButton quitButton = new CustomButton("Back to menu", SpriteManager.getSprite("spr_button"), 200, 45, () -> {
             AudioManager.stopSound(getMusicIdentifier());
             menu.chooseLevel();
             window.repaint();
@@ -100,7 +99,7 @@ public abstract class Level {
         quitButton.setLocation(600, 10);
         window.add(quitButton);
 
-        CustomButton redpotionButton = new CustomButton("", "./res/images/potion_red.png", 46, 75, () -> {
+        CustomButton redpotionButton = new CustomButton("", SpriteManager.getSprite("spr_potion_red"), 46, 75, () -> {
             if (inv.redPotions > 0) {
                 isUsingRedPotion = !isUsingRedPotion;
                 isUsingBluePotion = false;
@@ -114,7 +113,7 @@ public abstract class Level {
         redpotionButton.setLocation(400, 75);
         window.add(redpotionButton);
 
-        CustomButton bluePotionButton = new CustomButton("", "./res/images/potion_blue.png", 46, 75, () -> {
+        CustomButton bluePotionButton = new CustomButton("", SpriteManager.getSprite("spr_potion_blue"), 46, 75, () -> {
             if (inv.bluePotions > 0) {
                 isUsingBluePotion = !isUsingBluePotion;
                 isUsingRedPotion = false;
@@ -128,7 +127,7 @@ public abstract class Level {
         bluePotionButton.setLocation(520, 75);
         window.add(bluePotionButton);
 
-        CustomButton greenPotionButton = new CustomButton("", "./res/images/potion_green.png", 46, 75, () -> {
+        CustomButton greenPotionButton = new CustomButton("", SpriteManager.getSprite("spr_potion_green"), 46, 75, () -> {
             if (inv.greenPotions > 0) {
                 isUsingGreenPotion = !isUsingGreenPotion;
                 isUsingRedPotion = false;
@@ -147,7 +146,7 @@ public abstract class Level {
         }
 
         window.paintItems(inv.redPotions, inv.bluePotions, inv.greenPotions);
-        window.paintBackground(getBackGroundPath());
+        window.paintBackground(getBackGroundIdentifier());
         window.revalidate();
         window.repaint();
     }
@@ -361,12 +360,12 @@ public abstract class Level {
         saveProgress();
 
         if (menu != null) {
-            CustomButton nextLevelButton = new CustomButton("Next level", "./res/images/button.png", 200, 50, () -> {
+            CustomButton nextLevelButton = new CustomButton("Next level", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 AudioManager.stopSound(getMusicIdentifier());
                 changeLevel();
                 window.repaint();
             });
-            CustomButton levelMenuButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 50, () -> {
+            CustomButton levelMenuButton = new CustomButton("Back to menu", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 AudioManager.stopSound(getMusicIdentifier());
                 menu.chooseLevel();
                 window.repaint();
@@ -388,7 +387,7 @@ public abstract class Level {
         saveProgress();
 
         if (menu != null) {
-            CustomButton retryButton = new CustomButton("Retry?", "./res/images/button.png", 200, 50, () -> {
+            CustomButton retryButton = new CustomButton("Retry?", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 AudioManager.stopSound(getMusicIdentifier());
                 Thread thread = new Thread() {
                     public void run() {
@@ -397,7 +396,7 @@ public abstract class Level {
                 };
                 thread.start();
             });
-            CustomButton levelMenuButton = new CustomButton("Back to menu", "./res/images/button.png", 200, 50, () -> {
+            CustomButton levelMenuButton = new CustomButton("Back to menu", SpriteManager.getSprite("spr_button"), 200, 50, () -> {
                 AudioManager.stopSound(getMusicIdentifier());
                 menu.chooseLevel();
                 window.repaint();

@@ -18,34 +18,22 @@ public class Block extends JPanel implements MouseInputListener {
         this.parentGrid = parentGrid;
         switch(type) {
             case 'A':
-                try {
-                    image = ImageIO.read(new File("./res/images/block_forest_jelly.png"));
-              } catch (IOException ex) { System.out.println("INVALID PATH");}
+                image = SpriteManager.getSprite("spr_forest");
                 break;
             case 'B':
-                try {
-                    image = ImageIO.read(new File("./res/images/block_fire_jelly.png"));
-                } catch (IOException ex) {}
+                image = SpriteManager.getSprite("spr_fire");
                 break;
             case 'C':
-                try {
-                    image = ImageIO.read(new File("./res/images/block_air_jelly.png"));
-                } catch (IOException ex) {}
+                image = SpriteManager.getSprite("spr_air");
                 break;
             case 'D':
-                try {
-                    image = ImageIO.read(new File("./res/images/block_water_jelly.png"));
-                } catch (IOException ex) {}
+                image = SpriteManager.getSprite("spr_water");
                 break;
             case 'P':
-                try {
-                    image = ImageIO.read(new File("./res/images/block_spirit_jelly.png"));
-                } catch (IOException ex) {}
+                image = SpriteManager.getSprite("spr_spirit");
                 break;
             case '#':
-                try {
-                    image = ImageIO.read(new File("./res/images/block_demon_jelly.png"));
-                } catch (IOException ex) {}
+                image = SpriteManager.getSprite("spr_demon");
                 break;
         }
         setOpaque(false);
