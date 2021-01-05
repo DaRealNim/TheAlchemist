@@ -47,6 +47,7 @@ public class Menu {
             SpriteManager.registerSprite("spr_potion_blue", "./res/images/potion_blue.png");
             SpriteManager.registerSprite("spr_potion_green", "./res/images/potion_green.png");
             SpriteManager.registerSprite("spr_potion_red", "./res/images/potion_red.png");
+            SpriteManager.registerSprite("spr_padlock", "./res/images/padlock.png");
 
             AudioManager.registerSound("click", "./res/sounds/click.wav");
             AudioManager.registerSound("fire", "./res/sounds/fire.wav");
@@ -224,6 +225,12 @@ public class Menu {
                     System.out.println("Level is locked!");
                 }
             });
+            if(!levelIsUnlocked(levelId)) {
+                JLabel padlock = new JLabel(new ImageIcon(SpriteManager.getSprite("spr_padlock")));
+                padlock.setSize(100, 100);
+                padlock.setLocation(350, 375+(i*70));
+                mainWindow.add(padlock);
+            }
             levelButton.setLocation(300, 400+(i*70));
             mainWindow.getContentPane().add(levelButton);
         }
