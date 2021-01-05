@@ -12,14 +12,6 @@ public class Window extends JFrame {
     Font font;
     MouseIcon mouseIcon;
 
-    public static Color rgbToColor(String rgbString) {
-        return new Color( Integer.valueOf(rgbString.substring(1, 3), 16),
-                          Integer.valueOf(rgbString.substring(3, 5), 16),
-                          Integer.valueOf(rgbString.substring(5, 7), 16)
-        );
-    }
-
-
     public Window() {
         setTitle("The Alchemist");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -132,6 +124,13 @@ public class Window extends JFrame {
         if (p != null)
             mouseIcon.setLocation((int)p.getX()-20, (int)p.getY()-70);
         mouseIcon.repaint();
+    }
+
+    public static Color rgbToColor(String rgbString) {
+        return new Color( Integer.valueOf(rgbString.substring(1, 3), 16),
+                          Integer.valueOf(rgbString.substring(3, 5), 16),
+                          Integer.valueOf(rgbString.substring(5, 7), 16)
+        );
     }
 
 

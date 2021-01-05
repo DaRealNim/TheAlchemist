@@ -36,6 +36,45 @@ public class Menu implements InputOutput {
         }
     }
 
+    public void outputGraphics() {
+
+        AudioManager.playSound("menumusic", true);
+
+        mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+        mainWindow.getContentPane().removeAll();
+
+        JLabel picLabel = new JLabel(new ImageIcon(SpriteManager.getSprite("spr_logo")));
+        picLabel.setSize(600,600);
+        picLabel.setPreferredSize(new Dimension(600,600));
+        picLabel.setLocation(100,0);
+        mainWindow.add(picLabel);
+
+        CustomButton chooseLevelButton = new CustomButton("Play", SpriteManager.getSprite("spr_button"), 400, 100, () -> {
+            chooseLevel();
+        });
+        CustomButton quitGameButton = new CustomButton("Exit game", SpriteManager.getSprite("spr_button"), 400, 100, () -> {
+            quitGame();
+        });
+
+        chooseLevelButton.setLocation(200,600);
+        chooseLevelButton.setFontSize(40);
+        quitGameButton.setLocation(200,750);
+        quitGameButton.setFontSize(40);
+
+        mainWindow.getContentPane().add(chooseLevelButton);
+        mainWindow.getContentPane().add(quitGameButton);
+
+        mainWindow.paintBackground("bg_menu");
+        mainWindow.revalidate();
+        mainWindow.repaint();
+    }
+
+    public void inputGraphics() {
+        // Cette fonction n'est pas nécéssaire ici car tout les inputs (appuis sur des boutons)
+        // sont déjà mappées aux fonctions nécéssaire lors de la création des boutons
+    }
+
     public void outputText() {
         System.out.println("      _____");
         System.out.println("     `.___,'");
@@ -101,45 +140,6 @@ public class Menu implements InputOutput {
         }
     }
 
-    public void outputGraphics() {
-
-        AudioManager.playSound("menumusic", true);
-
-        mainWindow.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-
-        mainWindow.getContentPane().removeAll();
-
-        JLabel picLabel = new JLabel(new ImageIcon(SpriteManager.getSprite("spr_logo")));
-        picLabel.setSize(600,600);
-        picLabel.setPreferredSize(new Dimension(600,600));
-        picLabel.setLocation(100,0);
-        mainWindow.add(picLabel);
-
-        CustomButton chooseLevelButton = new CustomButton("Play", SpriteManager.getSprite("spr_button"), 400, 100, () -> {
-            chooseLevel();
-        });
-        CustomButton quitGameButton = new CustomButton("Exit game", SpriteManager.getSprite("spr_button"), 400, 100, () -> {
-            quitGame();
-        });
-
-        chooseLevelButton.setLocation(200,600);
-        chooseLevelButton.setFontSize(40);
-        quitGameButton.setLocation(200,750);
-        quitGameButton.setFontSize(40);
-
-        mainWindow.getContentPane().add(chooseLevelButton);
-        mainWindow.getContentPane().add(quitGameButton);
-
-        mainWindow.paintBackground("bg_menu");
-        mainWindow.revalidate();
-        mainWindow.repaint();
-    }
-
-    public void inputGraphics() {
-        // Cette fonction n'est pas nécéssaire ici car tout les inputs (appuis sur des boutons)
-        // sont déjà mappées aux fonctions nécéssaire lors de la création des boutons
-    }
-
     public void quitGame() {
         System.exit(0);
     }
@@ -153,7 +153,9 @@ public class Menu implements InputOutput {
     }
 
     private boolean isNumeric(String str) {
-        return (str != null && str.matches("[0-9.]+"));
+        if (str == null)
+            return false;
+        return (str.matches("[0-9.]+"));
     }
 
     public void chooseLevel() {
