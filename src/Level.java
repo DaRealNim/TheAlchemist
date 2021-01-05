@@ -164,13 +164,18 @@ public abstract class Level implements InputOutput, Game  {
     }
 
     public void inputGraphics() {
-        while(!grid.blockClicked) {
-            window.repaintMouseIcon();
-        }
-        delay();
-        int x = grid.blockClickedX;
-        int y = grid.blockClickedY;
-        System.out.println("Block click "+x + ", " + y);
+        int x;
+        int y;
+        do {
+            grid.blockClicked = false;
+            while(!grid.blockClicked) {
+                window.repaintMouseIcon();
+            }
+            delay();
+            x = grid.blockClickedX;
+            y = grid.blockClickedY;
+            System.out.println("Block click "+x + ", " + y);
+        } while (grid.getBlock(x, y) == null);
         if (isUsingRedPotion) {
             score += grid.destroyColumn(x, hasScroll ? scrollFirstLine : 0, hasScroll ? scrollLastLine : grid.getHeight()-1);
             isUsingRedPotion = false;
@@ -187,7 +192,6 @@ public abstract class Level implements InputOutput, Game  {
             score += grid.searchAndDestroyAdjacentBlocks(x, y, grid.getBlock(x,y).getType(), true);
         }
         window.updateMouseIcon("");
-        grid.blockClicked = false;
     }
 
     public void inputText() {
