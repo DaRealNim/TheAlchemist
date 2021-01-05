@@ -187,39 +187,37 @@ public class Grid {
                      if (block.isWall()) {
                          if (!upperBlock.isWall()) {
                              if (column != 0) {
-                                 shiftUpFromBlock(column, row);
+                                 shiftBlocksAbove(column, row);
                                  done = false;
                              }
                          }
                          else if (leftBlock.isWall()) {
                              if(leftUpperBlock == null) {
-                                 shiftUpFromBlock(column, row);
+                                 shiftBlocksAbove(column, row);
                                  done = false;
                              }
                          }
                      }
                  }
-                 catch (Exception e) { }
+                 catch (NullPointerException e) {}
              }
          }
          return done;
      }
 
-    private void shiftUpFromBlock(int column, int row) {
+    private void shiftBlocksAbove(int column, int row) {
         //move all blocks one step to left until there's no more or we hit a wall above
         //if there's a wall blocking the shift at some point, we quit
         for(int row2 = row - 1; row2 >= 0; row2--) {
             Block block = getBlock(column, row2);
-            if(block == null) {
+            if(block == null)
                 break;
-            } else if(block.isWall()) {
+            if(block.isWall())
                 break;
-            } else {
-                if(getBlock(column - 1, row2) != null)
-                    return;
-                insertBlock(column - 1, row2, block);
-                destroyBlock(column, row2);
-            }
+            if(getBlock(column - 1, row2) != null)
+                return;
+            insertBlock(column - 1, row2, block);
+            destroyBlock(column, row2);
         }
 
     }
@@ -234,20 +232,16 @@ public class Grid {
         for(int row = height - 2; row >= 0; row--) {
             for(int column = 0; column < width; column++) {
                 Block block = getBlock(column, row);
-                if (block != null) {
-                    if (block.getType() != '#') {
-                        if (getBlock(column, row + 1) == null) {
-                            insertBlock(column, row + 1, block);
-                            destroyBlock(column, row);
-                            if (gravityCycleDone) {
-                                Block blockBelowBelow = getBlock(column, row + 2);
-                                if (blockBelowBelow == null)
-                                    gravityCycleDone = false;
-                                else if (blockBelowBelow.isWall())
-                                    gravityCycleDone = false;
-
-                            }
-                        }
+                Block lowerBlock = getBlock(column, row + 1);
+                Block lowerLowerBlock = getBlock(column, row + 2);
+                if (block == null)
+                    continue;
+                if (!block.isWall()) {
+                    if (lowerBlock == null) {
+                        insertBlock(column, row + 1, block);
+                        destroyBlock(column, row);
+                        if (gravityCycleDone && lowerLowerBlock == null)
+                            gravityCycleDone = false;
                     }
                 }
             }
