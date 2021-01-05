@@ -174,39 +174,37 @@ public class Grid {
      * If there is a wall with a block on top and empty space or wall on the lower left, shift everything
      * on top of it until the next wall or when we reach another empty space or the top of the grid
      */
-    public boolean shiftToLeft() {
-        boolean done = true;
-        for(int row = height - 1; row >= 0; row--) {
-            for(int column = 0; column < width; column++){
-                Block block = getBlock(column, row);
-                if (block != null) {
-                    if (block.isWall()) {
-                        int offset = 0;
-                        // if(row == height - 1)
-                        //     offset = 1
-                        if (getBlock(column, row - 1) != null) {
-                            if (getBlock(column, row - 1).getType() != '#') {
-                                if (getBlock(column - 1, row) == null) {
-                                    if (column != 0) {
-                                        //SHIFT!
-                                        shiftUpFromBlock(column, row);
-                                        done = false;
-                                    }
-                                } else if (getBlock(column - 1, row).isWall()) {
-                                    if(getBlock(column - 1, row - 1) == null) {
-                                        //SHIFT!
-                                        shiftUpFromBlock(column, row);
-                                        done = false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return done;
-    }
+     public boolean shiftToLeft()
+     {
+         boolean done = true;
+         for(int row = height - 1; row >= 0; row--) {
+             for(int column = 0; column < width; column++) {
+                 try {
+                     Block block = getBlock(column, row);
+                     Block leftBlock = getBlock(column, row - 1);
+                     Block upperBlock = getBlock(column - 1, row);
+                     Block leftUpperBlock = getBlock(column - 1, row - 1);
+
+                     if (block.isWall()) {
+                         if (!leftBlock.isWall()) {
+                             if (column != 0) {
+                                 shiftUpFromBlock(column, row);
+                                 done = false;
+                             }
+                         }
+                         else if (upperBlock.isWall()) {
+                             if(leftUpperBlock == null) {
+                                 shiftUpFromBlock(column, row);
+                                 done = false;
+                             }
+                         }
+                     }
+                 }
+                 catch (Exception e) { }
+             }
+         }
+         return done;
+     }
 
     private void shiftUpFromBlock(int column, int row) {
         //move all blocks one step to left until there's no more or we hit a wall above
