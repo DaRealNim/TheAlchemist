@@ -1,0 +1,44 @@
+----------------------------------------
+ Projet de programmation orientée objet
+----------------------------------------
+
+Benjamin MAUDET
+Claudio TEIXEIRA MEDEIROS
+Binôme 13
+
+- Les classes Java se trouvent dans le dossier ./src
+- Les ressources pour la version graphique (images, sons et polices)
+  se trouvent dans le dossier ./res
+- Les classes, une fois le projet compilées, seront dans ./bin
+
+ * Makefile: compilation et execution
+    Le jeu peut se compiler et se lancer en une seule commande
+    en utilisant le Makefile mis a disposition dans la racine du projet.
+
+    - pour lancer le programme en mode graphique:  make launch
+    - pour lancer le programme en mode texte:      make launchtext
+
+
+ * Compilation et execution sans Makefile
+    Si pour une raison quelconque il n'y a pas la possibilité d'utiliser
+    make pour compiler et lancer le jeu, on peut utiliser les commandes
+    suivantes, dans l'ordre:
+
+    - Compilation:                 javac src/*.java -d bin/
+    - Execution en mode graphique: java -cp bin/ Launcher
+    - Execution en mode texte:     java -cp bin/ Launcher text
+
+
+ * Déroulement du jeu
+    Le jeu comporte 4 niveaux distincts. Au début, seul le niveau 1 est
+    déverrouillé. On déverrouille un niveau en gagnant le niveau précédent.
+    Une fois en jeu le but est d'amener le nombre d'esprits nécéssaire sur
+    la dernière ligne du plateau, et de détruire suffisemment de blocs.
+    Les blocs ne peuvent être détruits que par groupe de 2 minimum.
+    Vous disposez de 3 items: Les potions rouges, bleues et vertes
+        - Les potions rouges détruisent la colonne sélectionnée
+        - Les potions bleues détruisent la ligne sélectionnée
+        - Les potions vertes détruisent un carré de 3*3 autour du bloc
+          sélectionné
+
+    Ces items ne peuvent pas être rechargés, utilisez les avec parcimonie!
