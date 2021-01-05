@@ -13,7 +13,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 
-public class Menu {
+public class Menu implements InputOutput {
 
     private boolean gui;
     private Progression gameProg;
@@ -135,6 +135,11 @@ public class Menu {
         mainWindow.repaint();
     }
 
+    public void inputGraphics() {
+        // Cette fonction n'est pas nécéssaire ici car tout les inputs (appuis sur des boutons)
+        // sont déjà mappées aux fonctions nécéssaire lors de la création des boutons
+    }
+
     public void quitGame() {
         System.exit(0);
     }
@@ -192,10 +197,6 @@ public class Menu {
 
         mainWindow.revalidate();
         mainWindow.repaint();
-    }
-
-    public void inputGraphics() {
-        System.out.println("hereneither");
     }
 
     public void instanciateLevel(int levelId) {
