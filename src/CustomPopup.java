@@ -30,13 +30,15 @@ public class CustomPopup extends JPanel {
         label.setVisible(true);
         label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-        changeOrRetryButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        if(changeOrRetryButton != null)
+            changeOrRetryButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         add(Box.createRigidArea(new Dimension(0, 50)));
         add(label);
         add(Box.createRigidArea(new Dimension(0, 100)));
-        add(changeOrRetryButton);
+        if(changeOrRetryButton != null)
+            add(changeOrRetryButton);
         add(Box.createRigidArea(new Dimension(0, 50)));
         add(menuButton);
     }

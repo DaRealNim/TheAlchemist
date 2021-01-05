@@ -368,7 +368,7 @@ public abstract class Level implements InputOutput {
                 AudioManager.stopSound(getMusicIdentifier());
                 menu.chooseLevel();
             });
-            CustomPopup pop = new CustomPopup("You win!", nextLevelButton, levelMenuButton);
+            CustomPopup pop = new CustomPopup("You win!", (id != prog.unlockedLevels.length) ? nextLevelButton : null, levelMenuButton);
 
 
             pop.setVisible(true);
