@@ -453,12 +453,6 @@ public abstract class Level implements InputOutput {
         }
     }
 
-    public void scroll(int length) {
-        scrollFirstLine = Math.min(scrollFirstLine + length, grid.getHeight() - 11);
-        scrollLastLine = Math.min(scrollLastLine + length, grid.getHeight() - 2);
-        remainingLines = grid.getHeight()-scrollLastLine-2;
-    }
-
     /**
     * Checks if the last line of the current scrolls has empty blocs. if yes, and there's remaining space, then
     * scroll the screen by that ammount of remaining space
@@ -479,6 +473,12 @@ public abstract class Level implements InputOutput {
                 }
             }
         }
+    }
+
+    public void scroll(int length) {
+        scrollFirstLine = Math.min(scrollFirstLine + length, grid.getHeight() - 11);
+        scrollLastLine = Math.min(scrollLastLine + length, grid.getHeight() - 2);
+        remainingLines = grid.getHeight()-scrollLastLine-2;
     }
 
     public void saveProgress() {
