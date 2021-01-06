@@ -9,8 +9,9 @@ import java.io.*;
 
 public class Window extends JFrame {
 
-    Font font;
-    MouseIcon mouseIcon;
+    private Font font;
+    private MouseIcon mouseIcon;
+    public static final int BLOCKSIZE = 70;
 
     public Window() {
         setTitle("The Alchemist");
@@ -33,15 +34,15 @@ public class Window extends JFrame {
 
     public void paintGrid(Grid grid, int from, int to) {
         getContentPane().removeAll();
-        int startXPos = (800 - (grid.getWidth()*Block.BLOCKSIZE))/2;
-        int startYPos = 180 + (80 - Block.BLOCKSIZE) + ((grid.getHeight() < 10) ? (Block.BLOCKSIZE * (11 - grid.getHeight())) : 0);
+        int startXPos = (800 - (grid.getWidth()*BLOCKSIZE))/2;
+        int startYPos = 180 + (80 - BLOCKSIZE) + ((grid.getHeight() < 10) ? (BLOCKSIZE * (11 - grid.getHeight())) : 0);
         for(int row=from; row<=to; row++) {
             for(int column=0; column<grid.getWidth(); column++) {
                 Block block = grid.getBlock(column, row);
                 if (block == null)
                     continue;
-                block.setSize(Block.BLOCKSIZE,Block.BLOCKSIZE);
-                block.setLocation(startXPos + (column * Block.BLOCKSIZE), startYPos + ((row-from) * Block.BLOCKSIZE));
+                block.setSize(BLOCKSIZE,BLOCKSIZE);
+                block.setLocation(startXPos + (column * BLOCKSIZE), startYPos + ((row-from) * BLOCKSIZE));
                 getContentPane().add(block);
             }
         }
