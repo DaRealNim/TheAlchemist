@@ -1,0 +1,75 @@
+----------------------------------------
+ Projet de programmation orientée objet
+----------------------------------------
+
+Benjamin MAUDET
+Claudio TEIXEIRA MEDEIROS
+Binôme 13
+
+- Les classes Java se trouvent dans le dossier ./src
+- Les ressources pour la version graphique (images, sons et polices)
+  se trouvent dans le dossier ./res
+- Les classes, une fois le projet compilées, seront dans ./bin
+
+ * Makefile: compilation et execution
+    Le jeu peut se compiler et se lancer en une seule commande
+    en utilisant le Makefile mis a disposition dans la racine du projet.
+
+    - pour compiler et lancer le programme en mode graphique:  make launch
+    - pour compiler et lancer le programme en mode texte:      make launchtext
+
+
+ * Compilation et execution sans Makefile
+    Si pour une raison quelconque il n'y a pas la possibilité d'utiliser
+    make pour compiler et lancer le jeu, on peut utiliser les commandes
+    suivantes:
+
+    - Compilation:                 javac src/*.java -d bin/
+    - Execution en mode graphique: java -cp bin/ Launcher
+    - Execution en mode texte:     java -cp bin/ Launcher text
+
+
+ * Déroulement du jeu
+    Le but du jeu est de faire disparaitre les blocs élémentaires
+    (feu, air, nature et eau) par groupe de deux ou plus, afin de permettre
+    aux esprits de rejoindre la dernière ligne du niveau. Les esprits sont
+    les blocs roses munis d'une étoile dans la version graphique, ou
+    représentés par un "P" dans la version textuelle.
+    Les démons, blocs noirs munis d'un oeil dans la version graphique ou "#"
+    dans la version textuelle, sont des blocs d'obstacle. Ils sont complètement
+    fixes, et il est impossible de les détruire, y compris avec des potions.
+
+    Vous disposez de 3 type items: 5 potions rouges, 4 bleues et 3 vertes
+        - Les potions rouges détruisent la colonne sélectionnée
+        - Les potions bleues détruisent la ligne sélectionnée
+        - Les potions vertes détruisent un carré de 3*3 autour du bloc
+          sélectionné
+          
+    Ces items ne peuvent pas être rechargés, utilisez les avec parcimonie!
+    Si un niveau a une hauteur supérieure ou égale a 10, le "scroll" sera
+    activé. Seuls les 10 premières lignes de la grille seront affichées à
+    l'écran, et le nombre de ligne restante cachées sera affichée près d'une
+    flèche. La "caméra" descendra uniquement si la première ligne de l'écran
+    ne contient plus aucun blocs destructibles.
+    Le jeu comporte 4 niveaux distincts. Au début, seul le niveau 1 est
+    déverrouillé. On déverrouille un niveau en gagnant le niveau précédent.
+    Un niveau est gagné que si un nombre suffisant d'esprits ont été sauvés,
+    et un nombre suffisant de blocs cassés.
+
+
+
+ * Ergonomie
+    La version texte est évidemment moins intuitive que la version graphique.
+    En version texte:
+        - Dans les menus, il faut taper le numéro de l'option souhaitée,
+          puis appuyer sur ENTRER
+        - En jeu, on peut taper c pour cliquer sur un bloc, pr pour une
+          potion rouge, pb pour une potion bleue et pv pour une potion verte
+          (ces commandes seront rappelées en jeu)
+        - L'option de clic et la potion verte demande des coordonées, qui
+          doivent être entrée de la manière suivante: x,y
+          Avec x l'indice de la colonne et y l'indice de la ligne. Si l'une
+          des coordonnées est supérieure ou égale a 10, on peut utiliser leur
+          équivalent hexadécimal (par exemple: B,5 sera converti en 11,5)
+        - Les potions rouges et bleues ne demandent qu'une coordonnée y ou x.
+          Il est toujours possible d'utiliser l'hexadécimal.
